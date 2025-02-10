@@ -12,7 +12,6 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 
@@ -175,15 +174,15 @@ func TestRootMiddleware(t *testing.T) {
 			require.Equal(t, tc.expStatus, w.Code)
 			require.Equal(t, tc.expBody, w.Body.String())
 
-			if diff := cmp.Diff(tc.expLogs, monitor.GetLogs(t), cmpopts.IgnoreMapEntries(func(key string, value interface{}) bool {
-				if key == "msg" && strings.HasPrefix(value.(string), "Caught a panic") {
-					return true
-				}
+			requireEqual(t, tc.expLogs, monitor.GetLogs(t),
+				cmpopts.IgnoreMapEntries(func(key string, value interface{}) bool {
+					if key == "msg" && strings.HasPrefix(value.(string), "Caught a panic") {
+						return true
+					}
 
-				return key == "ts"
-			})); diff != "" {
-				t.Errorf("unexpected result (-want, got)\n%s", diff)
-			}
+					return key == "ts" || key == "trace_id" || key == "span_id"
+				}),
+			)
 		})
 	}
 }
