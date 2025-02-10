@@ -1,6 +1,6 @@
 module github.com/viebiz/lit
 
-go 1.23.2
+go 1.23.6
 
 require (
 	github.com/casbin/casbin/v2 v2.101.0
