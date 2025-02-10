@@ -4,11 +4,13 @@
 
 ## Project Status
 
-| Name            | Status                                                                                                                                       |
-|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| Main Pipeline   | [![Pipeline Status](https://gitlab.com/bizgroup2/lightning/badges/main/pipeline.svg)](https://gitlab.com/bizgroup2/lightning/-/pipelines)    |
-| Coverage        | [![coverage report](https://gitlab.com/bizgroup2/lightning/badges/main/coverage.svg)](https://gitlab.com/bizgroup2/lightning/-/commits/main) |
-| Release Version | [![Latest Release](https://gitlab.com/bizgroup2/lightning/-/badges/release.svg)](https://gitlab.com/bizgroup2/lightning/-/releases)          |
+| Name            | Status                                                                                                            |
+|-----------------|-------------------------------------------------------------------------------------------------------------------|
+| Pipeline        | [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main)   |
+| Coverage        | ![Coverage](https://coveralls.io/repos/github/viebiz/lit/badge.svg?branch=coverage)                               |
+| Release Version | ![GitHub release](https://img.shields.io/github/v/release/viebiz/lib?include_prereleases)                         |
+| Tag Version     | ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/viebiz/lit)                                    |
+
 
 
 ## Getting started
