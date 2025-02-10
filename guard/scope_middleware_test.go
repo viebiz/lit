@@ -43,7 +43,7 @@ func TestRequiredM2MScopeMiddleware(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/", nil)
 			req = req.WithContext(iam.SetM2MProfileInContext(req.Context(), tc.m2mProfile))
 
-			_, ctx, _ := lightning.NewRouterForTest(rr)
+			_, ctx, _ := lit.NewRouterForTest(rr)
 			ctx.SetRequest(req)
 
 			// When
@@ -53,7 +53,7 @@ func TestRequiredM2MScopeMiddleware(t *testing.T) {
 
 			// Then
 			if tc.expErr != nil {
-				var iamErr lightning.HttpError
+				var iamErr lit.HttpError
 				if errors.As(tc.expErr, &iamErr) {
 					require.Equal(t, rr.Code, iamErr.Status)
 				} else {

@@ -8,8 +8,8 @@ import (
 // RequestIDMiddleware ensures each request has a unique Request ID.
 // If the Request ID is provided in the request header, it uses that;
 // otherwise, it generates a new one and injects it into the request context.
-func RequestIDMiddleware() lightning.HandlerFunc {
-	return func(c lightning.Context) {
+func RequestIDMiddleware() lit.HandlerFunc {
+	return func(c lit.Context) {
 		// Get request ID from header, if it not exists, generate a new one
 		requestID := c.Request().Header.Get(RequestIDHeaderName)
 		if requestID == "" {

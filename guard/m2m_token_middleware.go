@@ -10,8 +10,8 @@ const (
 	m2mIDKey = "m2m_id"
 )
 
-func (guard AuthGuard) AuthenticateM2MMiddleware() lightning.HandlerFunc {
-	return func(c lightning.Context) {
+func (guard AuthGuard) AuthenticateM2MMiddleware() lit.HandlerFunc {
+	return func(c lit.Context) {
 		// 1. Get access token from request header
 		tokenStr := getTokenString(c.Request())
 		if tokenStr == "" {

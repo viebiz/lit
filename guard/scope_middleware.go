@@ -6,8 +6,8 @@ import (
 	"github.com/viebiz/lit/monitoring"
 )
 
-func (guard AuthGuard) RequiredM2MScopeMiddleware(scopes ...string) lightning.HandlerFunc {
-	return func(c lightning.Context) {
+func (guard AuthGuard) RequiredM2MScopeMiddleware(scopes ...string) lit.HandlerFunc {
+	return func(c lit.Context) {
 		ctx := c.Request().Context()
 
 		// 1. Get M2M profile from request context

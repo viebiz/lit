@@ -8,8 +8,8 @@ import (
 	"github.com/viebiz/lit/monitoring"
 )
 
-func (guard AuthGuard) RolePermissionHandler(handler lightning.ErrHandlerFunc, resource string, permissions Action) lightning.ErrHandlerFunc {
-	return func(c lightning.Context) error {
+func (guard AuthGuard) RolePermissionHandler(handler lit.ErrHandlerFunc, resource string, permissions Action) lit.ErrHandlerFunc {
+	return func(c lit.Context) error {
 		req := c.Request()
 		ctx := req.Context()
 
@@ -33,7 +33,7 @@ func (guard AuthGuard) RolePermissionHandler(handler lightning.ErrHandlerFunc, r
 				return errForbidden
 			}
 
-			return lightning.ErrInternalServerError
+			return lit.ErrInternalServerError
 		}
 
 		return handler(c)

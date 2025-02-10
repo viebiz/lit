@@ -114,7 +114,7 @@ func TestAuthenticateUserMiddleware(t *testing.T) {
 				inputStr: "invalid-token",
 				outErr:   errors.New("simulate server error"),
 			},
-			expErr: lightning.ErrInternalServerError,
+			expErr: lit.ErrInternalServerError,
 		},
 	}
 
@@ -129,7 +129,7 @@ func TestAuthenticateUserMiddleware(t *testing.T) {
 
 			respRecord := httptest.NewRecorder()
 
-			_, ctx, _ := lightning.NewRouterForTest(respRecord)
+			_, ctx, _ := lit.NewRouterForTest(respRecord)
 			ctx.SetRequest(request)
 
 			mockInstance := new(iam.MockValidator)
@@ -147,7 +147,7 @@ func TestAuthenticateUserMiddleware(t *testing.T) {
 
 			// Then
 			if tc.expErr != nil {
-				var iamErr lightning.HttpError
+				var iamErr lit.HttpError
 				if errors.As(tc.expErr, &iamErr) {
 					require.Equal(t, respRecord.Code, iamErr.Status)
 				} else {

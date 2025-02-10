@@ -15,10 +15,10 @@ const (
 var (
 	errUserProfileNotInCtx = errors.New("user profile not in context")
 	errM2MProfileNotInCtx  = errors.New("m2m profile not in context")
-	errMissingAccessToken  = lightning.HttpError{Status: http.StatusUnauthorized, Code: unAuthorizedKey, Description: "Access token is required"}
-	errForbidden           = lightning.HttpError{Status: http.StatusForbidden, Code: forbiddenKey, Description: "Permission denied"}
+	errMissingAccessToken  = lit.HttpError{Status: http.StatusUnauthorized, Code: unAuthorizedKey, Description: "Access token is required"}
+	errForbidden           = lit.HttpError{Status: http.StatusForbidden, Code: forbiddenKey, Description: "Permission denied"}
 )
 
-func unauthorizedErr(err error) lightning.HttpError {
-	return lightning.HttpError{Status: http.StatusUnauthorized, Code: unAuthorizedKey, Description: err.Error()}
+func unauthorizedErr(err error) lit.HttpError {
+	return lit.HttpError{Status: http.StatusUnauthorized, Code: unAuthorizedKey, Description: err.Error()}
 }

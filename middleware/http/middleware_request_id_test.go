@@ -20,7 +20,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 	type handler struct {
 		Method string
 		Path   string
-		Func   lightning.ErrHandlerFunc
+		Func   lit.ErrHandlerFunc
 	}
 	type arg struct {
 		givenReq  *http.Request
@@ -34,7 +34,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 			hdl: handler{
 				Method: http.MethodGet,
 				Path:   "/ping",
-				Func: func(c lightning.Context) error {
+				Func: func(c lit.Context) error {
 					c.JSON(http.StatusOK, gin.H{"message": "pong"})
 					return nil
 				},
@@ -47,7 +47,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 			hdl: handler{
 				Method: http.MethodPost,
 				Path:   "/ping",
-				Func: func(c lightning.Context) error {
+				Func: func(c lit.Context) error {
 					var msg map[string]string
 					if err := c.Bind(&msg); err != nil {
 						return err
@@ -74,7 +74,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 
 			// Given
 			w := httptest.NewRecorder()
-			route, c, hdlRequest := lightning.NewRouterForTest(w)
+			route, c, hdlRequest := lit.NewRouterForTest(w)
 			route.Use(RequestIDMiddleware())
 			route.Handle(tc.hdl.Method, tc.hdl.Path, tc.hdl.Func)
 

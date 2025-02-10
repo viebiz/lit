@@ -16,8 +16,8 @@ const (
 	roleKey                   = "roles"
 )
 
-func (guard AuthGuard) AuthenticateUserMiddleware() lightning.HandlerFunc {
-	return func(c lightning.Context) {
+func (guard AuthGuard) AuthenticateUserMiddleware() lit.HandlerFunc {
+	return func(c lit.Context) {
 		// 1. Get access token from request header
 		tokenStr := getTokenString(c.Request())
 		if tokenStr == "" {
@@ -62,7 +62,7 @@ func getTokenString(r *http.Request) string {
 	return authHeaderParts[1]
 }
 
-func responseErr(c lightning.Context, err error) {
+func responseErr(c lit.Context, err error) {
 	switch err.Error() {
 	case iam.ErrMissingRequiredClaim.Error(),
 		iam.ErrTokenExpired.Error(),
@@ -73,7 +73,7 @@ func responseErr(c lightning.Context, err error) {
 		c.AbortWithError(errForbidden)
 
 	default:
-		c.AbortWithError(lightning.ErrInternalServerError)
+		c.AbortWithError(lit.ErrInternalServerError)
 		monitoring.FromContext(c.Request().Context()).Errorf(err, "Got unexpected error")
 	}
 }

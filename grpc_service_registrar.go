@@ -1,4 +1,4 @@
-package lightning
+package lit
 
 import (
 	"google.golang.org/grpc"
