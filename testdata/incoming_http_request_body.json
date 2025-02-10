@@ -1,0 +1,96 @@
+{
+  "location": {
+    "city": "Metropolis",
+    "region": "Central State",
+    "country": "Countryland",
+    "coordinates": {
+      "latitude": 45.1234,
+      "longitude": -93.1234
+    },
+    "timezone": "UTC+6"
+  },
+  "current_weather": {
+    "temperature_celsius": 23.5,
+    "temperature_fahrenheit": 74.3,
+    "humidity_percentage": 56,
+    "wind_speed_kmph": 12,
+    "wind_speed_mph": 7.5,
+    "condition": "Partly Cloudy",
+    "condition_code": 1003,
+    "icon": "https://example.com/icons/partly-cloudy.png"
+  },
+  "forecast": [
+    {
+      "date": "2025-01-12",
+      "day_of_week": "Sunday",
+      "high_temp_celsius": 25,
+      "low_temp_celsius": 15,
+      "high_temp_fahrenheit": 77,
+      "low_temp_fahrenheit": 59,
+      "humidity_percentage": 60,
+      "condition": "Sunny",
+      "condition_code": 1000,
+      "icon": "https://example.com/icons/sunny.png"
+    },
+    {
+      "date": "2025-01-13",
+      "day_of_week": "Monday",
+      "high_temp_celsius": 22,
+      "low_temp_celsius": 14,
+      "high_temp_fahrenheit": 71.6,
+      "low_temp_fahrenheit": 57.2,
+      "humidity_percentage": 65,
+      "condition": "Rainy",
+      "condition_code": 1183,
+      "icon": "https://example.com/icons/rainy.png"
+    },
+    {
+      "date": "2025-01-14",
+      "day_of_week": "Tuesday",
+      "high_temp_celsius": 20,
+      "low_temp_celsius": 13,
+      "high_temp_fahrenheit": 68,
+      "low_temp_fahrenheit": 55.4,
+      "humidity_percentage": 70,
+      "condition": "Overcast",
+      "condition_code": 1006,
+      "icon": "https://example.com/icons/overcast.png"
+    }
+  ],
+  "alerts": [
+    {
+      "type": "Heat Warning",
+      "description": "High temperatures expected from 12:00 PM to 5:00 PM. Stay hydrated.",
+      "start_time": "2025-01-12T12:00:00Z",
+      "end_time": "2025-01-12T17:00:00Z"
+    },
+    {
+      "type": "Flood Alert",
+      "description": "Heavy rain expected. Avoid low-lying areas and stay informed.",
+      "start_time": "2025-01-13T03:00:00Z",
+      "end_time": "2025-01-13T15:00:00Z"
+    }
+  ],
+  "historical_data": {
+    "2025-01-11": {
+      "high_temp_celsius": 24,
+      "low_temp_celsius": 14,
+      "precipitation_mm": 1.5,
+      "condition": "Mostly Sunny"
+    },
+    "2025-01-10": {
+      "high_temp_celsius": 22,
+      "low_temp_celsius": 13,
+      "precipitation_mm": 0,
+      "condition": "Clear"
+    }
+  },
+  "air_quality_index": {
+    "aqi": 42,
+    "pm10": 20,
+    "pm2_5": 15,
+    "ozone": 30,
+    "main_pollutant": "PM2.5",
+    "advice": "Good air quality. You can enjoy outdoor activities."
+  }
+}
