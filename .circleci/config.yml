@@ -1,117 +1,48 @@
 version: 2.1
 
+executors:
+  golang-executor:
+    docker:
+      - image: golang:1.23
 
 jobs:
   # Dev Task
   dev-task:
-    docker:
-      - image: golang:1.23
+    executor: golang-executor
     steps:
       - checkout
       - run:
           name: Run Go Tests
           command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
-      - run:
-          name: Generate coverage report
-          command: go tool cover -html=coverage.out -o coverage.html
-      - store_artifacts:
-          path: coverage.html
-          destination: coverage.html
-      - run:
-          name: Send coverage to GitLab
-          command: |
-            # Calculate coverage from coverage.out
-            coverage_value=$(go tool cover -func=coverage.out | tail -n 1 | awk '{print $3}' | sed 's/%//')
+      - persist_to_workspace:
+          root: .
+          paths:
+            - coverage.out
 
-            # Send coverage to GitLab            
-            echo "Commit SHA: ${CIRCLE_SHA1}"
-            echo "Coverage Value: $coverage_value"
-            curl --request POST --header "PRIVATE-TOKEN: uyZyxNE2AwhzZ7s7grmQ" \
-            --form "coverage=$coverage_value" \
-            "https://gitlab.com/api/v4/projects/62833656/repository/commits/${CIRCLE_SHA1}/coverage"           
+  # Coverage
+  coverage:
+    executor: golang-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Setup Coveralls CLI
+          command: GO111MODULE=on go install github.com/mattn/goveralls@latest
+      - run:
+          name: Save Coverage
+          command: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
             
-
-  # QA job
-#  qa:
-#    executor: golang-executor
-#    steps:
-#      - checkout
-#      - setup_remote_docker:
-#          version: 20.10.7
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            go mod download
-#      - run:
-#          name: Build application
-#          command: |
-#            go build -o app ./...
-#      - run:
-#          name: Run tests
-#          command: |
-#            go test ./...
-#      - run:
-#          name: Build Docker image
-#          command: |
-#            docker build -t your-docker-repo/your-app:stag .
-#      - run:
-#          name: Push Docker image
-#          command: |
-#            docker push your-docker-repo/your-app:stag
-
-  # Prod job
-#  prod:
-#    executor: golang-executor
-#    steps:
-#      - checkout
-#      - setup_remote_docker:
-#          version: 20.10.7
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            go mod download
-#      - run:
-#          name: Build application
-#          command: |
-#            go build -o app ./...
-#      - run:
-#          name: Run tests
-#          command: |
-#            go test ./...
-#      - run:
-#          name: Build Docker image
-#          command: |
-#            docker build -t your-docker-repo/your-app:prod .
-#      - run:
-#          name: Push Docker image
-#          command: |
-#            docker push your-docker-repo/your-app:prod
 
 workflows:
   version: 2
   dev-workflow:
     jobs:
       - dev-task
-#          filters:
-#            branches:
-#              ignore:
-#                - main
-#                - stag
-#                - preprod
-
-#  qa-workflow:
-#    jobs:
-#      - qa:
-#          filters:
-#            branches:
-#              only:
-#                - stag
-#
-#  prod-workflow:
-#    jobs:
-#      - prod:
-#          filters:
-#            branches:
-#              only:
-#                - preprod
-#                - main
+      - coverage:
+          requires:
+            - dev-task
+          filters:
+            branches:
+              only:
+                - main
