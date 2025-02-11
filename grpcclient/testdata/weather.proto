@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package weather;
+
+option go_package = "gitlab.com/bizgroup2/lightning/grpcclient/testdata";
+
+service WeatherService {
+  rpc GetWeatherInfo (WeatherRequest) returns (WeatherResponse);
+
+  rpc StreamWeather(WeatherRequest) returns (stream WeatherDetail);
+}
+
+message WeatherRequest {
+  string location = 1; // e.g., city name or coordinates
+  string date = 2;     // Optional: date in YYYY-MM-DD format
+}
+
+message WeatherResponse {
+  repeated WeatherDetail weather_details = 1; // List of weather details
+}
+
+message WeatherDetail {
+  string location = 1;      // Location name
+  string date = 2;          // Date of the weather info
+  string description = 3;   // Weather description, e.g., "Sunny", "Rainy"
+  float temperature = 4;    // Temperature in Celsius
+}

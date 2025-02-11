@@ -1,0 +1,84 @@
+version: 2.1
+
+executors:
+  golang-executor:
+    docker:
+      - image: golang:1.23
+  bizgroup-executor:
+    docker:
+      - image: sangnv/bizgroup-thunder:x86
+
+jobs:
+  # Dev Task
+  dev-task:
+    executor: bizgroup-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Go Build
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+      - run:
+          name: Run Go Tests
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+
+  # Stag Task
+  stag-task:
+    executor: bizgroup-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Go Tests
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+
+  # Prod Task
+  prod-task:
+    executor: bizgroup-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Go Tests
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+      - persist_to_workspace:
+          root: .
+          paths:
+            - coverage.out
+
+  # Coverage
+  coverage:
+    executor: bizgroup-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Save Coverage
+          command: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+
+
+workflows:
+  version: 2
+  dev-workflow:
+    jobs:
+      - dev-task:
+          filters:
+            branches:
+              ignore:
+                - main
+                - stag
+      - stag-task:
+          filters:
+            branches:
+              only:
+                - stag
+      - prod-task:
+          filters:
+            branches:
+              only:
+                - main
+      - coverage:
+          requires:
+            - prod-task
+          filters:
+            branches:
+              only:
+                - main
