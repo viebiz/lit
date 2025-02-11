@@ -14,6 +14,24 @@ jobs:
       - run:
           name: Run Go Tests
           command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+
+  # Stag Task
+  stag-task:
+    executor: golang-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Go Tests
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+
+  # Prod Task
+  prod-task:
+    executor: golang-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Go Tests
+          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
       - persist_to_workspace:
           root: .
           paths:
@@ -32,16 +50,31 @@ jobs:
       - run:
           name: Save Coverage
           command: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
-            
+
 
 workflows:
   version: 2
   dev-workflow:
     jobs:
-      - dev-task
+      - dev-task:
+          filters:
+            branches:
+              ignore:
+                - main
+                - stag
+      - stag-task:
+          filters:
+            branches:
+              only:
+                - stag
+      - prod-task:
+          filters:
+            branches:
+              only:
+                - main
       - coverage:
           requires:
-            - dev-task
+            - prod-task
           filters:
             branches:
               only:

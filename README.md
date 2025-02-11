@@ -4,12 +4,12 @@
 
 ## Project Status
 
-| Name            | Status                                                                                                            |
-|-----------------|-------------------------------------------------------------------------------------------------------------------|
-| Pipeline        | [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main)   |
-| Coverage        | ![Coverage](https://coveralls.io/repos/github/viebiz/lit/badge.svg?branch=coverage)                               |
-| Release Version | ![GitHub release](https://img.shields.io/github/v/release/viebiz/lib?include_prereleases)                         |
-| Tag Version     | ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/viebiz/lit)                                    |
+| Name            | Status                                                                                                                                                                                                                                                    |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Pipeline        | [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main) |
+| Coverage        | ![Coverage](https://coveralls.io/repos/github/viebiz/lit/badge.svg?branch=coverage)                                                                                                                                                                       |
+| Release Version | ![GitHub release](https://img.shields.io/github/v/release/viebiz/lib?include_prereleases)                                                                                                                                                                 |
+| Tag Version     | ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/viebiz/lit)                                                                                                                                                                            |
 
 
 
