@@ -2,18 +2,9 @@ services:
   tool:
     container_name: ${GROUP_NAME}-tool-${ENV}
     restart: always
-    image: sangnv/${GROUP_NAME}-thunder:arm64
+    image: sangnv/${GROUP_NAME}-thunder:x86
     volumes:
       - .:/tool
     working_dir: /tool
     ports:
       - "3000-3005:3000-3005"
-    networks:
-      - ${GROUP_NAME}-network
-
-volumes:
-  certbot_etc:
-
-networks:
-  bizgroup-network:
-    driver: bridge
