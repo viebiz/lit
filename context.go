@@ -49,32 +49,32 @@ type Context interface {
 	Next()
 }
 
-type lightningContext struct {
+type litContext struct {
 	*gin.Context
 }
 
-func (c lightningContext) Request() *http.Request {
+func (c litContext) Request() *http.Request {
 	return c.Context.Request
 }
 
-func (c lightningContext) Writer() ResponseWriter {
+func (c litContext) Writer() ResponseWriter {
 	return c.Context.Writer
 }
 
-func (c lightningContext) SetRequest(r *http.Request) {
+func (c litContext) SetRequest(r *http.Request) {
 	c.Context.Request = r
 }
 
-func (c lightningContext) SetRequestContext(ctx context.Context) *http.Request {
+func (c litContext) SetRequestContext(ctx context.Context) *http.Request {
 	c.Context.Request = c.Context.Request.WithContext(ctx)
 	return c.Context.Request
 }
 
-func (c lightningContext) SetWriter(w ResponseWriter) {
+func (c litContext) SetWriter(w ResponseWriter) {
 	c.Context.Writer = w
 }
 
-func (c lightningContext) AbortWithError(err error) {
+func (c litContext) AbortWithError(err error) {
 	var httpErr HttpError
 	if errors.As(err, &httpErr) {
 		c.Context.AbortWithStatusJSON(httpErr.Status, httpErr)
@@ -84,7 +84,7 @@ func (c lightningContext) AbortWithError(err error) {
 	c.Context.AbortWithError(http.StatusInternalServerError, err)
 }
 
-func (c lightningContext) Bind(obj interface{}) error {
+func (c litContext) Bind(obj interface{}) error {
 	if err := c.Context.Bind(obj); err != nil {
 		return err
 	}

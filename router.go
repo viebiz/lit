@@ -41,7 +41,7 @@ func (rtr router) Use(middleware ...func(ctx Context)) {
 	handlers := make([]gin.HandlerFunc, len(middleware))
 	for idx, m := range middleware {
 		handlers[idx] = func(ctx *gin.Context) {
-			m(lightningContext{Context: ctx})
+			m(litContext{Context: ctx})
 		}
 	}
 

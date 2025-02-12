@@ -205,7 +205,7 @@ func BenchmarkRootMiddleware(b *testing.B) {
 			})
 		})
 
-		require.NoError(b, srv.start(context.Background()))
+		require.NoError(b, srv.RunWithContext(context.Background()))
 	}()
 
 	b.Run("incoming_http", func(b *testing.B) {
