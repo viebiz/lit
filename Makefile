@@ -8,10 +8,11 @@ DOCKER_BUILD_BIN := docker
 COMPOSE_BIN := ENV=$(ENV) GROUP_NAME=$(GROUP_NAME) PROJECT_NAME=$(PROJECT_NAME) docker compose
 COMPOSE_TOOL_RUN := $(COMPOSE_BIN) run --rm --service-ports tool
 
+pull:
+	@$(COMPOSE_BIN) pull || true
 
 test:
 	@$(COMPOSE_TOOL_RUN) sh -c "go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./..."
-	@$(COMPOSE_TOOL_RUN) sh -c "go tool cover -html=coverage.out -o coverage.html"
 
 benchmark:
 	@$(COMPOSE_TOOL_RUN) sh -c "go test ./... -bench=. -run=^#"

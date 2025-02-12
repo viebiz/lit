@@ -1,25 +1,19 @@
 version: 2.1
 
 executors:
-  golang-executor:
-    docker:
-      - image: golang:1.23
   bizgroup-executor:
     docker:
       - image: sangnv/bizgroup-thunder:x86
 
 jobs:
   # Dev Task
-  dev-task:
-    executor: bizgroup-executor
-    steps:
-      - checkout
-      - run:
-          name: Run Go Build
-          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
-      - run:
-          name: Run Go Tests
-          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+#  dev-task:
+#    executor: bizgroup-executor
+#    steps:
+#      - checkout
+#      - run:
+#          name: Run Go Build
+#          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
 
   # Stag Task
   stag-task:
@@ -59,12 +53,12 @@ workflows:
   version: 2
   dev-workflow:
     jobs:
-      - dev-task:
-          filters:
-            branches:
-              ignore:
-                - main
-                - stag
+#      - dev-task:
+#          filters:
+#            branches:
+#              ignore:
+#                - main
+#                - stag
       - stag-task:
           filters:
             branches:
