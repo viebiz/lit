@@ -17,7 +17,7 @@ type ErrHandlerFunc func(ctx Context) error
 
 func handleHttpError(handler ErrHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if err := handler(lightningContext{Context: c}); err != nil {
+		if err := handler(litContext{Context: c}); err != nil {
 			var wrapErr HttpError
 			if errors.As(err, &wrapErr) {
 				c.AbortWithStatusJSON(wrapErr.Status, wrapErr)

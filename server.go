@@ -45,17 +45,19 @@ func NewHttpServer(ctx context.Context, addr string, setupRouteFunc func(Router)
 	return srv
 }
 
+// Run starts http server and listen for syscall
+// kill (no param) default send syscall.SIGTERM
+// kill -2 is syscall.SIGINT
+// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
 func (srv *Server) Run() error {
-	// kill (no param) default send syscall.SIGTERM
-	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	return srv.start(ctx)
+	return srv.RunWithContext(ctx)
 }
 
-func (srv *Server) start(ctx context.Context) error {
+// RunWithContext starts http server and manages its lifecycle using given context
+func (srv *Server) RunWithContext(ctx context.Context) error {
 	startupErr := make(chan error)
 
 	// Start server

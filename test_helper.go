@@ -14,7 +14,7 @@ func NewRouterForTest(w http.ResponseWriter) (Router, Context, func()) {
 	}
 
 	ginCtx := gin.CreateTestContextOnly(w, route)
-	ctx := lightningContext{
+	ctx := litContext{
 		Context: ginCtx,
 	}
 
@@ -32,7 +32,7 @@ func NewTestRoute(w http.ResponseWriter) (Router, func(func(Context))) {
 
 	return rtr, func(cb func(Context)) {
 		ginCtx := gin.CreateTestContextOnly(w, route)
-		cb(lightningContext{
+		cb(litContext{
 			Context: ginCtx,
 		})
 
