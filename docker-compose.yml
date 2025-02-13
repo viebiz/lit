@@ -1,10 +1,24 @@
 services:
   tool:
-    container_name: ${GROUP_NAME}-tool-${ENV}
+    container_name: bizgroup-tool-${ENV}
     restart: always
-    image: sangnv/${GROUP_NAME}-thunder:x86
+    image: sangnv/bizgroup-thunder:x86
     volumes:
       - .:/tool
     working_dir: /tool
     ports:
       - "3000-3005:3000-3005"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=lightning
+      - POSTGRES_PASSWORD=lightning
+      - POSTGRES_DB=lightning
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
