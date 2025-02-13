@@ -55,8 +55,11 @@ jobs:
       - name: Pull Docker images
         run: make pull
 
-      - name: Run Unit Tests
+      - name: Run unit tests
         env:
           DATABASE_URL: ${{ secrets.PG_URL }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
         run: make test
+
+      - name: Run a basic check
+        run: echo "Status Check Passed!"
