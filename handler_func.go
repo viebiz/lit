@@ -15,12 +15,12 @@ type HandlerFunc func(ctx Context)
 // ErrHandlerFunc represents a lightning handler error function
 type ErrHandlerFunc func(ctx Context) error
 
-func handleHttpError(handler ErrHandlerFunc) gin.HandlerFunc {
+func handleUnexpectedError(handler ErrHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := handler(litContext{Context: c}); err != nil {
-			var wrapErr HttpError
-			if errors.As(err, &wrapErr) {
-				c.AbortWithStatusJSON(wrapErr.Status, wrapErr)
+			var expErr ExpectedError
+			if errors.As(err, &expErr) {
+				c.AbortWithStatusJSON(expErr.StatusCode(), expErr)
 				return
 			}
 
@@ -28,7 +28,7 @@ func handleHttpError(handler ErrHandlerFunc) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, ErrInternalServerError)
 
 			// Capture error
-			monitoring.FromContext(c.Request.Context()).Errorf(err, "Server error")
+			monitoring.FromContext(c.Request.Context()).Errorf(err, "Got internal server error")
 		}
 	}
 }

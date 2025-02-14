@@ -1,0 +1,4 @@
+{
+  "success": "Thành công",
+  "helloPerson": "Chào {{.Name}}"
+}

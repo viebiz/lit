@@ -101,6 +101,37 @@ func TestRootMiddleware(t *testing.T) {
 				},
 			},
 		},
+		"error - Expected error": {
+			givenReq: httptest.NewRequest(http.MethodPatch, "/ping", bytes.NewBufferString(`{"message":"pong"}`)),
+			hdl: handler{
+				Method: http.MethodPatch,
+				Path:   "/ping",
+				Func: func(c Context) error {
+					return HttpError{Status: http.StatusBadRequest, Code: "validation_error", Description: "Invalid request"}
+				},
+			},
+			expStatus: http.StatusBadRequest,
+			expBody:   HttpError{Status: http.StatusBadRequest, Code: "validation_error", Description: "Invalid request"}.Error(),
+			expLogs: []map[string]interface{}{
+				{
+					"level":    "info",
+					"msg":      `Wrote {"error":"validation_error","error_description":"Invalid request"}`,
+					"span_id":  "0000000000000001",
+					"trace_id": "00000000000000000000000000000001",
+				},
+				{
+					"http.request.body":     `{"message":"pong"}`,
+					"http.request.endpoint": "/ping",
+					"http.request.method":   "PATCH",
+					"http.response.size":    float64(66),
+					"http.response.status":  float64(400),
+					"level":                 "info",
+					"msg":                   "http.incoming_request",
+					"span_id":               "0000000000000001",
+					"trace_id":              "00000000000000000000000000000001",
+				},
+			},
+		},
 		"error - PANIC request": {
 			givenReq: httptest.NewRequest(http.MethodPatch, "/ping", bytes.NewBufferString(`{"message":"pong"}`)),
 			hdl: handler{
@@ -127,7 +158,7 @@ func TestRootMiddleware(t *testing.T) {
 							/Users/locdang/sdk/go1.23.3/src/runtime/panic.go:785 +0x124
 						gitlab.com/bizgroup2/lightning.TestRootMiddleware.func3({0x1400024adc0?, 0x101ffe978?})
 							/Users/locdang/IdeaProjects/playground/lightning/middleware_root_test.go:113 +0x50
-						gitlab.com/bizgroup2/lightning.router.Handle.handleHttpError.func1(0x1400020a200)
+						gitlab.com/bizgroup2/lightning.router.Handle.handleUnexpectedError.func1(0x1400020a200)
 							/Users/locdang/IdeaProjects/playground/lightning/handler_func.go:20 +0x34
 						github.com/gin-gonic/gin.(*Context).Next(...)
 							/Users/locdang/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
