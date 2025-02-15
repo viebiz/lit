@@ -122,11 +122,11 @@ func (client redisClient) Do(ctx context.Context, cmd string, args ...interface{
 // DoInBatch executes multiple Redis commands in a single call using a pipeline.
 // Note: All commands are executed at once, and no results are returned until the function completes.
 func (client redisClient) DoInBatch(ctx context.Context, fn func(cmder Commander) error) error {
-	pipelineFunc := func(pl redis.Pipeliner) error {
+	var pipelineFn = func(pl redis.Pipeliner) error {
 		return fn(commander{pipeliner: pl})
 	}
 
-	if _, err := client.rdb.Pipelined(ctx, pipelineFunc); err != nil {
+	if _, err := client.rdb.Pipelined(ctx, pipelineFn); err != nil {
 		return pkgerrors.WithStack(err)
 	}
 

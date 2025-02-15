@@ -15,13 +15,3 @@ const (
 
 	setModeXX setMode = "XX"
 )
-
-type setMode string
-
-func (s setMode) String() string {
-	return string(s)
-}
-
-func (s setMode) IsValid() bool {
-	return s == setModeNX || s == setModeXX
-}
