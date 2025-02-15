@@ -23,7 +23,8 @@ import (
 //     if you are other more complex or custom data types, please implement the encoding.BinaryMarshaler interface.
 func (client redisClient) HashSet(ctx context.Context, key string, value interface{}) error {
 	// 1. Return error if given value input is not in Struct or map
-	if reflect.TypeOf(value).Kind() != reflect.Struct && reflect.TypeOf(value).Kind() != reflect.Map {
+	if reflect.TypeOf(value).Kind() != reflect.Struct && reflect.TypeOf(value).Kind() != reflect.Map &&
+		reflect.TypeOf(value).Kind() != reflect.Slice {
 		return ErrUnsupportedInputType
 	}
 
