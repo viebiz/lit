@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -49,4 +50,9 @@ func injectOutgoingTracingInfo(ctx context.Context, spanCtx trace.SpanContext) c
 			Field(outgoingSpanIDKey, spanCtx.SpanID().String()),
 		),
 	)
+}
+
+func NotifyErrorToInstrumentation(ctx context.Context, err error) {
+	span := trace.SpanFromContext(ctx)
+	span.SetStatus(codes.Error, err.Error())
 }

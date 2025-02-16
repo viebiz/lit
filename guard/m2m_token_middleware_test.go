@@ -1,6 +1,7 @@
 package guard
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -114,7 +115,7 @@ func TestAuthenticateM2MMiddleware(t *testing.T) {
 				inputStr: "invalid-token",
 				outErr:   errors.New("simulate server error"),
 			},
-			expErr: lit.ErrInternalServerError,
+			expErr: lit.ErrDefaultInternal,
 		},
 	}
 
@@ -154,7 +155,9 @@ func TestAuthenticateM2MMiddleware(t *testing.T) {
 					require.Equal(t, respRecord.Code, http.StatusInternalServerError)
 				}
 
-				require.Equal(t, tc.expErr.Error(), respRecord.Body.String())
+				expResult, err := json.Marshal(tc.expErr)
+				require.NoError(t, err)
+				require.Equal(t, expResult, respRecord.Body.Bytes())
 			} else {
 				require.Equal(t, tc.expResult, actualProfile)
 			}

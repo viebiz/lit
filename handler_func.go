@@ -1,7 +1,8 @@
 package lit
 
 import (
-	"errors"
+	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,18 +18,61 @@ type ErrHandlerFunc func(ctx Context) error
 
 func handleUnexpectedError(handler ErrHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		ctx := c.Request.Context()
 		if err := handler(litContext{Context: c}); err != nil {
-			var expErr ExpectedError
-			if errors.As(err, &expErr) {
-				c.AbortWithStatusJSON(expErr.StatusCode(), expErr)
-				return
+			respondJSON(ctx, c.Writer, err)
+
+			// If error is bad request, can skip log the following error
+			if werr, ok := err.(Error); ok {
+				if werr.StatusCode() < http.StatusInternalServerError || werr.StatusCode() == http.StatusServiceUnavailable {
+					return
+				}
 			}
 
-			// Response internal server error
-			c.AbortWithStatusJSON(http.StatusInternalServerError, ErrInternalServerError)
-
-			// Capture error
-			monitoring.FromContext(c.Request.Context()).Errorf(err, "Got internal server error")
+			monitoring.FromContext(ctx).Errorf(err, "handle error")
+			monitoring.NotifyErrorToInstrumentation(ctx, err)
 		}
+	}
+}
+
+func respondJSON(ctx context.Context, w ResponseWriter, obj any) {
+	respondJSONWithHeaders(ctx, w, nil, obj)
+}
+
+func respondJSONWithHeaders(ctx context.Context, w ResponseWriter, headers map[string]string, obj any) {
+	// Set HTTP headers
+	w.Header().Set("Content-Type", "application/json")
+	for h, v := range headers {
+		w.Header().Set(h, v)
+	}
+
+	status := http.StatusOK
+	var respBytes []byte
+	var err error
+
+	switch parsed := obj.(type) {
+	case Error:
+		if parsed.StatusCode() >= http.StatusInternalServerError && parsed.StatusCode() != http.StatusServiceUnavailable {
+			status = http.StatusInternalServerError
+			parsed = ErrDefaultInternal
+		}
+		status = parsed.StatusCode()
+		respBytes, err = json.Marshal(parsed)
+	case error:
+		status = http.StatusInternalServerError
+		respBytes, err = json.Marshal(ErrDefaultInternal)
+	default:
+		respBytes, err = json.Marshal(obj)
+	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		monitoring.FromContext(ctx).Errorf(err, "Marshal failed")
+		return
+	}
+
+	// Write response
+	w.WriteHeader(status)
+	if _, err = w.Write(respBytes); err != nil {
+		monitoring.FromContext(ctx).Errorf(err, "Write failed")
 	}
 }

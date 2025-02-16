@@ -33,7 +33,7 @@ func unaryServerInterceptor(rootCtx context.Context) grpc.UnaryServerInterceptor
 				monitoring.FromContext(ctx).Errorf(rcvErr, "Caught a panic: %s", debug.Stack())
 				endInstrumentation(rcvErr)
 
-				err = ErrGRPCInternalServerError
+				err = ErrDefaultInternal
 			}
 		}()
 

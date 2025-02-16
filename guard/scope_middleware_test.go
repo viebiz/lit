@@ -1,6 +1,7 @@
 package guard
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -60,7 +61,9 @@ func TestRequiredM2MScopeMiddleware(t *testing.T) {
 					require.Equal(t, rr.Code, http.StatusInternalServerError)
 				}
 
-				require.Equal(t, tc.expErr.Error(), rr.Body.String())
+				expResult, err := json.Marshal(tc.expErr)
+				require.NoError(t, err)
+				require.Equal(t, expResult, rr.Body.Bytes())
 			}
 		})
 	}

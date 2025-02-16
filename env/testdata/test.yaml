@@ -1,0 +1,9 @@
+APP_NAME: lightning
+LANG:
+  - en
+  - vi
+DB:
+  URL: postgres:thisisurl
+WEB:
+  HOST: 0.0.0.0
+  PORT: 8080

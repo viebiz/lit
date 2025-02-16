@@ -84,7 +84,7 @@ func Test_unaryServerInterceptor(t *testing.T) {
 				willPanic: true,
 				in:        &testdata.WeatherRequest{},
 			},
-			expErr: ErrGRPCInternalServerError,
+			expErr: ErrDefaultInternal,
 			expLogs: []map[string]interface{}{
 				{
 					"error":    "simulated panic",

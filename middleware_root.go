@@ -29,7 +29,7 @@ func rootMiddleware(rootCtx context.Context) HandlerFunc {
 				monitoring.FromContext(c.Request().Context()).Errorf(err, "Caught a panic: %s", debug.Stack())
 
 				// Abort the request with a 500 Internal Server Error response.
-				c.AbortWithError(ErrInternalServerError)
+				c.AbortWithError(ErrDefaultInternal)
 				// End the instrumentation, marking the request with a 500 status code and the error.
 				endInstrumentation(http.StatusInternalServerError, err)
 			}

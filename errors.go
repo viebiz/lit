@@ -3,38 +3,26 @@ package lit
 import (
 	"fmt"
 	"net/http"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
-var (
-	// HTTP errors
-	ErrInternalServerError = HttpError{Status: http.StatusInternalServerError, Code: "internal_server_error", Description: "internal server error"}
-
-	// gRPC errors
-	ErrGRPCInternalServerError = status.Errorf(codes.Internal, "internal server error")
-)
-
-// ExpectedError represents a known error that should be returned to the client.
-// It helps the framework distinguish expected errors from unexpected ones for monitoring purposes.
-type ExpectedError interface {
+// Error represents standard error of lit framework
+type Error interface {
 	error
 
-	StatusCode() int
+	StatusCode() int // Suppose return status code
 
-	ErrorCode() string
+	ErrorCode() string // Suppose support internalization
 }
+
+var (
+	ErrDefaultInternal = HttpError{Status: http.StatusInternalServerError, Code: "internal_server_error", Desc: "Something went wrong"}
+)
 
 // HttpError represents an expected error from HTTP request
 type HttpError struct {
-	Status      int    `json:"-"`
-	Code        string `json:"error"`
-	Description string `json:"error_description"`
-}
-
-func (e HttpError) Error() string {
-	return fmt.Sprintf(`{"error":"%s","error_description":"%s"}`, e.Code, e.Description)
+	Status int    `json:"-"`
+	Code   string `json:"error"`
+	Desc   string `json:"error_description"`
 }
 
 func (e HttpError) StatusCode() int {
@@ -43,4 +31,8 @@ func (e HttpError) StatusCode() int {
 
 func (e HttpError) ErrorCode() string {
 	return e.Code
+}
+
+func (e HttpError) Error() string {
+	return fmt.Sprintf("Status: [%d], Code: [%s], Desc: [%s]", e.Status, e.Code, e.Desc)
 }

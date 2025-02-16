@@ -73,7 +73,7 @@ func responseErr(c lit.Context, err error) {
 		c.AbortWithError(errForbidden)
 
 	default:
-		c.AbortWithError(lit.ErrInternalServerError)
+		c.AbortWithError(lit.ErrDefaultInternal)
 		monitoring.FromContext(c.Request().Context()).Errorf(err, "Got unexpected error")
 	}
 }
