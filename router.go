@@ -49,7 +49,7 @@ func (rtr router) Use(middleware ...func(ctx Context)) {
 }
 
 func (rtr router) Handle(method string, relativePath string, handler ErrHandlerFunc) {
-	rtr.ginRouter.Handle(method, relativePath, handleHttpError(handler))
+	rtr.ginRouter.Handle(method, relativePath, handleUnexpectedError(handler))
 }
 
 func (rtr router) Get(relativePath string, handler ErrHandlerFunc) {
