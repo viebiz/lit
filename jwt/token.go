@@ -22,20 +22,6 @@ type Token[T Claims] struct {
 	signingMethod SigningMethod
 }
 
-// NewToken creates a new Token with the specified signing method and claims
-func NewToken[T Claims](method SigningMethod, claims T) Token[T] {
-	tk := Token[T]{
-		Header: map[string]string{
-			"typ": tokenHeaderType,
-			"alg": method.Alg(),
-		},
-		Claims:        claims,
-		signingMethod: method,
-	}
-
-	return tk
-}
-
 // SignedString creates and returns a complete, signed JWT. The token is signed
 // using the SigningMethod specified in the token
 func (tk Token[T]) SignedString(key crypto.Signer) (string, error) {

@@ -5,22 +5,9 @@ import (
 
 	pkgerrors "github.com/pkg/errors"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/viebiz/lit/monitoring"
 )
-
-// Conn defines a gRPC unary client connection interface.
-type Conn interface {
-	Invoke(ctx context.Context, method string, args any, reply any, opts ...grpc.CallOption) error
-
-	NewStream(ctx context.Context, desc *grpc.StreamDesc, method string, opts ...grpc.CallOption) (grpc.ClientStream, error)
-}
-
-// NewUnauthenticatedConnection initializes and returns a new unauthenticated grpc clientConn for unary calls
-func NewUnauthenticatedConnection(ctx context.Context, addr string) (Conn, error) {
-	return initUnaryClient(ctx, addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-}
 
 func initUnaryClient(ctx context.Context, addr string, opts ...grpc.DialOption) (Conn, error) {
 	svcInfo := monitoring.NewExternalServiceInfo(addr)

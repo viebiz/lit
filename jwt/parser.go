@@ -14,29 +14,6 @@ type Parser[T Claims] struct {
 	signingMethods map[string]SigningMethod // Supported signing method
 }
 
-// NewParser creates a new Parser with the default signing methods and validator.
-func NewParser[T Claims](opts ...ParserOptions) Parser[T] {
-	p := NewDefaultParser[T]()
-	for _, opt := range opts {
-		opt((*Parser[Claims])(&p))
-	}
-
-	return p
-}
-
-func NewDefaultParser[T Claims]() Parser[T] {
-	return Parser[T]{
-		signingMethods: map[string]SigningMethod{
-			SigningMethodNameRS256: NewRS256(),
-			SigningMethodNameRS384: NewRS384(),
-			SigningMethodNameRS512: NewRS512(),
-			SigningMethodNameHS256: NewHS256(),
-			SigningMethodNameHS384: NewHS384(),
-			SigningMethodNameHS512: NewHS512(),
-		},
-	}
-}
-
 // Parse decodes the provided JWT string into a Token, verifies its signature using the provided public key.
 // The public key can be determined dynamically based on the `kid` (Key ID) in the token header.
 func (p Parser[T]) Parse(tokenString string, getKeyFunc func(string) (crypto.PublicKey, error)) (Token[T], error) {

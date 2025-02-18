@@ -52,27 +52,6 @@ type rfc9068Validator struct {
 	tokenParser jwt.Parser[Claims]
 }
 
-func NewRFC9068Validator(issuer, audience string, client HTTPClient) (Validator, error) {
-	jwksURI := fmt.Sprintf("%s/.well-known/jwks.json", strings.TrimSuffix(issuer, "/"))
-	v := rfc9068Validator{
-		jwksURI:     jwksURI,
-		issuer:      issuer,
-		audience:    audience,
-		httpClient:  client,
-		tokenParser: jwt.NewParser[Claims](),
-	}
-
-	// Download signing key
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
-	if err := v.downloadSigningKey(ctx); err != nil {
-		return nil, err
-	}
-
-	return &v, nil
-}
-
 // Validate validates given claims
 func (v *rfc9068Validator) Validate(tokenString string) (jwt.Token[Claims], error) {
 	// 1. Parse token from string

@@ -2232,7 +2232,7 @@ func Test_commander_HashGetField(t *testing.T) {
 			givenContext: context.Background(),
 			givenKey:     "key",
 			givenField:   "givenKey",
-			givenValue:   StringPtr(""),
+			givenValue:   stringPtr(""),
 		},
 	}
 	for scenario, tc := range tcs {

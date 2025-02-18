@@ -2,11 +2,6 @@ package httpclient
 
 import (
 	"net/http"
-	"time"
-)
-
-const (
-	defaultTimeoutPerTry = 10 * time.Second
 )
 
 // NewSharedPool returns a new http.Client instance with customizable options, ensures

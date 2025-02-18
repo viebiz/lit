@@ -17,28 +17,6 @@ type UserProfile struct {
 	permissions []string
 }
 
-func NewUserProfile(id string, roles []string, permissions []string) UserProfile {
-	return UserProfile{
-		id:          id,
-		roles:       roles,
-		permissions: permissions,
-	}
-}
-
-func ExtractUserProfileFromClaims(claims Claims) (UserProfile, error) {
-	sub := claims.RegisteredClaims.Subject
-
-	roles, err := extractRolesFromClaims(claims)
-	if err != nil {
-		return UserProfile{}, err
-	}
-
-	return UserProfile{
-		id:    sub,
-		roles: roles,
-	}, nil
-}
-
 func (p UserProfile) ID() string {
 	return p.id
 }

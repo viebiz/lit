@@ -29,7 +29,7 @@ func TestStartIncomingRequest(t *testing.T) {
 
 	// 3. Then
 	// 3.1. Validate logs
-	require.NotNil(t, ctx.Value(loggerContextKey))
+	require.NotNil(t, ctx.Value(loggerContextKey{}))
 	FromContext(ctx).Infof("Got incoming request")
 	expectedLogs := []map[string]interface{}{
 		{

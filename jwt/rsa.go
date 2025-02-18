@@ -18,30 +18,6 @@ type RSA struct {
 	Hash crypto.Hash
 }
 
-// NewRS256 creates a new RS256 signing method struct
-func NewRS256() RSA {
-	return RSA{
-		Name: SigningMethodNameRS256,
-		Hash: crypto.SHA256,
-	}
-}
-
-// NewRS384 creates a new RS256 signing method struct
-func NewRS384() RSA {
-	return RSA{
-		Name: SigningMethodNameRS384,
-		Hash: crypto.SHA384,
-	}
-}
-
-// NewRS512 creates a new RS256 signing method struct
-func NewRS512() RSA {
-	return RSA{
-		Name: SigningMethodNameRS512,
-		Hash: crypto.SHA512,
-	}
-}
-
 // Sign implements token signing for the SigningMethod, that take Signer (*rsa.PrivateKey) for sign a token
 func (sm RSA) Sign(signingString []byte, key Signer) ([]byte, error) {
 	if _, ok := key.(*rsa.PrivateKey); !ok {

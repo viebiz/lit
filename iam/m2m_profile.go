@@ -15,32 +15,6 @@ type M2MProfile struct {
 	scopes map[string]bool
 }
 
-func NewM2MProfile(id string, scopes []string) M2MProfile {
-	scopeMap := make(map[string]bool)
-	for _, scope := range scopes {
-		scopeMap[scope] = true
-	}
-
-	return M2MProfile{
-		id:     id,
-		scopes: scopeMap,
-	}
-}
-
-func ExtractM2MProfileFromClaims(claims Claims) (M2MProfile, error) {
-	sub := claims.RegisteredClaims.Subject
-
-	scopeSet, err := extractScopeFromClaims(claims)
-	if err != nil {
-		return M2MProfile{}, err
-	}
-
-	return M2MProfile{
-		id:     sub,
-		scopes: scopeSet,
-	}, nil
-}
-
 func (p M2MProfile) ID() string {
 	return p.id
 }
