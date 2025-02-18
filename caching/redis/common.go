@@ -1,5 +1,5 @@
 package redis
 
-func StringPtr(str string) *string {
+func stringPtr(str string) *string {
 	return &str
 }

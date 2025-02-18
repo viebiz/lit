@@ -6,11 +6,6 @@ import (
 	"github.com/sony/sonyflake"
 )
 
-// Generator generates the snowflake ID
-type Generator struct {
-	flake *sonyflake.Sonyflake
-}
-
 // New returns a new instance of Generator
 func New(opts ...Option) (*Generator, error) {
 	s := sonyflake.Settings{

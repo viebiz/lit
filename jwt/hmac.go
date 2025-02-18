@@ -17,27 +17,6 @@ type HMAC struct {
 	Hash crypto.Hash
 }
 
-func NewHS256() HMAC {
-	return HMAC{
-		Name: SigningMethodNameHS256,
-		Hash: crypto.SHA256,
-	}
-}
-
-func NewHS384() HMAC {
-	return HMAC{
-		Name: SigningMethodNameHS384,
-		Hash: crypto.SHA384,
-	}
-}
-
-func NewHS512() HMAC {
-	return HMAC{
-		Name: SigningMethodNameHS512,
-		Hash: crypto.SHA512,
-	}
-}
-
 func (sm HMAC) Verify(signingString []byte, sig []byte, key VerifyKey) error {
 	keyBytes, ok := key.(HMACPrivateKey)
 	if !ok {

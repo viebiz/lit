@@ -37,7 +37,7 @@ func TestStartUnaryIncomingCall(t *testing.T) {
 	})
 
 	// Then
-	require.NotNil(t, ctx.Value(loggerContextKey))
+	require.NotNil(t, ctx.Value(loggerContextKey{}))
 	FromContext(ctx).Infof("Got incoming request")
 	expectedLogs := []map[string]interface{}{
 		{

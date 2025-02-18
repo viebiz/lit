@@ -8,6 +8,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+
 	"github.com/viebiz/lit/mocks/mockredis"
 )
 
@@ -263,7 +264,7 @@ func Test_redisClient_HashGetField(t *testing.T) {
 			givenContext: context.Background(),
 			givenKey:     "key",
 			givenField:   "givenField",
-			givenOut:     StringPtr(""),
+			givenOut:     stringPtr(""),
 			expErr:       errors.New("redis: hash get error"),
 		},
 		"success": {
@@ -280,7 +281,7 @@ func Test_redisClient_HashGetField(t *testing.T) {
 			givenContext: context.Background(),
 			givenKey:     "key",
 			givenField:   "givenField",
-			givenOut:     StringPtr(""),
+			givenOut:     stringPtr(""),
 		},
 	}
 	for scenario, tc := range tcs {
