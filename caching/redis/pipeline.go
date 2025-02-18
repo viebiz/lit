@@ -117,6 +117,26 @@ func (e commander) SetIntIfExist(ctx context.Context, key string, value int64, e
 	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeXX)
 }
 
+func (e commander) GetInt(ctx context.Context, key string) (int64, error) {
+	return getSingleValue[int64](ctx, e.pipeliner, key)
+}
+
+func (e commander) SetFloat(ctx context.Context, key string, value float64, expiration time.Duration) error {
+	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeNone)
+}
+
+func (e commander) SetFloatIfNotExist(ctx context.Context, key string, value float64, expiration time.Duration) error {
+	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeNX)
+}
+
+func (e commander) SetFloatIfExist(ctx context.Context, key string, value float64, expiration time.Duration) error {
+	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeXX)
+}
+
+func (e commander) GetFloat(ctx context.Context, key string) (float64, error) {
+	return getSingleValue[float64](ctx, e.pipeliner, key)
+}
+
 func (e commander) IncrementBy(ctx context.Context, key string, value int64) (int64, error) {
 	rs, err := e.pipeliner.IncrBy(ctx, key, value).Result()
 	if err != nil {
@@ -135,22 +155,6 @@ func (e commander) DecrementBy(ctx context.Context, key string, value int64) (in
 	return rs, nil
 }
 
-func (e commander) GetInt(ctx context.Context, key string) (int64, error) {
-	return getSingleValue[int64](ctx, e.pipeliner, key)
-}
-
-func (e commander) SetFloat(ctx context.Context, key string, value float64, expiration time.Duration) error {
-	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeNone)
-}
-
-func (e commander) SetFloatIfNotExist(ctx context.Context, key string, value float64, expiration time.Duration) error {
-	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeNX)
-}
-
-func (e commander) SetFloatIfExist(ctx context.Context, key string, value float64, expiration time.Duration) error {
-	return setSingleValue(ctx, e.pipeliner, key, value, expiration, setModeXX)
-}
-
 func (e commander) IncrementFloatBy(ctx context.Context, key string, value float64) (float64, error) {
 	rs, err := e.pipeliner.IncrByFloat(ctx, key, value).Result()
 	if err != nil {
@@ -158,10 +162,6 @@ func (e commander) IncrementFloatBy(ctx context.Context, key string, value float
 	}
 
 	return rs, nil
-}
-
-func (e commander) GetFloat(ctx context.Context, key string) (float64, error) {
-	return getSingleValue[float64](ctx, e.pipeliner, key)
 }
 
 func (e commander) HashSet(ctx context.Context, key string, value interface{}) error {

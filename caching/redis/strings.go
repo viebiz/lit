@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func setSingleValue[T string | int64 | float64](
+func setSingleValue[T Type](
 	ctx context.Context,
 	rdb redis.Cmdable,
 	key string,
@@ -41,7 +41,7 @@ func setSingleValue[T string | int64 | float64](
 	return nil
 }
 
-func getSingleValue[T string | int64 | float64](ctx context.Context, rdb redis.Cmdable, key string) (T, error) {
+func getSingleValue[T Type](ctx context.Context, rdb redis.Cmdable, key string) (T, error) {
 	var rs T
 	if err := rdb.Get(ctx, key).Scan(&rs); err != nil {
 		if errors.Is(err, redis.Nil) {
