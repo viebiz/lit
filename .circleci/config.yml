@@ -31,11 +31,11 @@ jobs:
       - checkout
       - run:
           name: Run Go Tests
-          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
+          command: go test -mod=vendor -coverprofile=full_coverage.out -failfast -timeout 5m ./...
       - persist_to_workspace:
           root: .
           paths:
-            - coverage.out
+            - full_coverage.out
 
   # Coverage
   coverage:
@@ -44,6 +44,12 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: Filter Coverage
+          command: grep -v "mock_.*.go" full_coverage.out > coverage.out
+      - run:
+          name: Cover Coverage
+          command: go tool cover -func=coverage.out
       - run:
           name: Save Coverage
           command: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
