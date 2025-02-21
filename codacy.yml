@@ -1,0 +1,5 @@
+files:
+  ignore:
+    - "**/mock_*.go"
+    - "**/*.md"
+    - "**/*.html"

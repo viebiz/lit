@@ -1,6 +1,7 @@
 # Lightning
 
 ## Description
+Go Libs: Lightning is a Go library that provides a set of utilities for building Go applications
 
 ## Project Status
 
