@@ -6,6 +6,14 @@ type Type interface {
 
 type setMode string
 
+const (
+	setModeNone setMode = ""
+
+	setModeNX setMode = "NX"
+
+	setModeXX setMode = "XX"
+)
+
 func (s setMode) String() string {
 	return string(s)
 }
