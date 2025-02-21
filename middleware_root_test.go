@@ -107,11 +107,11 @@ func TestRootMiddleware(t *testing.T) {
 				Method: http.MethodPatch,
 				Path:   "/ping",
 				Func: func(c Context) error {
-					return HttpError{Status: http.StatusBadRequest, Code: "validation_error", Description: "Invalid request"}
+					return HttpError{Status: http.StatusBadRequest, Code: "validation_error", Desc: "Invalid request"}
 				},
 			},
 			expStatus: http.StatusBadRequest,
-			expBody:   HttpError{Status: http.StatusBadRequest, Code: "validation_error", Description: "Invalid request"}.Error(),
+			expBody:   "{\"error\":\"validation_error\",\"error_description\":\"Invalid request\"}",
 			expLogs: []map[string]interface{}{
 				{
 					"level":    "info",
@@ -142,7 +142,7 @@ func TestRootMiddleware(t *testing.T) {
 				},
 			},
 			expStatus: http.StatusInternalServerError,
-			expBody:   ErrInternalServerError.Error(),
+			expBody:   "{\"error\":\"internal_server_error\",\"error_description\":\"Something went wrong\"}",
 			expLogs: []map[string]interface{}{
 				{
 					"error": "simulated panic",
@@ -171,7 +171,7 @@ func TestRootMiddleware(t *testing.T) {
 				},
 				{
 					"level":    "info",
-					"msg":      `Wrote {"error":"internal_server_error","error_description":"internal server error"}`,
+					"msg":      `Wrote {"error":"internal_server_error","error_description":"Something went wrong"}`,
 					"span_id":  "0000000000000001",
 					"trace_id": "00000000000000000000000000000001",
 				},

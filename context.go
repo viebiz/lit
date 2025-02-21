@@ -2,7 +2,6 @@ package lit
 
 import (
 	"context"
-	"errors"
 	"mime/multipart"
 	"net/http"
 
@@ -38,11 +37,7 @@ type Context interface {
 
 	JSON(code int, obj any)
 
-	JSONP(code int, obj any)
-
 	ProtoBuf(code int, obj any)
-
-	AbortWithStatus(code int)
 
 	AbortWithError(err error)
 
@@ -74,16 +69,6 @@ func (c litContext) SetWriter(w ResponseWriter) {
 	c.Context.Writer = w
 }
 
-func (c litContext) AbortWithError(err error) {
-	var httpErr HttpError
-	if errors.As(err, &httpErr) {
-		c.Context.AbortWithStatusJSON(httpErr.Status, httpErr)
-		return
-	}
-
-	c.Context.AbortWithError(http.StatusInternalServerError, err)
-}
-
 func (c litContext) Bind(obj interface{}) error {
 	if err := c.Context.Bind(obj); err != nil {
 		return err
@@ -95,4 +80,8 @@ func (c litContext) Bind(obj interface{}) error {
 	}
 
 	return nil
+}
+
+func (c litContext) AbortWithError(err error) {
+	respondJSON(c.Request().Context(), c.Writer(), err)
 }

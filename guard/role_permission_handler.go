@@ -33,7 +33,7 @@ func (guard AuthGuard) RolePermissionHandler(handler lit.ErrHandlerFunc, resourc
 				return errForbidden
 			}
 
-			return lit.ErrInternalServerError
+			return lit.ErrDefaultInternal
 		}
 
 		return handler(c)

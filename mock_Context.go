@@ -59,39 +59,6 @@ func (_c *MockContext_AbortWithError_Call) RunAndReturn(run func(error)) *MockCo
 	return _c
 }
 
-// AbortWithStatus provides a mock function with given fields: code
-func (_m *MockContext) AbortWithStatus(code int) {
-	_m.Called(code)
-}
-
-// MockContext_AbortWithStatus_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AbortWithStatus'
-type MockContext_AbortWithStatus_Call struct {
-	*mock.Call
-}
-
-// AbortWithStatus is a helper method to define mock.On call
-//   - code int
-func (_e *MockContext_Expecter) AbortWithStatus(code interface{}) *MockContext_AbortWithStatus_Call {
-	return &MockContext_AbortWithStatus_Call{Call: _e.mock.On("AbortWithStatus", code)}
-}
-
-func (_c *MockContext_AbortWithStatus_Call) Run(run func(code int)) *MockContext_AbortWithStatus_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(int))
-	})
-	return _c
-}
-
-func (_c *MockContext_AbortWithStatus_Call) Return() *MockContext_AbortWithStatus_Call {
-	_c.Call.Return()
-	return _c
-}
-
-func (_c *MockContext_AbortWithStatus_Call) RunAndReturn(run func(int)) *MockContext_AbortWithStatus_Call {
-	_c.Run(run)
-	return _c
-}
-
 // Bind provides a mock function with given fields: obj
 func (_m *MockContext) Bind(obj interface{}) error {
 	ret := _m.Called(obj)
@@ -465,40 +432,6 @@ func (_c *MockContext_JSON_Call) Return() *MockContext_JSON_Call {
 }
 
 func (_c *MockContext_JSON_Call) RunAndReturn(run func(int, any)) *MockContext_JSON_Call {
-	_c.Run(run)
-	return _c
-}
-
-// JSONP provides a mock function with given fields: code, obj
-func (_m *MockContext) JSONP(code int, obj any) {
-	_m.Called(code, obj)
-}
-
-// MockContext_JSONP_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'JSONP'
-type MockContext_JSONP_Call struct {
-	*mock.Call
-}
-
-// JSONP is a helper method to define mock.On call
-//   - code int
-//   - obj any
-func (_e *MockContext_Expecter) JSONP(code interface{}, obj interface{}) *MockContext_JSONP_Call {
-	return &MockContext_JSONP_Call{Call: _e.mock.On("JSONP", code, obj)}
-}
-
-func (_c *MockContext_JSONP_Call) Run(run func(code int, obj any)) *MockContext_JSONP_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(int), args[1].(any))
-	})
-	return _c
-}
-
-func (_c *MockContext_JSONP_Call) Return() *MockContext_JSONP_Call {
-	_c.Call.Return()
-	return _c
-}
-
-func (_c *MockContext_JSONP_Call) RunAndReturn(run func(int, any)) *MockContext_JSONP_Call {
 	_c.Run(run)
 	return _c
 }

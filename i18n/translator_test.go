@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"errors"
 	"testing"
 
 	pkgerrors "github.com/pkg/errors"
@@ -84,6 +85,11 @@ func TestTranslator_TranslateWithLang(t *testing.T) {
 			lang:       "zh",
 			givenMsgID: "success",
 			expErr:     ErrGivenLangNotSupported,
+		},
+		"error - message id not found": {
+			lang:       "vi",
+			givenMsgID: "MISSING_MESSAGE_ID",
+			expErr:     errors.New("message \"MISSING_MESSAGE_ID\" not found in language \"vi\""),
 		},
 	}
 
