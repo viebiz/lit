@@ -12,7 +12,7 @@ var (
 )
 
 type enforcerLogger struct {
-	*monitoring.Logger
+	*monitoring.Monitor
 }
 
 func (i enforcerLogger) EnableLog(b bool) {}

@@ -3,16 +3,19 @@ package msdsn
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/pem"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 	"unicode"
+
+	"github.com/google/uuid"
 )
 
 type (
@@ -43,6 +46,8 @@ const (
 	LogTransaction Log = 32
 	LogDebug       Log = 64
 	LogRetries     Log = 128
+	// LogSessionIDs tells the session logger to include activity id and connection id
+	LogSessionIDs Log = 0x8000
 )
 
 const (
@@ -77,6 +82,8 @@ const (
 	Protocol               = "protocol"
 	DialTimeout            = "dial timeout"
 	Pipe                   = "pipe"
+	MultiSubnetFailover    = "multisubnetfailover"
+	NoTraceID              = "notraceid"
 )
 
 type Config struct {
@@ -127,6 +134,44 @@ type Config struct {
 	ChangePassword string
 	//ColumnEncryption is true if the application needs to decrypt or encrypt Always Encrypted values
 	ColumnEncryption bool
+	// Attempt to connect to all IPs in parallel when MultiSubnetFailover is true
+	MultiSubnetFailover bool
+	// guid to set as Activity Id in the prelogin packet. Defaults to a new value for each Config.
+	ActivityID []byte
+	// When true, no connection id or trace id value is sent in the prelogin packet.
+	// Some cloud servers may block connections that lack such values.
+	NoTraceID bool
+}
+
+func readDERFile(filename string) ([]byte, error) {
+	derBytes, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	cert, err := x509.ParseCertificate(derBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	pemBytes := pem.EncodeToMemory(&pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: cert.Raw,
+	})
+	return pemBytes, nil
+}
+
+func readCertificate(certificate string) ([]byte, error) {
+	certType := strings.ToLower(filepath.Ext(certificate))
+
+	switch certType {
+	case ".pem":
+		return os.ReadFile(certificate)
+	case ".der":
+		return readDERFile(certificate)
+	default:
+		return nil, fmt.Errorf("certificate type %s is not supported", certType)
+	}
 }
 
 // Build a tls.Config object from the supplied certificate.
@@ -146,7 +191,7 @@ func SetupTLS(certificate string, insecureSkipVerify bool, hostInCertificate str
 	if len(certificate) == 0 {
 		return &config, nil
 	}
-	pem, err := ioutil.ReadFile(certificate)
+	pem, err := readCertificate(certificate)
 	if err != nil {
 		return nil, fmt.Errorf("cannot read certificate %q: %w", certificate, err)
 	}
@@ -250,6 +295,10 @@ func Parse(dsn string) (Config, error) {
 		Protocols:          []string{},
 	}
 
+	activityid, uerr := uuid.NewRandom()
+	if uerr == nil {
+		p.ActivityID = activityid[:]
+	}
 	var params map[string]string
 	var err error
 
@@ -450,6 +499,31 @@ func Parse(dsn string) (Config, error) {
 			}
 		}
 		p.ColumnEncryption = columnEncryption
+	}
+
+	msf, ok := params[MultiSubnetFailover]
+	if ok {
+		multiSubnetFailover, err := strconv.ParseBool(msf)
+		if err != nil {
+			if strings.EqualFold(msf, "Enabled") {
+				multiSubnetFailover = true
+			} else if strings.EqualFold(msf, "Disabled") {
+				multiSubnetFailover = false
+			} else {
+				return p, fmt.Errorf("invalid multiSubnetFailover value '%v': %v", multiSubnetFailover, err.Error())
+			}
+		}
+		p.MultiSubnetFailover = multiSubnetFailover
+	} else {
+		// Defaulting to true to prevent breaking change although other client libraries default to false
+		p.MultiSubnetFailover = true
+	}
+	nti, ok := params[NoTraceID]
+	if ok {
+		notraceid, err := strconv.ParseBool(nti)
+		if err == nil {
+			p.NoTraceID = notraceid
+		}
 	}
 	return p, nil
 }

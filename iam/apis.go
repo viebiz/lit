@@ -27,7 +27,7 @@ func NewEnforcer(ctx context.Context, cfg EnforcerConfig) (Enforcer, error) {
 	}
 
 	logger := enforcerLogger{
-		Logger: monitoring.FromContext(ctx),
+		Monitor: monitoring.FromContext(ctx),
 	}
 
 	// 2. Init casbin enforcer with model

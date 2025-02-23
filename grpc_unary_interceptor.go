@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/viebiz/lit/monitoring"
+	"github.com/viebiz/lit/monitoring/instrumentgrpc"
 )
 
 const (
@@ -18,11 +19,8 @@ const (
 
 func unaryServerInterceptor(rootCtx context.Context) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (rs any, err error) {
-		// Add logger to request context
-		ctx = monitoring.SetInContext(ctx, monitoring.FromContext(rootCtx))
-
 		// Start tracing for incoming unary call request
-		ctx, reqMeta, endInstrumentation := monitoring.StartUnaryIncomingCall(ctx, info.FullMethod, req)
+		ctx, reqMeta, endInstrumentation := instrumentgrpc.StartUnaryIncomingCall(ctx, monitoring.FromContext(rootCtx), info.FullMethod, req)
 		defer func() {
 			if p := recover(); p != nil {
 				rcvErr, ok := p.(error)
@@ -61,21 +59,21 @@ func parseProtoMessage(resp any) []byte {
 	return b
 }
 
-func logIncomingGRPCCall(ctx context.Context, reqMeta monitoring.GRPCRequestMetadata, result any) {
-	logFields := []monitoring.LogField{
-		monitoring.Field("grpc.service_method", reqMeta.ServiceMethod),
-	}
-
-	// BodyToLog always have `{}`
-	if len(reqMeta.BodyToLog) > 2 {
-		logFields = append(logFields, monitoring.Field("grpc.request_body", reqMeta.BodyToLog))
-	}
-
-	if resultToLog := parseProtoMessage(result); len(resultToLog) > 2 && shouldLogGRPCResponse {
-		logFields = append(logFields, monitoring.Field("grpc.response_body", parseProtoMessage(result)))
-	}
-
-	monitoring.FromContext(ctx).
-		With(logFields...).
-		Infof("grpc.unary_incoming_call")
+func logIncomingGRPCCall(ctx context.Context, reqMeta instrumentgrpc.RequestMetadata, result any) {
+	//logFields := []monitoring.LogField{
+	//	monitoring.Field("grpc.service_method", reqMeta.ServiceMethod),
+	//}
+	//
+	//// BodyToLog always have `{}`
+	//if len(reqMeta.BodyToLog) > 2 {
+	//	logFields = append(logFields, monitoring.Field("grpc.request_body", reqMeta.BodyToLog))
+	//}
+	//
+	//if resultToLog := parseProtoMessage(result); len(resultToLog) > 2 && shouldLogGRPCResponse {
+	//	logFields = append(logFields, monitoring.Field("grpc.response_body", parseProtoMessage(result)))
+	//}
+	//
+	//monitoring.FromContext(ctx).
+	//	With(logFields...).
+	//	Infof("grpc.unary_incoming_call")
 }
