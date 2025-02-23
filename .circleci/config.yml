@@ -4,16 +4,10 @@ executors:
   bizgroup-executor:
     docker:
       - image: sangnv/bizgroup-thunder:x86
+        environment:
+          CODACY_PROJECT_TOKEN: $CODACY_PROJECT_TOKEN
 
 jobs:
-  # Dev Task
-#  dev-task:
-#    executor: bizgroup-executor
-#    steps:
-#      - checkout
-#      - run:
-#          name: Run Go Build
-#          command: go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./...
 
   # Stag Task
   stag-task:
@@ -51,20 +45,17 @@ jobs:
           name: Cover Coverage
           command: go tool cover -func=coverage.out
       - run:
-          name: Save Coverage
+          name: Send Coverall
           command: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+      - run:
+          name: Send Codacy
+          command: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.out
 
 
 workflows:
   version: 2
   dev-workflow:
     jobs:
-#      - dev-task:
-#          filters:
-#            branches:
-#              ignore:
-#                - main
-#                - stag
       - stag-task:
           filters:
             branches:
