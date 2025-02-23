@@ -1,0 +1,15 @@
+---
+languages:
+  go:
+    enabled: true
+    checkstyle:
+      enabled: true
+    duplication:
+      enabled: true
+    codacy:
+      enabled: true
+exclude_paths:
+  - "**/mock_**.go"
+  - "mock_**.go"
+  - "**/mocks/**"
+  - "**/**_test.go"
