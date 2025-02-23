@@ -8,6 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/viebiz/lit/monitoring"
+	"github.com/viebiz/lit/monitoring/instrumentgrpc"
 )
 
 func unaryClientInterceptor(
@@ -26,7 +27,7 @@ func unaryClientInterceptor(
 		}
 	}
 
-	ctx, end := monitoring.StartGRPCUnaryCallSegment(ctx, extSvcInfo.info, method)
+	ctx, end := instrumentgrpc.StartGRPCUnaryCallSegment(ctx, extSvcInfo.info, method)
 	defer func() {
 		end(err)
 	}()
@@ -42,20 +43,20 @@ func unaryClientInterceptor(
 
 func logRequestBody(ctx context.Context, req interface{}) {
 	monitoring.FromContext(ctx).
-		With(monitoring.Field("grpc.request", parseProtoRequest(req))).
+		WithTag("grpc.request", serializeProtoMessage(req)).
 		Infof("grpc.outgoing_request")
 }
 
-func parseProtoRequest(req any) []byte {
+func serializeProtoMessage(req any) string {
 	msg, ok := req.(proto.Message)
 	if !ok {
-		return nil // Ignore req body if it not proto message
+		return "" // Ignore req body if it not proto message
 	}
 
 	b, err := protojson.Marshal(msg)
 	if err != nil {
-		return nil // Ignore if it is invalid proto message
+		return "" // Ignore if it is invalid proto message
 	}
 
-	return b
+	return string(b)
 }
