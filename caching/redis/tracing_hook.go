@@ -6,10 +6,10 @@ import (
 
 	"github.com/redis/go-redis/extra/rediscmd/v9"
 	"github.com/redis/go-redis/v9"
+	"github.com/viebiz/lit/monitoring"
+	
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-
-	"github.com/viebiz/lit/monitoring"
 )
 
 type tracingHook struct {
