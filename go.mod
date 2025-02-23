@@ -5,6 +5,7 @@ go 1.23.6
 require (
 	github.com/casbin/casbin/v2 v2.103.0
 	github.com/casbin/gorm-adapter/v3 v3.32.0
+	github.com/getsentry/sentry-go v0.31.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0

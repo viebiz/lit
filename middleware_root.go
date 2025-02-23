@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strconv"
 
 	"github.com/viebiz/lit/monitoring"
+	"github.com/viebiz/lit/monitoring/instrumenthttp"
 )
 
 // rootMiddleware is a middleware function that handles tracing for incoming requests
@@ -14,7 +16,7 @@ import (
 func rootMiddleware(rootCtx context.Context) HandlerFunc {
 	return func(c Context) {
 		// Start tracing for the incoming request
-		ctx, reqMeta, endInstrumentation := monitoring.StartIncomingRequest(monitoring.FromContext(rootCtx), c.Request())
+		ctx, reqMeta, endInstrumentation := instrumenthttp.StartIncomingRequest(monitoring.FromContext(rootCtx), c.Request())
 		defer func() {
 			// Recover from any panic that may have occurred during request handling
 			if p := recover(); p != nil {
@@ -73,26 +75,17 @@ func (w *responseRecorder) Write(resp []byte) (n int, err error) {
 	return w.ResponseWriter.Write(resp)
 }
 
-func logIncomingRequest(ctx Context, reqMeta monitoring.RequestMetadata, msg string) {
-	logFields := []monitoring.LogField{
-		monitoring.Field("http.request.method", reqMeta.Method),
-		monitoring.Field("http.request.endpoint", reqMeta.Endpoint),
-	}
-
-	if len(reqMeta.ContextData) > 0 {
-		logFields = append(logFields, monitoring.Field("http.request.context_data", reqMeta.ContextData))
+func logIncomingRequest(ctx Context, reqMeta instrumenthttp.RequestMetadata, msg string) {
+	tags := map[string]string{
+		"http.response.status": strconv.Itoa(ctx.Writer().Status()),
+		"http.response.size":   strconv.Itoa(ctx.Writer().Size()),
 	}
 
 	if len(reqMeta.BodyToLog) > 0 {
-		logFields = append(logFields, monitoring.Field("http.request.body", string(reqMeta.BodyToLog)))
+		tags["http.request.body"] = string(reqMeta.BodyToLog)
 	}
 
-	logFields = append(logFields,
-		monitoring.Field("http.response.status", ctx.Writer().Status()),
-		monitoring.Field("http.response.size", ctx.Writer().Size()),
-	)
-
 	monitoring.FromContext(ctx.Request().Context()).
-		With(logFields...).
+		With(tags).
 		Infof(msg)
 }
