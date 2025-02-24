@@ -45,23 +45,9 @@ type ContextTransactor interface {
 	ContextExecutor
 }
 
-// ContextBeginner allows creation of context aware transactions with options.
-type ContextBeginner interface {
+// BeginnerExecutor allows creation of context aware transactions with options.
+type BeginnerExecutor interface {
 	BeginTx(context.Context, *sql.TxOptions) (*sql.Tx, error)
 
 	ContextExecutor
-}
-
-type QueryExecutor interface {
-	Prepare(query string) (*sql.Stmt, error)
-	Query(query string, args ...interface{}) (*sql.Rows, error)
-	QueryRow(query string, args ...interface{}) *sql.Row
-}
-
-type ContextQueryExecutor interface {
-	PrepareContext(ctx context.Context, query string) (*sql.Stmt, error)
-	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
-	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
-
-	Executor
 }
