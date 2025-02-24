@@ -12,6 +12,11 @@ import (
 	pkgerrors "github.com/pkg/errors"
 )
 
+const (
+	defaultServerReadTimeout  = time.Minute
+	defaultServerWriteTimeout = time.Minute
+)
+
 type Server struct {
 	httpServer    *http.Server
 	withTLS       bool
@@ -21,7 +26,7 @@ type Server struct {
 }
 
 // NewHttpServer creates new http server
-func NewHttpServer(ctx context.Context, addr string, setupRouteFunc func(Router), opts ...func(*Server)) Server {
+func NewHttpServer(ctx context.Context, addr string, setupRouteFunc func(Router), opts ...ServerOption) Server {
 	// Create new router
 	r, hdl := NewRouter()
 	r.Use(rootMiddleware(ctx))
@@ -32,8 +37,12 @@ func NewHttpServer(ctx context.Context, addr string, setupRouteFunc func(Router)
 	// Setup server
 	srv := Server{
 		httpServer: &http.Server{
-			Addr:    addr,
-			Handler: hdl,
+			Addr:         addr,
+			Handler:      hdl,
+			ReadTimeout:  defaultServerReadTimeout,
+			WriteTimeout: defaultServerWriteTimeout,
+			//IdleTimeout:  Default same with ReadTimeout
+			//MaxHeaderBytes: Default 1MB
 		},
 	}
 
