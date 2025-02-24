@@ -1,0 +1,317 @@
+[
+  {
+    "_id": "67bb6af0fe365d0a36e5d2e5",
+    "index": 0,
+    "guid": "a782effc-29b2-4b64-8508-a734c08d895c",
+    "isActive": true,
+    "balance": "$1,080.32",
+    "picture": "http://placehold.it/32x32",
+    "age": 26,
+    "eyeColor": "green",
+    "name": "Adkins Barry",
+    "gender": "male",
+    "company": "ANDRYX",
+    "email": "adkinsbarry@andryx.com",
+    "phone": "+1 (904) 513-3363",
+    "address": "747 Farragut Road, Jennings, Marshall Islands, 3750",
+    "about": "Laboris ut incididunt exercitation qui adipisicing velit magna nostrud laborum. Incididunt commodo qui pariatur officia irure eiusmod dolore deserunt non magna ipsum est consequat quis. Tempor tempor commodo exercitation laboris aliqua deserunt. Ipsum aliqua esse sunt ad amet amet sunt ut duis dolore nisi reprehenderit qui laborum. Voluptate pariatur tempor sunt voluptate magna. Sint do ex exercitation duis sit exercitation laboris anim in sint eu et.\r\n",
+    "registered": "2019-02-20T08:23:58 -07:00",
+    "latitude": 45.72058,
+    "longitude": -106.206299,
+    "tags": [
+      "ex",
+      "anim",
+      "ad",
+      "tempor",
+      "sunt",
+      "pariatur",
+      "duis"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Conrad Cain"
+      },
+      {
+        "id": 1,
+        "name": "Weber Ellis"
+      },
+      {
+        "id": 2,
+        "name": "Dickerson Boone"
+      }
+    ],
+    "greeting": "Hello, Adkins Barry! You have 7 unread messages.",
+    "favoriteFruit": "apple"
+  },
+  {
+    "_id": "67bb6af00a4740908e61af84",
+    "index": 1,
+    "guid": "921280d9-b00d-4966-8fdf-8c9e1e4f08f3",
+    "isActive": false,
+    "balance": "$1,910.39",
+    "picture": "http://placehold.it/32x32",
+    "age": 22,
+    "eyeColor": "green",
+    "name": "Wise Santiago",
+    "gender": "male",
+    "company": "SCENTRIC",
+    "email": "wisesantiago@scentric.com",
+    "phone": "+1 (923) 400-3029",
+    "address": "643 Concord Street, Elbert, Mississippi, 4873",
+    "about": "Nisi occaecat consequat quis eiusmod in proident ex consectetur velit id laboris eiusmod mollit mollit. Nostrud irure voluptate in laboris. Nostrud est ex in dolore occaecat irure aute.\r\n",
+    "registered": "2019-07-23T07:06:29 -07:00",
+    "latitude": -20.315766,
+    "longitude": 117.679525,
+    "tags": [
+      "laborum",
+      "elit",
+      "commodo",
+      "exercitation",
+      "sit",
+      "qui",
+      "non"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Madeleine Stevens"
+      },
+      {
+        "id": 1,
+        "name": "Bertie Gillespie"
+      },
+      {
+        "id": 2,
+        "name": "Dickson Dawson"
+      }
+    ],
+    "greeting": "Hello, Wise Santiago! You have 6 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6af0cd3851eabc4925ab",
+    "index": 2,
+    "guid": "b7f97975-8f6d-418c-88c3-2d15d36c44bf",
+    "isActive": false,
+    "balance": "$1,744.60",
+    "picture": "http://placehold.it/32x32",
+    "age": 22,
+    "eyeColor": "green",
+    "name": "Glenn Reeves",
+    "gender": "male",
+    "company": "INTERGEEK",
+    "email": "glennreeves@intergeek.com",
+    "phone": "+1 (820) 575-2307",
+    "address": "893 Opal Court, Gambrills, Illinois, 200",
+    "about": "Elit mollit excepteur quis eu. Et consectetur nisi ex culpa duis excepteur. Dolore dolore anim ut aliquip irure pariatur. Consequat commodo adipisicing eu nisi est. Ut nostrud enim aute occaecat dolore amet exercitation ex adipisicing anim magna nulla id.\r\n",
+    "registered": "2014-05-13T02:18:26 -07:00",
+    "latitude": -73.80202,
+    "longitude": -109.845085,
+    "tags": [
+      "velit",
+      "culpa",
+      "Lorem",
+      "commodo",
+      "sint",
+      "pariatur",
+      "tempor"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Maricela Ball"
+      },
+      {
+        "id": 1,
+        "name": "Erma Guerrero"
+      },
+      {
+        "id": 2,
+        "name": "Robles Watts"
+      }
+    ],
+    "greeting": "Hello, Glenn Reeves! You have 8 unread messages.",
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "_id": "67bb6af06857d17a145f0ad2",
+    "index": 3,
+    "guid": "458cbcaa-e7d5-4cdc-a516-3ce8d3cf6a25",
+    "isActive": true,
+    "balance": "$2,851.63",
+    "picture": "http://placehold.it/32x32",
+    "age": 26,
+    "eyeColor": "green",
+    "name": "Stokes Landry",
+    "gender": "male",
+    "company": "PROGENEX",
+    "email": "stokeslandry@progenex.com",
+    "phone": "+1 (847) 532-3433",
+    "address": "605 Ryder Street, Alleghenyville, New Jersey, 9640",
+    "about": "Dolore nisi qui qui commodo aliquip sint. Sunt ad elit occaecat est proident quis labore exercitation qui aute ea consequat laboris Lorem. Commodo deserunt commodo enim ipsum dolor sit reprehenderit voluptate cillum officia sint eu. Reprehenderit tempor reprehenderit proident id nulla ea velit. Ut cillum nulla sit eiusmod Lorem duis.\r\n",
+    "registered": "2024-12-28T08:24:32 -07:00",
+    "latitude": -29.89519,
+    "longitude": -21.991653,
+    "tags": [
+      "adipisicing",
+      "culpa",
+      "aliquip",
+      "id",
+      "aliquip",
+      "consectetur",
+      "mollit"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Violet Rowe"
+      },
+      {
+        "id": 1,
+        "name": "Johanna Albert"
+      },
+      {
+        "id": 2,
+        "name": "Patrick Sims"
+      }
+    ],
+    "greeting": "Hello, Stokes Landry! You have 5 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6af0b832b78ee688dc96",
+    "index": 4,
+    "guid": "383b44d8-c748-4017-8a71-29969a32334c",
+    "isActive": true,
+    "balance": "$1,606.21",
+    "picture": "http://placehold.it/32x32",
+    "age": 37,
+    "eyeColor": "brown",
+    "name": "Mcgowan Fields",
+    "gender": "male",
+    "company": "TECHTRIX",
+    "email": "mcgowanfields@techtrix.com",
+    "phone": "+1 (924) 547-3716",
+    "address": "290 Hendrix Street, Herlong, New York, 6910",
+    "about": "Magna voluptate consectetur proident laboris anim est aliquip anim voluptate quis anim. Do officia ipsum ex nulla labore elit nulla mollit veniam fugiat nostrud. Exercitation ex voluptate deserunt reprehenderit consequat officia id culpa nulla ut proident aliquip. Eiusmod cupidatat adipisicing tempor nisi Lorem.\r\n",
+    "registered": "2016-01-30T04:12:31 -07:00",
+    "latitude": 52.305645,
+    "longitude": -89.866676,
+    "tags": [
+      "nisi",
+      "officia",
+      "labore",
+      "est",
+      "nostrud",
+      "cupidatat",
+      "fugiat"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Nicole Warren"
+      },
+      {
+        "id": 1,
+        "name": "Fay Davidson"
+      },
+      {
+        "id": 2,
+        "name": "Joyce Ford"
+      }
+    ],
+    "greeting": "Hello, Mcgowan Fields! You have 4 unread messages.",
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "_id": "67bb6af064d050ad70758e14",
+    "index": 5,
+    "guid": "26103590-89ff-413e-a2dd-18b557a9b44a",
+    "isActive": true,
+    "balance": "$1,703.67",
+    "picture": "http://placehold.it/32x32",
+    "age": 20,
+    "eyeColor": "blue",
+    "name": "Kelly Kim",
+    "gender": "female",
+    "company": "LETPRO",
+    "email": "kellykim@letpro.com",
+    "phone": "+1 (906) 416-2239",
+    "address": "438 Branton Street, Sanders, Louisiana, 7559",
+    "about": "Voluptate ea sit consectetur consectetur consectetur ipsum et irure. Est cillum exercitation consequat deserunt dolor esse qui incididunt pariatur irure anim mollit adipisicing. Lorem dolor ullamco deserunt officia quis Lorem sunt consequat voluptate eiusmod elit. Nisi minim magna magna occaecat do dolor duis ullamco esse eu anim do. Non ea adipisicing dolore anim exercitation in ea magna pariatur ad eu. Exercitation in magna officia sit pariatur qui. Amet aliqua officia sit officia.\r\n",
+    "registered": "2020-07-30T04:50:51 -07:00",
+    "latitude": -21.812519,
+    "longitude": -28.415314,
+    "tags": [
+      "Lorem",
+      "cillum",
+      "minim",
+      "sit",
+      "ullamco",
+      "cupidatat",
+      "ex"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Cheryl Burton"
+      },
+      {
+        "id": 1,
+        "name": "Maldonado Snider"
+      },
+      {
+        "id": 2,
+        "name": "Goff Blackwell"
+      }
+    ],
+    "greeting": "Hello, Kelly Kim! You have 5 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6af0257526b9d330ede7",
+    "index": 6,
+    "guid": "8ebefb66-9cb9-4229-a138-03b88f59aaf0",
+    "isActive": true,
+    "balance": "$3,135.95",
+    "picture": "http://placehold.it/32x32",
+    "age": 23,
+    "eyeColor": "green",
+    "name": "Marcie Wall",
+    "gender": "female",
+    "company": "JUMPSTACK",
+    "email": "marciewall@jumpstack.com",
+    "phone": "+1 (932) 527-2139",
+    "address": "575 Herzl Street, Marenisco, Minnesota, 2175",
+    "about": "Aliquip irure aute et amet excepteur nisi. Nisi aute cupidatat aliqua aute aliquip sint ut voluptate laboris. Sunt deserunt occaecat eu nulla elit. Cupidatat sit cupidatat adipisicing incididunt dolore dolor. Labore mollit eu amet tempor dolore ea occaecat. Sunt eiusmod sit quis nostrud aliquip mollit enim eiusmod irure do ipsum enim est est. Officia eu ad esse ullamco elit sunt esse do officia officia et anim.\r\n",
+    "registered": "2017-07-29T04:10:24 -07:00",
+    "latitude": 80.386441,
+    "longitude": -129.050943,
+    "tags": [
+      "reprehenderit",
+      "Lorem",
+      "reprehenderit",
+      "aliqua",
+      "mollit",
+      "non",
+      "sit"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Cherie Knowles"
+      },
+      {
+        "id": 1,
+        "name": "Tanner Ayala"
+      },
+      {
+        "id": 2,
+        "name": "Kent Young"
+      }
+    ],
+    "greeting": "Hello, Marcie Wall! You have 8 unread messages.",
+    "favoriteFruit": "strawberry"
+  }
+]

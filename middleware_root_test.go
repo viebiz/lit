@@ -3,10 +3,11 @@ package lit
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"slices"
 	"strings"
 	"testing"
@@ -15,10 +16,15 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 
+	"github.com/viebiz/lit/internal/testutil"
 	"github.com/viebiz/lit/monitoring"
+	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 )
 
 func TestRootMiddleware(t *testing.T) {
+	tp := mocktracer.Start()
+	defer tp.Stop()
+
 	type handler struct {
 		Method string
 		Path   string
@@ -29,7 +35,7 @@ func TestRootMiddleware(t *testing.T) {
 		hdl       handler
 		expStatus int
 		expBody   string
-		expLogs   []map[string]interface{}
+		expLogs   []map[string]string
 	}{
 		"success - GET method": {
 			givenReq: httptest.NewRequest(http.MethodGet, "/ping", nil),
@@ -43,27 +49,15 @@ func TestRootMiddleware(t *testing.T) {
 			},
 			expStatus: http.StatusOK,
 			expBody:   `{"message":"pong"}`,
-			expLogs: []map[string]interface{}{
-				{
-					"level":    "info",
-					"msg":      `Wrote {"message":"pong"}`,
-					"span_id":  "0000000000000001",
-					"trace_id": "00000000000000000000000000000001",
-				},
-				{
-					"http.request.endpoint": "/ping",
-					"http.request.method":   "GET",
-					"http.response.size":    float64(18),
-					"http.response.status":  float64(200),
-					"level":                 "info",
-					"msg":                   "http.incoming_request",
-					"span_id":               "0000000000000001",
-					"trace_id":              "00000000000000000000000000000001",
-				},
+			expLogs: []map[string]string{
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "Sentry DSN not provided. Not using Sentry Error Reporting", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "OTelExporter URL not provided. Not using Distributed Tracing", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "Wrote {\"message\":\"pong\"}", "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001", "http.request.method": "GET", "server.address": "example.com", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1"},
+				{"level": "INFO", "ts": "2025-02-23T18:23:26.434+0700", "msg": "http.incoming_request", "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001", "http.request.method": "GET", "server.address": "example.com", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "http.response.status": "200", "http.response.size": "18"},
 			},
 		},
 		"success - POST method": {
-			givenReq: httptest.NewRequest(http.MethodPost, "/ping", bytes.NewBufferString(`{"message":"pong"}`)),
+			givenReq: httptest.NewRequest(http.MethodPost, "/ping", bytes.NewBufferString(`{"message":"Hello lightning"}`)),
 			hdl: handler{
 				Method: http.MethodPost,
 				Path:   "/ping",
@@ -80,25 +74,12 @@ func TestRootMiddleware(t *testing.T) {
 				},
 			},
 			expStatus: http.StatusOK,
-			expBody:   `{"message":"pong"}`,
-			expLogs: []map[string]interface{}{
-				{
-					"level":    "info",
-					"msg":      `Wrote {"message":"pong"}`,
-					"span_id":  "0000000000000001",
-					"trace_id": "00000000000000000000000000000001",
-				},
-				{
-					"http.request.body":     `{"message":"pong"}`,
-					"http.request.endpoint": "/ping",
-					"http.request.method":   "POST",
-					"http.response.size":    float64(18),
-					"http.response.status":  float64(200),
-					"level":                 "info",
-					"msg":                   "http.incoming_request",
-					"span_id":               "0000000000000001",
-					"trace_id":              "00000000000000000000000000000001",
-				},
+			expBody:   `{"message":"Hello lightning"}`,
+			expLogs: []map[string]string{
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "Sentry DSN not provided. Not using Sentry Error Reporting", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "OTelExporter URL not provided. Not using Distributed Tracing", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "Wrote {\"message\":\"Hello lightning\"}", "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001", "http.request.method": "POST", "http.request.body.size": "29", "server.address": "example.com", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1"},
+				{"level": "INFO", "ts": "2025-02-23T18:23:26.434+0700", "msg": "http.incoming_request", "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001", "http.request.method": "POST", "http.request.body.size": "29", "http.request.body": "{\"message\":\"Hello lightning\"}", "server.address": "example.com", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "http.response.status": "200", "http.response.size": "29"},
 			},
 		},
 		"error - Expected error": {
@@ -112,24 +93,11 @@ func TestRootMiddleware(t *testing.T) {
 			},
 			expStatus: http.StatusBadRequest,
 			expBody:   "{\"error\":\"validation_error\",\"error_description\":\"Invalid request\"}",
-			expLogs: []map[string]interface{}{
-				{
-					"level":    "info",
-					"msg":      `Wrote {"error":"validation_error","error_description":"Invalid request"}`,
-					"span_id":  "0000000000000001",
-					"trace_id": "00000000000000000000000000000001",
-				},
-				{
-					"http.request.body":     `{"message":"pong"}`,
-					"http.request.endpoint": "/ping",
-					"http.request.method":   "PATCH",
-					"http.response.size":    float64(66),
-					"http.response.status":  float64(400),
-					"level":                 "info",
-					"msg":                   "http.incoming_request",
-					"span_id":               "0000000000000001",
-					"trace_id":              "00000000000000000000000000000001",
-				},
+			expLogs: []map[string]string{
+				{"environment": "dev", "level": "INFO", "msg": "Sentry DSN not provided. Not using Sentry Error Reporting", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0"},
+				{"environment": "dev", "level": "INFO", "msg": "OTelExporter URL not provided. Not using Distributed Tracing", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0"},
+				{"environment": "dev", "http.request.body.size": "18", "http.request.method": "PATCH", "level": "INFO", "msg": `Wrote {"error":"validation_error","error_description":"Invalid request"}`, "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "server.address": "example.com", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
+				{"environment": "dev", "http.request.body": `{"message":"pong"}`, "http.request.body.size": "18", "http.request.method": "PATCH", "http.response.size": "66", "http.response.status": "400", "level": "INFO", "msg": "http.incoming_request", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "server.address": "example.com", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
 			},
 		},
 		"error - PANIC request": {
@@ -143,38 +111,11 @@ func TestRootMiddleware(t *testing.T) {
 			},
 			expStatus: http.StatusInternalServerError,
 			expBody:   "{\"error\":\"internal_server_error\",\"error_description\":\"Something went wrong\"}",
-			expLogs: []map[string]interface{}{
-				{
-					"error": "simulated panic",
-					"level": "error",
-					"msg": `
-						"""
-						Caught a panic: goroutine 7 [running]:
-						runtime/debug.Stack()
-							/Users/locdang/sdk/go1.23.3/src/runtime/debug/stack.go:26 +0x64
-						gitlab.com/bizgroup2/lightning.TestRootMiddleware.func4.rootMiddleware.2.1()
-							/Users/locdang/IdeaProjects/playground/lightning/middleware_root.go:29 +0xc4
-						panic({0x1013bf000?, 0x14000238900?})
-							/Users/locdang/sdk/go1.23.3/src/runtime/panic.go:785 +0x124
-						gitlab.com/bizgroup2/lightning.TestRootMiddleware.func3({0x1400024adc0?, 0x101ffe978?})
-							/Users/locdang/IdeaProjects/playground/lightning/middleware_root_test.go:113 +0x50
-						gitlab.com/bizgroup2/lightning.router.Handle.handleUnexpectedError.func1(0x1400020a200)
-							/Users/locdang/IdeaProjects/playground/lightning/handler_func.go:20 +0x34
-						github.com/gin-gonic/gin.(*Context).Next(...)
-							/Users/locdang/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185
-						gitlab.com/bizgroup2/lightning.TestRootMiddleware.func4.rootMiddleware.2({0x1014eb488, 0x1400020a200})
-							/Users/locdang/IdeaProjects/playground/lightning/middleware_root.go:45 +0x14c
-						... // 16 elided lines
-					`,
-					"span_id":  "0000000000000001",
-					"trace_id": "00000000000000000000000000000001",
-				},
-				{
-					"level":    "info",
-					"msg":      `Wrote {"error":"internal_server_error","error_description":"Something went wrong"}`,
-					"span_id":  "0000000000000001",
-					"trace_id": "00000000000000000000000000000001",
-				},
+			expLogs: []map[string]string{
+				{"environment": "dev", "level": "INFO", "msg": "Sentry DSN not provided. Not using Sentry Error Reporting", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0"},
+				{"environment": "dev", "level": "INFO", "msg": "OTelExporter URL not provided. Not using Distributed Tracing", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0"},
+				{"environment": "dev", "level": "ERROR", "msg": "Caught a panic", "http.request.body.size": "18", "http.request.method": "PATCH", "error.kind": "*errors.errorString", "error.message": "simulated panic", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "server.address": "example.com", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
+				{"environment": "dev", "level": "INFO", "msg": `Wrote {"error":"internal_server_error","error_description":"Something went wrong"}`, "http.request.body.size": "18", "http.request.method": "PATCH", "user_agent": "", "url": "/ping", "network.peer.address": "192.0.2.1:1234", "network.protocol.version": "HTTP/1.1", "server.address": "example.com", "server.name": "lightning", "ts": "2025-02-23T18:43:12.5460700", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
 			},
 		},
 	}
@@ -183,14 +124,16 @@ func TestRootMiddleware(t *testing.T) {
 		tc := tc
 		t.Run(scenario, func(t *testing.T) {
 			t.Parallel()
+
 			// Given
-			monitor, endTest := monitoring.NewMonitorTest()
-			defer endTest()
+			logBuffer := bytes.NewBuffer(nil)
+			m, err := monitoring.New(monitoring.Config{ServerName: "lightning", Environment: "dev", Version: "1.0.0", Writer: logBuffer})
+			require.NoError(t, err)
+			appCtx := monitoring.SetInContext(context.Background(), m)
 
 			w := httptest.NewRecorder()
-
 			route, ctx, handleRequest := NewRouterForTest(w)
-			route.Use(rootMiddleware(monitor.Context()))
+			route.Use(rootMiddleware(appCtx))
 			route.Handle(tc.hdl.Method, tc.hdl.Path, tc.hdl.Func)
 
 			if slices.Contains([]string{http.MethodPost, http.MethodPut, http.MethodPatch}, tc.givenReq.Method) {
@@ -204,53 +147,75 @@ func TestRootMiddleware(t *testing.T) {
 			// Then
 			require.Equal(t, tc.expStatus, w.Code)
 			require.Equal(t, tc.expBody, w.Body.String())
+			pasedLogs, err := parseLog(logBuffer.Bytes())
+			require.NoError(t, err)
+			testutil.Equal(t, tc.expLogs, pasedLogs, cmpopts.IgnoreMapEntries(func(k string, v any) bool {
+				if k == "ts" {
+					return true
+				}
 
-			requireEqual(t, tc.expLogs, monitor.GetLogs(t),
-				cmpopts.IgnoreMapEntries(func(key string, value interface{}) bool {
-					if key == "msg" && strings.HasPrefix(value.(string), "Caught a panic") {
-						return true
-					}
+				if k == "error.stack" {
+					return true
+				}
 
-					return key == "ts" || key == "trace_id" || key == "span_id"
-				}),
-			)
+				if str, ok := v.(string); ok && str == "Caught a panic" {
+					return true
+				}
+
+				return false
+			}))
 		})
 	}
 }
 
-func BenchmarkRootMiddleware(b *testing.B) {
-	// Start a new HTTP server for test
-	const srvAddr = "localhost:1604"
-	go func() {
-		logger := monitoring.NewLoggerWithWriter(bytes.NewBuffer(nil))
-		appCtx := monitoring.SetInContext(context.Background(), logger)
-		srv := NewHttpServer(appCtx, srvAddr, func(r Router) {
-			r.Post("/weather", func(c Context) error {
-				req := new(map[string]interface{})
-				if err := c.Bind(&req); err != nil {
-					return err
-				}
-
-				c.JSON(http.StatusOK, req)
-				return nil
-			})
-		})
-
-		require.NoError(b, srv.RunWithContext(context.Background()))
-	}()
-
-	b.Run("incoming_http", func(b *testing.B) {
-		b.Helper()
-		b.ReportAllocs()
-		b.ResetTimer()
-
-		for idx := 0; idx < b.N; idx++ {
-			reqBody, err := os.ReadFile("testdata/incoming_http_request_body.json")
-			require.NoError(b, err)
-
-			if _, err := http.Post("http://"+srvAddr+"/weather", "application/json", bytes.NewBuffer(reqBody)); err != nil {
-				b.Error(err)
-			}
+func parseLog(b []byte) ([]map[string]string, error) {
+	var result []map[string]string
+	for _, s := range strings.Split(string(b), "\n") {
+		if s == "" {
+			break
 		}
+		var r map[string]string
+		if err := json.Unmarshal([]byte(s), &r); err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+	return result, nil
+}
+
+func BenchmarkRootMiddleware(b *testing.B) {
+	// Given
+	// Setup Monitor
+	m, err := monitoring.New(monitoring.Config{ServerName: "lightning", Environment: "dev", Version: "1.0.0", Writer: io.Discard})
+	require.NoError(b, err)
+
+	// Init trace test
+	tp := mocktracer.Start()
+	defer tp.Stop()
+
+	appCtx := monitoring.SetInContext(context.Background(), m)
+
+	r, hdl := NewRouter()
+	r.Use(rootMiddleware(appCtx)) // Add middleware for benchmark
+
+	// Define a dummy route
+	r.Post("/users", func(ctx Context) error {
+		ctx.JSON(http.StatusOK, map[string]string{
+			"message": "your are the best developer",
+		})
+		return nil
 	})
+
+	// Pre-create request to avoid redundant allocations inside the loop
+	req := httptest.NewRequest(http.MethodPost, "/users", bytes.NewBufferString(`{"username":"the-witcher-knight"}`))
+	req.Header.Set("Content-Type", "application/json")
+
+	// When
+	b.ReportAllocs() // Track memory allocations
+	b.ResetTimer()   // Reset timer to avoid setup overhead
+	for i := 0; i < b.N; i++ {
+		// Create a response recorder
+		w := httptest.NewRecorder()
+		hdl.ServeHTTP(w, req)
+	}
 }

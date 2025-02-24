@@ -5,12 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"net"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/internal/testutil"
 	"google.golang.org/grpc"
 
 	"github.com/viebiz/lit/grpcclient/testdata"
@@ -30,7 +32,7 @@ func TestClientConn_Invoke(t *testing.T) {
 		mockData mockData
 		expResp  *testdata.WeatherResponse
 		expErr   error
-		expLog   []map[string]interface{}
+		expLog   []map[string]string
 	}{
 		"success": {
 			givenReq: &testdata.WeatherRequest{
@@ -73,14 +75,10 @@ func TestClientConn_Invoke(t *testing.T) {
 					},
 				},
 			},
-			expLog: []map[string]interface{}{
-				{
-					"grpc.request":      `{"date":"M41.993.32"}`,
-					"level":             "info",
-					"msg":               "grpc.outgoing_request",
-					"outgoing_span_id":  "0000000000000000",
-					"outgoing_trace_id": "00000000000000000000000000000000",
-				},
+			expLog: []map[string]string{
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "Sentry DSN not provided. Not using Sentry Error Reporting", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "OTelExporter URL not provided. Not using Distributed Tracing", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "grpc.outgoing_request", "grpc.request": `{"date":"M41.993.32"}`, "outgoing_span_id": "0000000000000000", "outgoing_trace_id": "00000000000000000000000000000000", "rpc.method": "GetWeatherInfo", "rpc.service": "weather.WeatherService", "rpc.system": "grpc", "server.address": "localhost:50052", "server.name": "lightning", "environment": "dev", "version": "1.0.0"},
 			},
 		},
 	}
@@ -88,8 +86,8 @@ func TestClientConn_Invoke(t *testing.T) {
 		t.Run(scenario, func(t *testing.T) {
 			// Given
 			logBuffer := new(bytes.Buffer)
-			logger := monitoring.NewLoggerWithWriter(logBuffer)
-			reqCtx := monitoring.SetInContext(context.Background(), logger)
+			m, _ := monitoring.New(monitoring.Config{ServerName: "lightning", Environment: "dev", Version: "1.0.0", Writer: logBuffer})
+			reqCtx := monitoring.SetInContext(context.Background(), m)
 
 			// Start a new GRPC server for testing
 			go func() {
@@ -123,17 +121,40 @@ func TestClientConn_Invoke(t *testing.T) {
 				}
 			}
 
-			if diff := cmp.Diff(tc.expLog, parseLogs(t, *logBuffer), cmpopts.IgnoreMapEntries(func(key string, value interface{}) bool {
-				if key == "ts" {
+			pasedLogs, err := parseLog(logBuffer.Bytes())
+			require.NoError(t, err)
+			testutil.Equal(t, tc.expLog, pasedLogs, cmpopts.IgnoreMapEntries(func(k string, v any) bool {
+				if k == "ts" {
+					return true
+				}
+
+				if k == "error.stack" {
+					return true
+				}
+
+				if str, ok := v.(string); ok && str == "Caught a panic" {
 					return true
 				}
 
 				return false
-			})); diff != "" {
-				t.Errorf("unexpected log (-want, +got) = %v", diff)
-			}
+			}))
 		})
 	}
+}
+
+func parseLog(b []byte) ([]map[string]string, error) {
+	var result []map[string]string
+	for _, s := range strings.Split(string(b), "\n") {
+		if s == "" {
+			break
+		}
+		var r map[string]string
+		if err := json.Unmarshal([]byte(s), &r); err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+	return result, nil
 }
 
 type weatherService struct {
@@ -145,21 +166,4 @@ func (s *weatherService) GetWeatherInfo(ctx context.Context, req *testdata.Weath
 	args := s.Called(ctx, req)
 
 	return args.Get(0).(*testdata.WeatherResponse), args.Error(1)
-}
-
-func parseLogs(t require.TestingT, buf bytes.Buffer) []map[string]interface{} {
-	var logs []map[string]interface{}
-
-	lines := bytes.Split(buf.Bytes(), []byte("\n")) // \n is end of line
-	for _, line := range lines {
-		if len(line) == 0 {
-			continue
-		}
-
-		var msg map[string]interface{}
-		require.NoError(t, json.Unmarshal(line, &msg))
-		logs = append(logs, msg)
-	}
-
-	return logs
 }

@@ -8,6 +8,7 @@ import (
 	"math"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/microsoft/go-mssqldb/internal/cp"
@@ -148,7 +149,7 @@ func readTypeInfo(r *tdsBuffer, typeId byte, c *cryptoMetadata) (res typeInfo) {
 }
 
 // https://msdn.microsoft.com/en-us/library/dd358284.aspx
-func writeTypeInfo(w io.Writer, ti *typeInfo) (err error) {
+func writeTypeInfo(w io.Writer, ti *typeInfo, out bool) (err error) {
 	err = binary.Write(w, binary.LittleEndian, ti.TypeId)
 	if err != nil {
 		return
@@ -162,7 +163,7 @@ func writeTypeInfo(w io.Writer, ti *typeInfo) (err error) {
 	case typeTvp:
 		ti.Writer = writeFixedType
 	default: // all others are VARLENTYPE
-		err = writeVarLen(w, ti)
+		err = writeVarLen(w, ti, out)
 		if err != nil {
 			return
 		}
@@ -176,7 +177,7 @@ func writeFixedType(w io.Writer, ti typeInfo, buf []byte) (err error) {
 }
 
 // https://msdn.microsoft.com/en-us/library/dd358341.aspx
-func writeVarLen(w io.Writer, ti *typeInfo) (err error) {
+func writeVarLen(w io.Writer, ti *typeInfo, out bool) (err error) {
 	switch ti.TypeId {
 
 	case typeDateN:
@@ -222,7 +223,7 @@ func writeVarLen(w io.Writer, ti *typeInfo) (err error) {
 		typeNVarChar, typeNChar, typeXml, typeUdt:
 
 		// short len types
-		if ti.Size > 8000 || ti.Size == 0 {
+		if ti.Size > 8000 || ti.Size == 0 || out {
 			if err = binary.Write(w, binary.LittleEndian, uint16(0xffff)); err != nil {
 				return
 			}
@@ -1137,6 +1138,8 @@ func makeGoLangScanType(ti typeInfo) reflect.Type {
 		return reflect.TypeOf([]byte{})
 	case typeVariant:
 		return reflect.TypeOf(nil)
+	case typeUdt:
+		return reflect.TypeOf([]byte{})
 	default:
 		panic(fmt.Sprintf("not implemented makeGoLangScanType for type %d", ti.TypeId))
 	}
@@ -1366,6 +1369,8 @@ func makeGoLangTypeName(ti typeInfo) string {
 		return "SQL_VARIANT"
 	case typeBigBinary:
 		return "BINARY"
+	case typeUdt:
+		return strings.ToUpper(ti.UdtInfo.TypeName)
 	default:
 		panic(fmt.Sprintf("not implemented makeGoLangTypeName for type %d", ti.TypeId))
 	}
@@ -1490,9 +1495,22 @@ func makeGoLangTypeLength(ti typeInfo) (int64, bool) {
 		return 0, false
 	case typeBigBinary:
 		return int64(ti.Size), true
+	case typeUdt:
+		switch ti.UdtInfo.TypeName {
+		case "hierarchyid":
+			// https://learn.microsoft.com/en-us/sql/t-sql/data-types/hierarchyid-data-type-method-reference?view=sql-server-ver16
+			return 892, true
+		case "geography":
+		case "geometry":
+			return 2147483647, true
+		default:
+			panic(fmt.Sprintf("not implemented makeGoLangTypeLength for user defined type %s", ti.UdtInfo.TypeName))
+		}
 	default:
 		panic(fmt.Sprintf("not implemented makeGoLangTypeLength for type %d", ti.TypeId))
 	}
+
+	return 0, false
 }
 
 // makes go/sql type precision and scale as described below
@@ -1601,6 +1619,8 @@ func makeGoLangTypePrecisionScale(ti typeInfo) (int64, int64, bool) {
 	case typeVariant:
 		return 0, 0, false
 	case typeBigBinary:
+		return 0, 0, false
+	case typeUdt:
 		return 0, 0, false
 	default:
 		panic(fmt.Sprintf("not implemented makeGoLangTypePrecisionScale for type %d", ti.TypeId))

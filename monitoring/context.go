@@ -6,21 +6,22 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-type loggerContextKey struct{}
+// monitorContextKey is the context key used to retrieve a Monitor from context.
+// An empty struct is preferred for efficiency: https://github.com/golang/go/issues/17826#issuecomment-259035465
+type monitorContextKey struct{}
 
 // SetInContext sets the logger in context
-func SetInContext(ctx context.Context, logger *Logger) context.Context {
-	return context.WithValue(ctx, loggerContextKey{}, logger)
+func SetInContext(ctx context.Context, m *Monitor) context.Context {
+	return context.WithValue(ctx, monitorContextKey{}, m)
 }
 
 // FromContext gets the logger from context
-func FromContext(ctx context.Context) *Logger {
-	logger, ok := ctx.Value(loggerContextKey{}).(*Logger)
-	if !ok {
-		return NewNoopLogger()
+func FromContext(ctx context.Context) *Monitor {
+	if m, ok := ctx.Value(monitorContextKey{}).(*Monitor); ok && m != nil {
+		return m
 	}
 
-	return logger
+	return nil
 }
 
 // NewContext copies the logger from old to a new context

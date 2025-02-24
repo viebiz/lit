@@ -1,0 +1,362 @@
+[
+  {
+    "_id": "67bb6b45c7455c3a0d7eae4e",
+    "index": 0,
+    "guid": "00b48319-261b-4c48-b768-5f8266215b8e",
+    "isActive": true,
+    "balance": "$2,242.24",
+    "picture": "http://placehold.it/32x32",
+    "age": 25,
+    "eyeColor": "brown",
+    "name": "Arline Spencer",
+    "gender": "female",
+    "company": "ARTWORLDS",
+    "email": "arlinespencer@artworlds.com",
+    "phone": "+1 (866) 599-3800",
+    "address": "909 Empire Boulevard, Canoochee, District Of Columbia, 6359",
+    "about": "Ut voluptate ex laborum aliqua laborum ad esse tempor pariatur commodo et consequat velit. Sunt amet non eiusmod Lorem aute. Ex dolore est ad qui. Adipisicing commodo amet sunt duis. Mollit occaecat ipsum enim ut. Culpa fugiat in consequat voluptate nisi occaecat id occaecat occaecat est sunt commodo.\r\n",
+    "registered": "2014-06-04T03:31:11 -07:00",
+    "latitude": -31.465793,
+    "longitude": 42.988446,
+    "tags": [
+      "occaecat",
+      "pariatur",
+      "aliqua",
+      "tempor",
+      "duis",
+      "mollit",
+      "laborum"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Karyn Petty"
+      },
+      {
+        "id": 1,
+        "name": "Frances Monroe"
+      },
+      {
+        "id": 2,
+        "name": "Deidre Dickson"
+      }
+    ],
+    "greeting": "Hello, Arline Spencer! You have 3 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6b45a3903cabccba2bf4",
+    "index": 1,
+    "guid": "f7183952-be27-4b83-b977-449794f0af0b",
+    "isActive": true,
+    "balance": "$2,045.33",
+    "picture": "http://placehold.it/32x32",
+    "age": 40,
+    "eyeColor": "green",
+    "name": "Lizzie Cunningham",
+    "gender": "female",
+    "company": "VERTIDE",
+    "email": "lizziecunningham@vertide.com",
+    "phone": "+1 (926) 580-3182",
+    "address": "997 Poly Place, Woodburn, New Hampshire, 1095",
+    "about": "Consectetur veniam pariatur ex cillum aliquip est ipsum. Veniam dolore duis id duis. Aute culpa officia occaecat irure. Quis pariatur voluptate officia tempor consequat fugiat magna minim veniam non ipsum. Minim voluptate anim officia deserunt occaecat ad mollit exercitation.\r\n",
+    "registered": "2021-03-31T05:39:34 -07:00",
+    "latitude": -52.664034,
+    "longitude": 30.666342,
+    "tags": [
+      "nisi",
+      "tempor",
+      "duis",
+      "Lorem",
+      "tempor",
+      "quis",
+      "pariatur"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Patrick Gross"
+      },
+      {
+        "id": 1,
+        "name": "Holcomb Ayers"
+      },
+      {
+        "id": 2,
+        "name": "Jasmine Hyde"
+      }
+    ],
+    "greeting": "Hello, Lizzie Cunningham! You have 6 unread messages.",
+    "favoriteFruit": "apple"
+  },
+  {
+    "_id": "67bb6b451c7dcd4dbd341d34",
+    "index": 2,
+    "guid": "257f19b9-519a-45c1-8955-a9b0b62517ac",
+    "isActive": false,
+    "balance": "$2,948.40",
+    "picture": "http://placehold.it/32x32",
+    "age": 22,
+    "eyeColor": "green",
+    "name": "Burton Hewitt",
+    "gender": "male",
+    "company": "MEDICROIX",
+    "email": "burtonhewitt@medicroix.com",
+    "phone": "+1 (917) 549-3682",
+    "address": "456 Eaton Court, Harleigh, Alabama, 5797",
+    "about": "Elit sunt Lorem non ea ad reprehenderit aute non. Reprehenderit deserunt ex nisi sit elit deserunt amet ad incididunt Lorem ut voluptate. Officia enim do fugiat sint laboris ipsum. Incididunt labore est dolor dolore sit est reprehenderit nostrud cupidatat. Elit nulla ad adipisicing cillum fugiat qui deserunt.\r\n",
+    "registered": "2018-04-25T11:44:04 -07:00",
+    "latitude": 9.382405,
+    "longitude": -120.866488,
+    "tags": [
+      "consectetur",
+      "officia",
+      "aute",
+      "Lorem",
+      "in",
+      "ad",
+      "reprehenderit"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Miranda Nixon"
+      },
+      {
+        "id": 1,
+        "name": "Rena Nguyen"
+      },
+      {
+        "id": 2,
+        "name": "Joann Dillon"
+      }
+    ],
+    "greeting": "Hello, Burton Hewitt! You have 9 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6b459cd08024887e3436",
+    "index": 3,
+    "guid": "e54e724e-d054-4935-8925-d0b945274a55",
+    "isActive": false,
+    "balance": "$3,514.56",
+    "picture": "http://placehold.it/32x32",
+    "age": 26,
+    "eyeColor": "brown",
+    "name": "Gross Holman",
+    "gender": "male",
+    "company": "WRAPTURE",
+    "email": "grossholman@wrapture.com",
+    "phone": "+1 (841) 414-3469",
+    "address": "101 Indiana Place, Tyro, Maryland, 874",
+    "about": "Velit do anim sint incididunt voluptate ut ad velit ex fugiat est. Sunt enim amet reprehenderit excepteur. Excepteur sint est ut fugiat anim cupidatat. Ipsum eiusmod consectetur aliqua laboris consectetur. Qui mollit proident esse anim eu pariatur id incididunt.\r\n",
+    "registered": "2016-12-18T01:15:30 -07:00",
+    "latitude": -86.700036,
+    "longitude": 45.659817,
+    "tags": [
+      "et",
+      "Lorem",
+      "proident",
+      "do",
+      "commodo",
+      "magna",
+      "fugiat"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Lela Christian"
+      },
+      {
+        "id": 1,
+        "name": "Aisha Vang"
+      },
+      {
+        "id": 2,
+        "name": "Riley Mosley"
+      }
+    ],
+    "greeting": "Hello, Gross Holman! You have 1 unread messages.",
+    "favoriteFruit": "banana"
+  },
+  {
+    "_id": "67bb6b456193dd7ad093b553",
+    "index": 4,
+    "guid": "533cda61-0ef1-4442-b27f-71edb1fd12c3",
+    "isActive": false,
+    "balance": "$2,119.20",
+    "picture": "http://placehold.it/32x32",
+    "age": 29,
+    "eyeColor": "brown",
+    "name": "Bridgette Pruitt",
+    "gender": "female",
+    "company": "HYDROCOM",
+    "email": "bridgettepruitt@hydrocom.com",
+    "phone": "+1 (874) 497-3941",
+    "address": "106 Sharon Street, Drytown, Virginia, 7071",
+    "about": "Non esse labore esse proident Lorem consequat ea. Quis sunt commodo nostrud in anim minim non ex officia minim culpa enim. Non ea ex nisi eiusmod elit. Laboris deserunt aute occaecat consequat mollit nulla. Eu ad ad in ea cillum aute aliqua eiusmod anim.\r\n",
+    "registered": "2024-10-26T07:28:20 -07:00",
+    "latitude": 5.197215,
+    "longitude": 26.419267,
+    "tags": [
+      "mollit",
+      "id",
+      "aute",
+      "veniam",
+      "enim",
+      "excepteur",
+      "magna"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Sampson Bryant"
+      },
+      {
+        "id": 1,
+        "name": "Slater Bowen"
+      },
+      {
+        "id": 2,
+        "name": "Duran Vinson"
+      }
+    ],
+    "greeting": "Hello, Bridgette Pruitt! You have 6 unread messages.",
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "_id": "67bb6b45095473b244ab97d6",
+    "index": 5,
+    "guid": "9f271db3-62d0-4ffa-b233-bf742b6026cd",
+    "isActive": false,
+    "balance": "$2,343.57",
+    "picture": "http://placehold.it/32x32",
+    "age": 24,
+    "eyeColor": "brown",
+    "name": "Patsy Owen",
+    "gender": "female",
+    "company": "ORBIN",
+    "email": "patsyowen@orbin.com",
+    "phone": "+1 (896) 556-2734",
+    "address": "806 Clark Street, Freeburn, North Carolina, 8859",
+    "about": "Eu mollit elit nulla commodo et ut aliqua deserunt minim aliqua. Lorem eu ullamco occaecat excepteur ea non sint. Magna irure nisi magna incididunt do duis duis dolor occaecat laboris ullamco qui. Laboris sunt amet in laboris irure cillum laboris nostrud in ullamco nisi incididunt. Quis deserunt labore esse elit reprehenderit dolore amet officia fugiat commodo. Aliquip voluptate est velit consequat ea.\r\n",
+    "registered": "2021-09-16T07:42:45 -07:00",
+    "latitude": 12.600347,
+    "longitude": -158.41798,
+    "tags": [
+      "dolore",
+      "magna",
+      "consectetur",
+      "in",
+      "laborum",
+      "sit",
+      "elit"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Fannie Woodard"
+      },
+      {
+        "id": 1,
+        "name": "Lee Irwin"
+      },
+      {
+        "id": 2,
+        "name": "Salas Frost"
+      }
+    ],
+    "greeting": "Hello, Patsy Owen! You have 4 unread messages.",
+    "favoriteFruit": "apple"
+  },
+  {
+    "_id": "67bb6b45defef13bc543ee8a",
+    "index": 6,
+    "guid": "601c9d16-3d43-4447-aff5-718dc8f8c539",
+    "isActive": true,
+    "balance": "$1,509.28",
+    "picture": "http://placehold.it/32x32",
+    "age": 23,
+    "eyeColor": "green",
+    "name": "Wallace Petersen",
+    "gender": "male",
+    "company": "KYAGORO",
+    "email": "wallacepetersen@kyagoro.com",
+    "phone": "+1 (891) 488-3523",
+    "address": "935 Fulton Street, Morgandale, South Carolina, 1941",
+    "about": "Quis irure dolor irure sit deserunt magna anim minim minim voluptate proident mollit. Qui voluptate quis nisi aliqua tempor. Nulla aliqua ut ut nisi dolore id. Elit magna adipisicing cillum elit excepteur magna irure commodo eu reprehenderit ullamco.\r\n",
+    "registered": "2022-01-27T05:07:58 -07:00",
+    "latitude": 31.781613,
+    "longitude": -26.415203,
+    "tags": [
+      "irure",
+      "aliqua",
+      "eu",
+      "id",
+      "voluptate",
+      "ipsum",
+      "aliquip"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Evangeline Buckley"
+      },
+      {
+        "id": 1,
+        "name": "Pratt Dickerson"
+      },
+      {
+        "id": 2,
+        "name": "Conner Savage"
+      }
+    ],
+    "greeting": "Hello, Wallace Petersen! You have 7 unread messages.",
+    "favoriteFruit": "apple"
+  },
+  {
+    "_id": "67bb6b454c81b1b81e3a82d6",
+    "index": 7,
+    "guid": "b9944118-3e6b-4047-a0d4-331def653796",
+    "isActive": true,
+    "balance": "$2,227.28",
+    "picture": "http://placehold.it/32x32",
+    "age": 25,
+    "eyeColor": "brown",
+    "name": "Norton Davis",
+    "gender": "male",
+    "company": "ENERVATE",
+    "email": "nortondavis@enervate.com",
+    "phone": "+1 (952) 402-3605",
+    "address": "403 Maujer Street, Gracey, Washington, 1511",
+    "about": "Est eu id tempor laborum elit nisi deserunt adipisicing deserunt esse laborum irure proident. Sit deserunt sit duis exercitation culpa ad exercitation anim adipisicing ea elit est. Sint excepteur aute nostrud consectetur dolore duis reprehenderit non sit pariatur et quis eiusmod est. Reprehenderit duis do ullamco do Lorem nisi eu est. Pariatur consectetur excepteur enim labore deserunt veniam deserunt. Incididunt aliqua do excepteur dolor nisi aute nulla qui.\r\n",
+    "registered": "2022-11-18T04:32:54 -07:00",
+    "latitude": 2.810248,
+    "longitude": 70.044703,
+    "tags": [
+      "quis",
+      "excepteur",
+      "laborum",
+      "commodo",
+      "ex",
+      "laborum",
+      "ullamco"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Christy Harding"
+      },
+      {
+        "id": 1,
+        "name": "Velma Wise"
+      },
+      {
+        "id": 2,
+        "name": "Vicki Carney"
+      }
+    ],
+    "greeting": "Hello, Norton Davis! You have 2 unread messages.",
+    "favoriteFruit": "strawberry"
+  }
+]

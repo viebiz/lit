@@ -50,6 +50,7 @@ var (
 		keysTag:           {},
 		endKeysTag:        {},
 		structOnlyTag:     {},
+		omitzero:          {},
 		omitempty:         {},
 		omitnil:           {},
 		skipValidationTag: {},
@@ -205,6 +206,7 @@ var (
 		"fqdn":                          isFQDN,
 		"unique":                        isUnique,
 		"oneof":                         isOneOf,
+		"oneofci":                       isOneOfCI,
 		"html":                          isHTML,
 		"html_encoded":                  isHTMLEncoded,
 		"url_encoded":                   isURLEncoded,
@@ -213,6 +215,7 @@ var (
 		"json":                          isJSON,
 		"jwt":                           isJWT,
 		"hostname_port":                 isHostnamePort,
+		"port":                          isPort,
 		"lowercase":                     isLowercase,
 		"uppercase":                     isUppercase,
 		"datetime":                      isDatetime,
@@ -293,6 +296,23 @@ func isOneOf(fl FieldLevel) bool {
 	}
 	for i := 0; i < len(vals); i++ {
 		if vals[i] == v {
+			return true
+		}
+	}
+	return false
+}
+
+// isOneOfCI is the validation function for validating if the current field's value is one of the provided string values (case insensitive).
+func isOneOfCI(fl FieldLevel) bool {
+	vals := parseOneOfParam2(fl.Param())
+	field := fl.Field()
+
+	if field.Kind() != reflect.String {
+		panic(fmt.Sprintf("Bad field type %T", field.Interface()))
+	}
+	v := field.String()
+	for _, val := range vals {
+		if strings.EqualFold(val, v) {
 			return true
 		}
 	}
@@ -1398,6 +1418,7 @@ func isPostcodeByIso3166Alpha2Field(fl FieldLevel) bool {
 		panic(fmt.Sprintf("Bad field type %T", currentField.Interface()))
 	}
 
+	postcodeRegexInit.Do(initPostcodes)
 	reg, found := postCodeRegexDict[currentField.String()]
 	if !found {
 		return false
@@ -1772,6 +1793,20 @@ func hasValue(fl FieldLevel) bool {
 	default:
 		if fl.(*validate).fldIsPointer && field.Interface() != nil {
 			return true
+		}
+		return field.IsValid() && !field.IsZero()
+	}
+}
+
+// hasNotZeroValue is the validation function for validating if the current field's value is not the zero value for its type.
+func hasNotZeroValue(fl FieldLevel) bool {
+	field := fl.Field()
+	switch field.Kind() {
+	case reflect.Slice, reflect.Map, reflect.Ptr, reflect.Interface, reflect.Chan, reflect.Func:
+		return !field.IsNil()
+	default:
+		if fl.(*validate).fldIsPointer && field.Interface() != nil {
+			return !field.IsZero()
 		}
 		return field.IsValid() && !field.IsZero()
 	}
@@ -2709,6 +2744,13 @@ func isHostnamePort(fl FieldLevel) bool {
 		return hostnameRegexRFC1123().MatchString(host)
 	}
 	return true
+}
+
+// IsPort validates if the current field's value represents a valid port
+func isPort(fl FieldLevel) bool {
+	val := fl.Field().Uint()
+
+	return val >= 1 && val <= 65535
 }
 
 // isLowercase is the validation function for validating if the current field's value is a lowercase string.

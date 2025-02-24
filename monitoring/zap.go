@@ -1,8 +1,12 @@
 package monitoring
 
 import (
+	"context"
+	"errors"
 	"io"
+	"time"
 
+	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
@@ -22,11 +26,33 @@ func newEncoderConfig() zapcore.EncoderConfig {
 		CallerKey:      "caller",
 		FunctionKey:    zapcore.OmitKey,
 		MessageKey:     "msg",
-		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.LowercaseLevelEncoder,
-		EncodeTime:     zapcore.EpochTimeEncoder,
+		EncodeLevel:    zapcore.CapitalLevelEncoder, // to show {"level": "info"} or to show {"level": "INFO"}
+		EncodeTime:     zapcore.ISO8601TimeEncoder,  // to format time as {"timestamp":"2021-06-21T09:25:51.230+08:00"}
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
+}
+
+// flush flushes any buffered log entries.
+func flushZap(z *zap.Logger, maxWait time.Duration) error {
+	errChan := make(chan error)
+	go func() {
+		errChan <- z.Sync()
+	}()
+
+	ctx, cancel := context.WithTimeout(context.Background(), maxWait)
+	defer cancel()
+	select {
+	case <-errChan:
+		// NOTE: We ignore any errors here because Sync is known to fail with EINVAL
+		// When logging to Stdout on certain OS's.
+		//
+		// Uber made the same change within the core of the lg implementation.
+		// See: https://github.com/uber-go/zap/issues/328
+		// See: https://github.com/influxdata/influxdb/pull/20448
+		return nil
+	case <-ctx.Done():
+		return errors.New("timed out")
 	}
 }

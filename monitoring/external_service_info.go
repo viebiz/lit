@@ -16,7 +16,7 @@ func NewExternalServiceInfo(rawURL string) ExternalServiceInfo {
 
 	u, err := url.Parse(rawURL)
 	if err != nil || u.Host == "" {
-		u, err = url.Parse("https://" + rawURL) // Try again as best effort.
+		u, err = url.Parse("https://" + rawURL)
 		if err != nil {
 			return info
 		}
