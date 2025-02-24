@@ -21,9 +21,9 @@ func (_m *MockPoolOption) EXPECT() *MockPoolOption_Expecter {
 	return &MockPoolOption_Expecter{mock: &_m.Mock}
 }
 
-// Execute provides a mock function with given fields: _a0
-func (_m *MockPoolOption) Execute(_a0 *http.Client) {
-	_m.Called(_a0)
+// Execute provides a mock function with given fields: c, t
+func (_m *MockPoolOption) Execute(c *http.Client, t *http.Transport) {
+	_m.Called(c, t)
 }
 
 // MockPoolOption_Execute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Execute'
@@ -32,14 +32,15 @@ type MockPoolOption_Execute_Call struct {
 }
 
 // Execute is a helper method to define mock.On call
-//   - _a0 *http.Client
-func (_e *MockPoolOption_Expecter) Execute(_a0 interface{}) *MockPoolOption_Execute_Call {
-	return &MockPoolOption_Execute_Call{Call: _e.mock.On("Execute", _a0)}
+//   - c *http.Client
+//   - t *http.Transport
+func (_e *MockPoolOption_Expecter) Execute(c interface{}, t interface{}) *MockPoolOption_Execute_Call {
+	return &MockPoolOption_Execute_Call{Call: _e.mock.On("Execute", c, t)}
 }
 
-func (_c *MockPoolOption_Execute_Call) Run(run func(_a0 *http.Client)) *MockPoolOption_Execute_Call {
+func (_c *MockPoolOption_Execute_Call) Run(run func(c *http.Client, t *http.Transport)) *MockPoolOption_Execute_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*http.Client))
+		run(args[0].(*http.Client), args[1].(*http.Transport))
 	})
 	return _c
 }
@@ -49,7 +50,7 @@ func (_c *MockPoolOption_Execute_Call) Return() *MockPoolOption_Execute_Call {
 	return _c
 }
 
-func (_c *MockPoolOption_Execute_Call) RunAndReturn(run func(*http.Client)) *MockPoolOption_Execute_Call {
+func (_c *MockPoolOption_Execute_Call) RunAndReturn(run func(*http.Client, *http.Transport)) *MockPoolOption_Execute_Call {
 	_c.Run(run)
 	return _c
 }

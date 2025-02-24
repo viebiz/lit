@@ -16,6 +16,20 @@ type HandlerFunc func(ctx Context)
 // ErrHandlerFunc represents a lightning handler error function
 type ErrHandlerFunc func(ctx Context) error
 
+// WrapF is a helper function for wrapping http.HandlerFunc and returns a ErrHandlerFunc.
+func WrapF(f http.HandlerFunc) HandlerFunc {
+	return func(c Context) {
+		f(c.Writer(), c.Request())
+	}
+}
+
+// WrapH is a helper function for wrapping http.Handler and returns a Gin middleware.
+func WrapH(h http.Handler) HandlerFunc {
+	return func(c Context) {
+		h.ServeHTTP(c.Writer(), c.Request())
+	}
+}
+
 func handleUnexpectedError(handler ErrHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()

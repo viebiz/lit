@@ -2,29 +2,68 @@ package lit
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 	"os"
 	"syscall"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewHttpServer(t *testing.T) {
-	server := NewHttpServer(context.Background(), "127.0.0.1:8080", func(r Router) {
-		// Mock route setup
-	}, func(s *Server) {
-		s.withTLS = false
-	})
+	tcs := []struct {
+		givenAddr         string
+		givenOpts         []ServerOption
+		wantReadTimeout   time.Duration
+		wantWriteTimeout  time.Duration
+		wantShutdownGrace time.Duration
+		wantPort          string
+	}{
+		{
+			givenAddr:         ":3000",
+			wantReadTimeout:   time.Minute,
+			wantWriteTimeout:  time.Minute,
+			wantShutdownGrace: 0,
+			wantPort:          ":3000",
+		},
+		{
+			givenAddr:         ":5000",
+			givenOpts:         []ServerOption{ServerReadTimeout(time.Hour), ServerShutdownGrace(time.Second)},
+			wantReadTimeout:   time.Hour,
+			wantWriteTimeout:  time.Minute,
+			wantShutdownGrace: time.Second,
+			wantPort:          ":5000",
+		},
+		{
+			givenAddr:         ":1604",
+			givenOpts:         []ServerOption{ServerWriteTimeout(time.Hour)},
+			wantReadTimeout:   time.Minute,
+			wantWriteTimeout:  time.Hour,
+			wantShutdownGrace: 0,
+			wantPort:          ":1604",
+		},
+	}
+	for i, tc := range tcs {
+		t.Run(fmt.Sprintf("scenario: %d", i), func(t *testing.T) {
+			// Given:
 
-	assert.NotNil(t, server.httpServer)
-	assert.Equal(t, "127.0.0.1:8080", server.httpServer.Addr)
-	assert.Equal(t, defaultServerReadTimeout, server.httpServer.ReadTimeout)
-	assert.Equal(t, defaultServerWriteTimeout, server.httpServer.WriteTimeout)
+			// When:
+			s := NewHttpServer(tc.givenAddr, emptyHandler{}, tc.givenOpts...)
+
+			// Then:
+			require.Equal(t, tc.wantReadTimeout, s.httpServer.ReadTimeout)
+			require.Equal(t, tc.wantWriteTimeout, s.httpServer.WriteTimeout)
+			require.Equal(t, tc.wantShutdownGrace, s.shutdownGrace)
+			require.Equal(t, tc.wantPort, s.httpServer.Addr)
+		})
+	}
 }
 
 func TestRunWithContext(t *testing.T) {
-	server := NewHttpServer(context.Background(), "127.0.0.1:0", func(r Router) {}, ServerShutdownGrace(2*time.Second))
+	server := NewHttpServer("127.0.0.1:0", emptyHandler{}, ServerShutdownGrace(2*time.Second))
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -42,9 +81,8 @@ func TestRunWithContext(t *testing.T) {
 }
 
 func TestRun(t *testing.T) {
-	server := NewHttpServer(context.Background(), "127.0.0.1:0", func(r Router) {}, func(s *Server) {
-		s.shutdownGrace = 2 * time.Second
-	})
+	const addr = "127.0.0.1:0"
+	server := NewHttpServer(addr, emptyHandler{}, ServerShutdownGrace(2*time.Second))
 
 	// Simulate SIGINT
 	go func() {
@@ -59,10 +97,13 @@ func TestRun(t *testing.T) {
 
 // Test stop ensures server shuts down properly
 func TestStop(t *testing.T) {
-	server := NewHttpServer(context.Background(), "127.0.0.1:0", func(r Router) {}, func(s *Server) {
-		s.shutdownGrace = time.Second
-	})
+	const addr = "127.0.0.1:0"
+	server := NewHttpServer(addr, emptyHandler{}, ServerShutdownGrace(time.Second))
 
 	err := server.stop()
 	assert.NoError(t, err)
 }
+
+type emptyHandler struct{}
+
+func (emptyHandler) ServeHTTP(http.ResponseWriter, *http.Request) {}

@@ -76,8 +76,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 			w := httptest.NewRecorder()
 			route, c, hdlRequest := lit.NewRouterForTest(w)
 			route.Use(RequestIDMiddleware())
-			route.Handle(tc.hdl.Method, tc.hdl.Path, tc.hdl.Func)
-
+			route.HandleWithErr(tc.hdl.Method, tc.hdl.Path, tc.hdl.Func)
 			if slices.Contains([]string{http.MethodPost, http.MethodPut, http.MethodPatch}, tc.givenReq.Method) {
 				tc.givenReq.Header.Set("Content-Type", "application/json")
 			}
