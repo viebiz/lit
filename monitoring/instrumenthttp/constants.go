@@ -9,6 +9,8 @@ import (
 const (
 	tracerName           = "github.com/viebiz/lit/monitoring/instrumenthttp"
 	httpIncomingSpanName = "http.incoming_request"
+	httpOutgoingSpanName = "http.outgoing_request"
+	httpRequestSpanName  = "http.request"
 
 	// Attributes
 	httpRequestMethodKey   = "http.request.method"
@@ -18,6 +20,7 @@ const (
 	networkPeerAddressKey  = "network.peer.address"
 	networkProtocolVersion = "network.protocol.version"
 	httpRequestBodySize    = "http.request.body.size"
+	serviceNameKey         = "service.name"
 )
 
 var (

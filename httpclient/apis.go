@@ -23,15 +23,24 @@ import (
 //	}
 //
 // Refer https://www.loginradius.com/blog/engineering/tune-the-go-http-client-for-high-performance/
+// NewSharedPool returns a new http.Client instance based on the arguments
 func NewSharedPool(opts ...PoolOption) *http.Client {
-	cl := &http.Client{
-		Transport: createDefaultTransport(),
-		Timeout:   defaultTimeoutPerTry,
-	}
+	return newUnderlyingClient(createDefaultTransport(), opts...)
+}
 
-	for _, opt := range opts {
-		opt(cl)
-	}
+// NewSharedCustomPool returns a new custom http.Client instance with custom retry and timeout options based on the arguments
+func NewSharedCustomPool(opts ...PoolOption) *SharedCustomPool {
+	return &SharedCustomPool{newUnderlyingCustomClient(createDefaultTransport(), opts...)}
+}
 
-	return cl
+// Config holds the base config for Client
+type Config struct {
+	ServiceName, // The name of the service we call. Will be used with CallName to form the label for logging.
+	URL, // The URL we need to call
+	Method string // The HTTP Method to be used
+}
+
+// NewUnauthenticated returns a new Client instance based on the arguments without any authentication
+func NewUnauthenticated(cfg Config, pool *SharedCustomPool, opts ...ClientOption) (*Client, error) {
+	return newClient(pool.Client, cfg.URL, cfg.Method, cfg.ServiceName, opts...)
 }
