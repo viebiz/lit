@@ -26,14 +26,7 @@ type Server struct {
 }
 
 // NewHttpServer creates new http server
-func NewHttpServer(ctx context.Context, addr string, setupRouteFunc func(Router), opts ...ServerOption) Server {
-	// Create new router
-	r, hdl := NewRouter()
-	r.Use(rootMiddleware(ctx))
-
-	// Setup routes
-	setupRouteFunc(r)
-
+func NewHttpServer(addr string, hdl http.Handler, opts ...ServerOption) Server {
 	// Setup server
 	srv := Server{
 		httpServer: &http.Server{

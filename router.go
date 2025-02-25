@@ -9,7 +9,9 @@ import (
 type Router interface {
 	Use(middleware ...func(ctx Context))
 
-	Handle(method string, relativePath string, handler ErrHandlerFunc)
+	Handle(method string, relativePath string, handler HandlerFunc)
+
+	HandleWithErr(method string, relativePath string, handler ErrHandlerFunc)
 
 	Get(relativePath string, handler ErrHandlerFunc)
 
@@ -48,28 +50,34 @@ func (rtr router) Use(middleware ...func(ctx Context)) {
 	rtr.ginRouter.Use(handlers...)
 }
 
-func (rtr router) Handle(method string, relativePath string, handler ErrHandlerFunc) {
+func (rtr router) Handle(method string, relativePath string, handler HandlerFunc) {
+	rtr.ginRouter.Handle(method, relativePath, func(ctx *gin.Context) {
+		handler(litContext{Context: ctx})
+	})
+}
+
+func (rtr router) HandleWithErr(method string, relativePath string, handler ErrHandlerFunc) {
 	rtr.ginRouter.Handle(method, relativePath, handleUnexpectedError(handler))
 }
 
 func (rtr router) Get(relativePath string, handler ErrHandlerFunc) {
-	rtr.Handle(http.MethodGet, relativePath, handler)
+	rtr.HandleWithErr(http.MethodGet, relativePath, handler)
 }
 
 func (rtr router) Post(relativePath string, handler ErrHandlerFunc) {
-	rtr.Handle(http.MethodPost, relativePath, handler)
+	rtr.HandleWithErr(http.MethodPost, relativePath, handler)
 }
 
 func (rtr router) Put(relativePath string, handler ErrHandlerFunc) {
-	rtr.Handle(http.MethodPut, relativePath, handler)
+	rtr.HandleWithErr(http.MethodPut, relativePath, handler)
 }
 
 func (rtr router) Patch(relativePath string, handler ErrHandlerFunc) {
-	rtr.Handle(http.MethodPatch, relativePath, handler)
+	rtr.HandleWithErr(http.MethodPatch, relativePath, handler)
 }
 
 func (rtr router) Delete(relativePath string, handler ErrHandlerFunc) {
-	rtr.Handle(http.MethodDelete, relativePath, handler)
+	rtr.HandleWithErr(http.MethodDelete, relativePath, handler)
 }
 
 func (rtr router) Group(relativePath string, routerFunc func(Router)) {
