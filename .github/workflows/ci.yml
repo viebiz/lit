@@ -24,6 +24,17 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
+      - name: Create Database
+        env:
+          POSTGRES_USER: ${{ secrets.PG_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.PG_DB }}
+        run: docker exec -i postgres
+
+
+      - name: Create Redis
+        uses: docker/setup-buildx-action@v3
+
       - name: Run Unit Tests
         env:
           DATABASE_URL: ${{ secrets.PG_URL }}
