@@ -51,3 +51,37 @@ func NotifyErrorToInstrumentation(ctx context.Context, err error) {
 	span := trace.SpanFromContext(ctx)
 	span.SetStatus(codes.Error, err.Error())
 }
+
+// StartSegment starts a span instrumentation.
+// Start child span from parent span in ctx, put child span in ctx and return ctx & end func
+// Monitor: Get from ctx, add trace_id, span_id of child span as logTags, populate in ctx and return ctx
+func StartSegment(ctx context.Context, name string) (context.Context, func()) {
+	return StartSegmentWithTags(ctx, name, nil)
+}
+
+// StartSegmentWithTags starts a span instrumentation with extra tags
+// Start child span from parent span in ctx, put child span in ctx and return ctx & end func
+// Monitor: Get from ctx, add trace_id, dd.span_id of child span as logTags, populate in ctx and return ctx
+func StartSegmentWithTags(ctx context.Context, name string, extraTags map[string]string) (context.Context, func()) {
+	// Prepare start span option
+	opts := []trace.SpanStartOption{
+		trace.WithSpanKind(trace.SpanKindInternal),
+	}
+
+	attrs := make([]attribute.KeyValue, 0, len(extraTags))
+	for k, v := range extraTags {
+		attrs = append(attrs, attribute.String(k, v))
+	}
+
+	if len(attrs) > 0 {
+		opts = append(opts, trace.WithAttributes(attrs...))
+	}
+
+	// Start Span
+	ctx, span := tracer.Start(ctx, name, opts...)
+	ctx = SetInContext(ctx, InjectTracingInfo(FromContext(ctx), span.SpanContext()))
+
+	return ctx, func() {
+		span.End()
+	}
+}
