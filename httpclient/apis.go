@@ -44,3 +44,22 @@ type Config struct {
 func NewUnauthenticated(cfg Config, pool *SharedCustomPool, opts ...ClientOption) (*Client, error) {
 	return newClient(pool.Client, cfg.URL, cfg.Method, cfg.ServiceName, opts...)
 }
+
+// APIKeyConfig holds the config for APIKey auth
+type APIKeyConfig struct {
+	Key, Value string
+}
+
+// NewWithAPIKey creates and returns a new Client instance with API key auth config
+func NewWithAPIKey(cfg Config, pool *SharedCustomPool, apiKeyCfg APIKeyConfig, opts ...ClientOption) (*Client, error) {
+	c, err := newClient(pool.Client, cfg.URL, cfg.Method, cfg.ServiceName, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	if c.header.values == nil {
+		c.header.values = map[string]string{}
+	}
+	c.header.values[apiKeyCfg.Key] = apiKeyCfg.Value
+	return c, nil
+}
