@@ -10,11 +10,9 @@ import (
 	"testing"
 
 	"github.com/getsentry/sentry-go"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	pkgerrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
-
-	"github.com/viebiz/lit/internal/testutil"
+	"github.com/viebiz/lit/testutil"
 )
 
 func TestMonitorLogger(t *testing.T) {
@@ -152,7 +150,7 @@ func TestMonitorLogger(t *testing.T) {
 			// Then
 			parsedLog, err := parseLog(logBuffer.Bytes())
 			require.NoError(t, err)
-			testutil.Equal(t, tc.expected, parsedLog, cmpopts.IgnoreMapEntries(func(k string, v any) bool {
+			testutil.Equal(t, tc.expected, parsedLog, testutil.IgnoreSliceMapEntries(func(k string, v string) bool {
 				// Ignore timestamp field as it updates dynamically
 				if k == "ts" {
 					return true
@@ -206,7 +204,7 @@ func TestMonitor_ReportError(t *testing.T) {
 			// Then
 			parsedLog, err := parseLog(logBuffer.Bytes())
 			require.NoError(t, err)
-			testutil.Equal(t, tc.expected, parsedLog, cmpopts.IgnoreMapEntries(func(k string, v any) bool {
+			testutil.Equal(t, tc.expected, parsedLog, testutil.IgnoreSliceMapEntries(func(k string, v string) bool {
 				// Ignore timestamp field as it updates dynamically
 				if k == "ts" {
 					return true

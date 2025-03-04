@@ -3,9 +3,10 @@ package redis
 import (
 	"context"
 	"errors"
+	"time"
+
 	pkgerrors "github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"
-	"time"
 )
 
 func setSingleValue[T Type](

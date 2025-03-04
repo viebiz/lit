@@ -120,7 +120,7 @@ func (_c *MockRouter_Group_Call) RunAndReturn(run func(string, func(Router))) *M
 }
 
 // Handle provides a mock function with given fields: method, relativePath, handler
-func (_m *MockRouter) Handle(method string, relativePath string, handler ErrHandlerFunc) {
+func (_m *MockRouter) Handle(method string, relativePath string, handler HandlerFunc) {
 	_m.Called(method, relativePath, handler)
 }
 
@@ -132,14 +132,14 @@ type MockRouter_Handle_Call struct {
 // Handle is a helper method to define mock.On call
 //   - method string
 //   - relativePath string
-//   - handler ErrHandlerFunc
+//   - handler HandlerFunc
 func (_e *MockRouter_Expecter) Handle(method interface{}, relativePath interface{}, handler interface{}) *MockRouter_Handle_Call {
 	return &MockRouter_Handle_Call{Call: _e.mock.On("Handle", method, relativePath, handler)}
 }
 
-func (_c *MockRouter_Handle_Call) Run(run func(method string, relativePath string, handler ErrHandlerFunc)) *MockRouter_Handle_Call {
+func (_c *MockRouter_Handle_Call) Run(run func(method string, relativePath string, handler HandlerFunc)) *MockRouter_Handle_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string), args[1].(string), args[2].(ErrHandlerFunc))
+		run(args[0].(string), args[1].(string), args[2].(HandlerFunc))
 	})
 	return _c
 }
@@ -149,7 +149,42 @@ func (_c *MockRouter_Handle_Call) Return() *MockRouter_Handle_Call {
 	return _c
 }
 
-func (_c *MockRouter_Handle_Call) RunAndReturn(run func(string, string, ErrHandlerFunc)) *MockRouter_Handle_Call {
+func (_c *MockRouter_Handle_Call) RunAndReturn(run func(string, string, HandlerFunc)) *MockRouter_Handle_Call {
+	_c.Run(run)
+	return _c
+}
+
+// HandleWithErr provides a mock function with given fields: method, relativePath, handler
+func (_m *MockRouter) HandleWithErr(method string, relativePath string, handler ErrHandlerFunc) {
+	_m.Called(method, relativePath, handler)
+}
+
+// MockRouter_HandleWithErr_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'HandleWithErr'
+type MockRouter_HandleWithErr_Call struct {
+	*mock.Call
+}
+
+// HandleWithErr is a helper method to define mock.On call
+//   - method string
+//   - relativePath string
+//   - handler ErrHandlerFunc
+func (_e *MockRouter_Expecter) HandleWithErr(method interface{}, relativePath interface{}, handler interface{}) *MockRouter_HandleWithErr_Call {
+	return &MockRouter_HandleWithErr_Call{Call: _e.mock.On("HandleWithErr", method, relativePath, handler)}
+}
+
+func (_c *MockRouter_HandleWithErr_Call) Run(run func(method string, relativePath string, handler ErrHandlerFunc)) *MockRouter_HandleWithErr_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].(string), args[2].(ErrHandlerFunc))
+	})
+	return _c
+}
+
+func (_c *MockRouter_HandleWithErr_Call) Return() *MockRouter_HandleWithErr_Call {
+	_c.Call.Return()
+	return _c
+}
+
+func (_c *MockRouter_HandleWithErr_Call) RunAndReturn(run func(string, string, ErrHandlerFunc)) *MockRouter_HandleWithErr_Call {
 	_c.Run(run)
 	return _c
 }

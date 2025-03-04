@@ -3,20 +3,9 @@ package testutil
 import (
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel/trace"
 )
-
-func Compare(t *testing.T, expected, actual trace.SpanContext) {
-	t.Helper()
-	if !actual.Equal(expected) {
-		t.Errorf("\n mismatched. \n expected: %+v \n got: %+v \n diff:\n%s",
-			expected, actual,
-			cmp.Diff(expected, actual))
-		t.FailNow()
-	}
-}
 
 func NewTraceID(t *testing.T, v string) trace.TraceID {
 	t.Helper()

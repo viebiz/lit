@@ -12,7 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-	"github.com/viebiz/lit/internal/testutil"
+	"github.com/viebiz/lit/testutil"
 	"google.golang.org/grpc"
 
 	"github.com/viebiz/lit/grpcclient/testdata"
@@ -123,7 +123,7 @@ func TestClientConn_Invoke(t *testing.T) {
 
 			pasedLogs, err := parseLog(logBuffer.Bytes())
 			require.NoError(t, err)
-			testutil.Equal(t, tc.expLog, pasedLogs, cmpopts.IgnoreMapEntries(func(k string, v any) bool {
+			testutil.Equal(t, tc.expLog, pasedLogs, testutil.IgnoreSliceMapEntries(func(k string, v string) bool {
 				if k == "ts" {
 					return true
 				}
@@ -132,7 +132,7 @@ func TestClientConn_Invoke(t *testing.T) {
 					return true
 				}
 
-				if str, ok := v.(string); ok && str == "Caught a panic" {
+				if v == "Caught a panic" {
 					return true
 				}
 

@@ -10,12 +10,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
-	"github.com/viebiz/lit/internal/testutil"
 	"github.com/viebiz/lit/monitoring"
-	internaltestutil "github.com/viebiz/lit/monitoring/internal/testutil"
 	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
+	"github.com/viebiz/lit/testutil"
 	"go.opentelemetry.io/otel/attribute"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
@@ -48,8 +46,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -71,8 +69,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expLogBody:           false,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -94,8 +92,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -126,17 +124,17 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 			givenStatus: http.StatusOK,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
-				SpanID:     internaltestutil.NewSpanID(t, "abad1dea0ddba11c"),
+				TraceID:    testutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
+				SpanID:     testutil.NewSpanID(t, "abad1dea0ddba11c"),
 				TraceFlags: 01,
-				TraceState: internaltestutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
+				TraceState: testutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
 				Remote:     true,
 			}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
-				TraceState: internaltestutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
+				TraceState: testutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
 			}),
 			expSpanKind: trace.SpanKindServer,
 			expAttributes: []attribute.KeyValue{
@@ -158,8 +156,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -182,8 +180,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -205,8 +203,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -229,8 +227,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -254,8 +252,8 @@ func TestStartIncomingRequest(t *testing.T) {
 			expSpanKind:          trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{Remote: true}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, fmt.Sprintf("%032x", 1)),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
 			}),
 			expAttributes: []attribute.KeyValue{
@@ -290,17 +288,17 @@ func TestStartIncomingRequest(t *testing.T) {
 			expLogBody:  true,
 			expSpanKind: trace.SpanKindServer,
 			expParentSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
-				SpanID:     internaltestutil.NewSpanID(t, "abad1dea0ddba11c"),
+				TraceID:    testutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
+				SpanID:     testutil.NewSpanID(t, "abad1dea0ddba11c"),
 				TraceFlags: 01,
-				TraceState: internaltestutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
+				TraceState: testutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
 				Remote:     true,
 			}),
 			expSpanContext: trace.NewSpanContext(trace.SpanContextConfig{
-				TraceID:    internaltestutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
-				SpanID:     internaltestutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
+				TraceID:    testutil.NewTraceID(t, "deadbeefcafebabefeedfacebadc0de1"),
+				SpanID:     testutil.NewSpanID(t, fmt.Sprintf("%016x", 1)),
 				TraceFlags: 01,
-				TraceState: internaltestutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
+				TraceState: testutil.NewTraceState(t, "ot=abc123, azure=def456, aws=ghi789"),
 			}),
 			expAttributes: []attribute.KeyValue{
 				semconv.HTTPRequestMethodKey.String(http.MethodPost),
@@ -341,15 +339,15 @@ func TestStartIncomingRequest(t *testing.T) {
 
 			spanStub := tp.GetLatestSpan()
 			require.Equal(t, tc.expSpanKind, spanStub.SpanKind)
-			internaltestutil.Compare(t, tc.expParentSpanContext, spanStub.Parent)
-			internaltestutil.Compare(t, tc.expSpanContext, spanStub.SpanContext)
-			testutil.Equal(t, tc.expAttributes, spanStub.Attributes, cmpopts.EquateComparable(attribute.KeyValue{}))
+			testutil.Equal(t, tc.expParentSpanContext, spanStub.Parent)
+			testutil.Equal(t, tc.expSpanContext, spanStub.SpanContext)
+			testutil.Equal(t, tc.expAttributes, spanStub.Attributes, testutil.EquateComparable[[]attribute.KeyValue](attribute.KeyValue{}))
 			if len(tc.expSpanEvents) > 0 {
 				require.Equal(t, len(tc.expSpanEvents), len(spanStub.Events))
 				for idx, expEvent := range tc.expSpanEvents {
 					e := spanStub.Events[idx]
 					require.Equal(t, expEvent.Name, e.Name)
-					testutil.Equal(t, expEvent.Attributes, e.Attributes, cmpopts.EquateComparable(attribute.KeyValue{}))
+					testutil.Equal(t, expEvent.Attributes, e.Attributes, testutil.EquateComparable[[]attribute.KeyValue](attribute.KeyValue{}))
 				}
 			}
 		})
