@@ -6,13 +6,15 @@ Go Libs: Lightning is a collection of Go libraries that provide a set of tools t
 
 ## Project status
 
-| Name            | Status                                                                                                                                                                                                                                                    |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Pipeline        | [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main) |
-| Coverage        | [![Coverage Status](https://coveralls.io/repos/github/viebiz/lit/badge.svg)](https://coveralls.io/github/viebiz/lit)                                                                                                                                      |
-| Code Quality    | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/c6d7a11459994e3984fd2ae2008839d1)](https://app.codacy.com/gh/viebiz/lit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)                                    |
-| Release Version | ![GitHub Release](https://img.shields.io/github/v/release/viebiz/lit)                                                                                                                                                                                     |
-| Tag Version     | ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/viebiz/lit)                                                                                                                                                                            |
+| Name            | Status                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Pipeline        | [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/Nur6mXEFG9qEiztTeZh7R9/AKZQkEe9aCbcR1kLJk4amp/tree/main)                                                                                                                 |
+| Coverage        | [![Coverage Status](https://coveralls.io/repos/github/viebiz/lit/badge.svg?branch=main)](https://coveralls.io/github/viebiz/lit?branch=main) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/c6d7a11459994e3984fd2ae2008839d1)](https://app.codacy.com/gh/viebiz/lit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage) |
+| Code Quality    | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/c6d7a11459994e3984fd2ae2008839d1)](https://app.codacy.com/gh/viebiz/lit/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Open Source Helpers](https://www.codetriage.com/viebiz/lit/badges/users.svg)](https://www.codetriage.com/viebiz/lit)                            |
+| Go Report       | [![Go Report Card](https://goreportcard.com/badge/github.com/viebiz/lit)](https://goreportcard.com/report/github.com/viebiz/lit)                                                                                                                                                                                                                                          |
+| Go Reference    | [![Go Reference](https://pkg.go.dev/badge/github.com/viebiz/lit?status.svg)](https://pkg.go.dev/github.com/viebiz/lit?tab=doc)                                                                                                                                                                                                                                            |
+| Release Version | ![GitHub Release](https://img.shields.io/github/v/release/viebiz/lit)                                                                                                                                                                                                                                                                                                     |
+| Tag Version     | ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/viebiz/lit)                                                                                                                                                                                                                                                                                            |
 
 
 
@@ -29,13 +31,11 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/bizgroup2/lightning.git
+git remote add origin https://github.com/viebiz/lit.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/bizgroup2/lightning/-/settings/integrations)
 
 ## Test and Deploy
