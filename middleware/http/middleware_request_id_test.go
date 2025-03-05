@@ -15,7 +15,8 @@ import (
 )
 
 func TestRequestIDMiddleware(t *testing.T) {
-	const staticRequestID = "mock-uuid-for-test"
+	const staticRequestID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+	const staticHashRequestID = "tHisisAhAsheD"
 
 	type handler struct {
 		Method string
@@ -68,8 +69,10 @@ func TestRequestIDMiddleware(t *testing.T) {
 			idFunc = func() string {
 				return staticRequestID
 			}
+			hash64Func = func(v string) string { return staticHashRequestID }
 			defer func() {
 				idFunc = uuid.NewString
+				hash64Func = hash64
 			}()
 
 			// Given
@@ -89,7 +92,7 @@ func TestRequestIDMiddleware(t *testing.T) {
 			// Then
 			require.Equal(t, tc.expStatus, w.Code)
 			require.Equal(t, tc.expBody, w.Body.String())
-			require.Equal(t, staticRequestID, w.Header().Get(RequestIDHeaderName))
+			require.Equal(t, staticRequestID, w.Header().Get(headerXRequestID))
 		})
 	}
 }
