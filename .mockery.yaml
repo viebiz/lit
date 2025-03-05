@@ -25,3 +25,7 @@ packages:
         config:
       Pipeliner:
         config:
+      Hook:
+        config:
+      DialHook:
+        config:

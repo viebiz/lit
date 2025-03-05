@@ -7,7 +7,7 @@ import (
 	"github.com/redis/go-redis/extra/rediscmd/v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/viebiz/lit/monitoring"
-	
+
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -22,7 +22,7 @@ func newTracingHook(info monitoring.ExternalServiceInfo) redis.Hook {
 	}
 }
 
-func (t tracingHook) DialHook(next redis.DialHook) redis.DialHook {
+func (tracingHook) DialHook(next redis.DialHook) redis.DialHook {
 	return func(ctx context.Context, network, addr string) (net.Conn, error) {
 		var err error
 		span := trace.SpanFromContext(ctx)
