@@ -21,7 +21,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.PG_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PG_PASS }}
-          POSTGRES_DB: ${{ secrets.PG_DB }}
+          POSTGRES_DB: ${{ secrets.PG_DB }}_${{ github.run_number }}
         ports:
           - 5432:5432
         options: >-
@@ -51,6 +51,6 @@ jobs:
 
       - name: Run Unit Tests
         env:
-          DATABASE_URL: ${{ secrets.PG_URL }}
+          DATABASE_URL: postgres://${{ secrets.PG_USER }}:${{ secrets.PG_PASS }}@postgres:5432/${{ secrets.PG_DB }}_${{ github.run_number }}?sslmode=disable
           REDIS_URL: ${{ secrets.REDIS_URL }}
         run: make test
