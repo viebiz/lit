@@ -10,18 +10,19 @@ services:
       - "3000-3005:3000-3005"
 
   postgres:
+    container_name: bizgroup-tool-${ENV}
     image: postgres:latest
     environment:
-      - POSTGRES_USER=lightning
-      - POSTGRES_PASSWORD=lightning
-      - POSTGRES_DB=lightning
+      - POSTGRES_USER=lit
+      - POSTGRES_PASSWORD=lit
+      - POSTGRES_DB=master
     ports:
-      - 5432:5432
+      - 54321:5432
 
   redis:
     image: redis:latest
     ports:
-      - 6379:6379
+      - 63791:6379
 
   collector:
     image: otel/opentelemetry-collector-contrib:0.120.0
