@@ -96,6 +96,10 @@ func readRequestBody(m *monitoring.Monitor, r *http.Request) []byte {
 		return nil
 	}
 
+	if r.Header.Get(requestHeaderContentType) != contextTypeJSON {
+		return nil
+	}
+
 	if r.ContentLength > 10_000 {
 		// Quite unlikely that request body JSON payload will be more than this. This max limit already gives ~500 lines
 		// of JSON payload.
@@ -108,12 +112,12 @@ func readRequestBody(m *monitoring.Monitor, r *http.Request) []byte {
 		return nil
 	}
 
+	// Restore request body so it can be read again
+	r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+
 	if !json.Valid(bodyBytes) { // We don't care about invalid JSON for logging
 		return nil
 	}
-
-	// Restore request body so it can be read again
-	r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 
 	// TODO: redact request body
 	return bodyBytes
