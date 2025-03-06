@@ -1,6 +1,7 @@
 with-expecter: True
 resolve-type-alias: False
 issue-845-fix: True
+disable-version-string: True
 packages:
   github.com/viebiz/lit:
     config:
