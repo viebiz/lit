@@ -148,8 +148,11 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 		},
 		"POST": {
-			givenURL:             "/api/v1/users",
-			givenMethod:          http.MethodPost,
+			givenURL:    "/api/v1/users",
+			givenMethod: http.MethodPost,
+			givenHeaders: map[string]string{
+				"Content-Type": "application/json",
+			},
 			givenBody:            bodyFromFile(t, "medium.json"),
 			givenStatus:          http.StatusOK,
 			expLogBody:           true,
@@ -172,8 +175,11 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 		},
 		"POST error when read body": {
-			givenURL:             "/api/v1/users",
-			givenMethod:          http.MethodPost,
+			givenURL:    "/api/v1/users",
+			givenMethod: http.MethodPost,
+			givenHeaders: map[string]string{
+				"Content-Type": "application/json",
+			},
 			givenBody:            &errorReader{},
 			givenStatus:          http.StatusOK,
 			expLogBody:           false,
@@ -195,8 +201,11 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 		},
 		"POST invalid json": {
-			givenURL:             "/api/v1/users",
-			givenMethod:          http.MethodPost,
+			givenURL:    "/api/v1/users",
+			givenMethod: http.MethodPost,
+			givenHeaders: map[string]string{
+				"Content-Type": "application/json",
+			},
 			givenBody:            bytes.NewBufferString("invalid json"),
 			givenStatus:          http.StatusOK,
 			expLogBody:           false,
@@ -219,8 +228,11 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 		},
 		"POST body out of limit": {
-			givenURL:             "/api/v1/users",
-			givenMethod:          http.MethodPost,
+			givenURL:    "/api/v1/users",
+			givenMethod: http.MethodPost,
+			givenHeaders: map[string]string{
+				"Content-Type": "application/json",
+			},
 			givenBody:            bodyFromFile(t, "large.json"),
 			givenStatus:          http.StatusOK,
 			expLogBody:           false,
@@ -243,8 +255,11 @@ func TestStartIncomingRequest(t *testing.T) {
 			},
 		},
 		"POST with error": {
-			givenURL:             "/api/v1/users",
-			givenMethod:          http.MethodPost,
+			givenURL:    "/api/v1/users",
+			givenMethod: http.MethodPost,
+			givenHeaders: map[string]string{
+				"Content-Type": "application/json",
+			},
 			givenBody:            bytes.NewBufferString(`{"username":"the-witcher-knight"}`),
 			givenStatus:          http.StatusBadRequest,
 			givenRespErr:         errors.New("simulated error"),
@@ -280,8 +295,9 @@ func TestStartIncomingRequest(t *testing.T) {
 			givenURL:    "/api/v1/users",
 			givenMethod: http.MethodPost,
 			givenHeaders: map[string]string{
-				"Traceparent": "00-deadbeefcafebabefeedfacebadc0de1-abad1dea0ddba11c-01",
-				"Tracestate":  "ot=abc123, azure=def456, aws=ghi789",
+				"Content-Type": "application/json",
+				"Traceparent":  "00-deadbeefcafebabefeedfacebadc0de1-abad1dea0ddba11c-01",
+				"Tracestate":   "ot=abc123, azure=def456, aws=ghi789",
 			},
 			givenBody:   bytes.NewBufferString(`{"username":"the-witcher-knight"}`),
 			givenStatus: http.StatusOK,

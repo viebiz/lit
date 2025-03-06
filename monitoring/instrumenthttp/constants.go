@@ -21,6 +21,10 @@ const (
 	networkProtocolVersion = "network.protocol.version"
 	httpRequestBodySize    = "http.request.body.size"
 	serviceNameKey         = "service.name"
+
+	// Constants
+	requestHeaderContentType = "Content-Type"
+	contextTypeJSON          = "application/json"
 )
 
 var (
