@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/viebiz/redis"
 
 	pkgerrors "github.com/pkg/errors"
 )

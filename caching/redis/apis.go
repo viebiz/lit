@@ -3,7 +3,7 @@ package redis
 import (
 	"crypto/tls"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/viebiz/redis"
 
 	pkgerrors "github.com/pkg/errors"
 

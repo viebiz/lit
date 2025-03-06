@@ -6,7 +6,7 @@ import (
 	"time"
 
 	pkgerrors "github.com/pkg/errors"
-	"github.com/redis/go-redis/v9"
+	"github.com/viebiz/redis"
 )
 
 func setSingleValue[T Type](

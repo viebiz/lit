@@ -19,6 +19,10 @@ redis:
 collector:
 	@$(COMPOSE_BIN) up collector -d
 
+mod:
+	go mod tidy
+	go mod vendor
+
 test:
 	@$(COMPOSE_TOOL_RUN) sh -c "go test -mod=vendor -coverprofile=coverage.out -failfast -timeout 5m ./..."
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"net"
 
-	"github.com/redis/go-redis/extra/rediscmd/v9"
-	"github.com/redis/go-redis/v9"
 	"github.com/viebiz/lit/monitoring"
+	"github.com/viebiz/redis"
+	"github.com/viebiz/redis/extra/rediscmd"
 
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"

@@ -5,8 +5,8 @@ package mockredis
 import (
 	context "context"
 
-	redis "github.com/redis/go-redis/v9"
 	mock "github.com/stretchr/testify/mock"
+	redis "github.com/viebiz/redis"
 
 	time "time"
 )
@@ -22,6 +22,152 @@ type MockUniversalClient_Expecter struct {
 
 func (_m *MockUniversalClient) EXPECT() *MockUniversalClient_Expecter {
 	return &MockUniversalClient_Expecter{mock: &_m.Mock}
+}
+
+// ACLCat provides a mock function with given fields: ctx
+func (_m *MockUniversalClient) ACLCat(ctx context.Context) *redis.StringSliceCmd {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ACLCat")
+	}
+
+	var r0 *redis.StringSliceCmd
+	if rf, ok := ret.Get(0).(func(context.Context) *redis.StringSliceCmd); ok {
+		r0 = rf(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StringSliceCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ACLCat_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ACLCat'
+type MockUniversalClient_ACLCat_Call struct {
+	*mock.Call
+}
+
+// ACLCat is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockUniversalClient_Expecter) ACLCat(ctx interface{}) *MockUniversalClient_ACLCat_Call {
+	return &MockUniversalClient_ACLCat_Call{Call: _e.mock.On("ACLCat", ctx)}
+}
+
+func (_c *MockUniversalClient_ACLCat_Call) Run(run func(ctx context.Context)) *MockUniversalClient_ACLCat_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLCat_Call) Return(_a0 *redis.StringSliceCmd) *MockUniversalClient_ACLCat_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLCat_Call) RunAndReturn(run func(context.Context) *redis.StringSliceCmd) *MockUniversalClient_ACLCat_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ACLCatArgs provides a mock function with given fields: ctx, options
+func (_m *MockUniversalClient) ACLCatArgs(ctx context.Context, options *redis.ACLCatArgs) *redis.StringSliceCmd {
+	ret := _m.Called(ctx, options)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ACLCatArgs")
+	}
+
+	var r0 *redis.StringSliceCmd
+	if rf, ok := ret.Get(0).(func(context.Context, *redis.ACLCatArgs) *redis.StringSliceCmd); ok {
+		r0 = rf(ctx, options)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StringSliceCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ACLCatArgs_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ACLCatArgs'
+type MockUniversalClient_ACLCatArgs_Call struct {
+	*mock.Call
+}
+
+// ACLCatArgs is a helper method to define mock.On call
+//   - ctx context.Context
+//   - options *redis.ACLCatArgs
+func (_e *MockUniversalClient_Expecter) ACLCatArgs(ctx interface{}, options interface{}) *MockUniversalClient_ACLCatArgs_Call {
+	return &MockUniversalClient_ACLCatArgs_Call{Call: _e.mock.On("ACLCatArgs", ctx, options)}
+}
+
+func (_c *MockUniversalClient_ACLCatArgs_Call) Run(run func(ctx context.Context, options *redis.ACLCatArgs)) *MockUniversalClient_ACLCatArgs_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(*redis.ACLCatArgs))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLCatArgs_Call) Return(_a0 *redis.StringSliceCmd) *MockUniversalClient_ACLCatArgs_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLCatArgs_Call) RunAndReturn(run func(context.Context, *redis.ACLCatArgs) *redis.StringSliceCmd) *MockUniversalClient_ACLCatArgs_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ACLDelUser provides a mock function with given fields: ctx, username
+func (_m *MockUniversalClient) ACLDelUser(ctx context.Context, username string) *redis.IntCmd {
+	ret := _m.Called(ctx, username)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ACLDelUser")
+	}
+
+	var r0 *redis.IntCmd
+	if rf, ok := ret.Get(0).(func(context.Context, string) *redis.IntCmd); ok {
+		r0 = rf(ctx, username)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ACLDelUser_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ACLDelUser'
+type MockUniversalClient_ACLDelUser_Call struct {
+	*mock.Call
+}
+
+// ACLDelUser is a helper method to define mock.On call
+//   - ctx context.Context
+//   - username string
+func (_e *MockUniversalClient_Expecter) ACLDelUser(ctx interface{}, username interface{}) *MockUniversalClient_ACLDelUser_Call {
+	return &MockUniversalClient_ACLDelUser_Call{Call: _e.mock.On("ACLDelUser", ctx, username)}
+}
+
+func (_c *MockUniversalClient_ACLDelUser_Call) Run(run func(ctx context.Context, username string)) *MockUniversalClient_ACLDelUser_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLDelUser_Call) Return(_a0 *redis.IntCmd) *MockUniversalClient_ACLDelUser_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLDelUser_Call) RunAndReturn(run func(context.Context, string) *redis.IntCmd) *MockUniversalClient_ACLDelUser_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // ACLDryRun provides a mock function with given fields: ctx, username, command
@@ -80,6 +226,54 @@ func (_c *MockUniversalClient_ACLDryRun_Call) Return(_a0 *redis.StringCmd) *Mock
 }
 
 func (_c *MockUniversalClient_ACLDryRun_Call) RunAndReturn(run func(context.Context, string, ...interface{}) *redis.StringCmd) *MockUniversalClient_ACLDryRun_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ACLList provides a mock function with given fields: ctx
+func (_m *MockUniversalClient) ACLList(ctx context.Context) *redis.StringSliceCmd {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ACLList")
+	}
+
+	var r0 *redis.StringSliceCmd
+	if rf, ok := ret.Get(0).(func(context.Context) *redis.StringSliceCmd); ok {
+		r0 = rf(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StringSliceCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ACLList_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ACLList'
+type MockUniversalClient_ACLList_Call struct {
+	*mock.Call
+}
+
+// ACLList is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockUniversalClient_Expecter) ACLList(ctx interface{}) *MockUniversalClient_ACLList_Call {
+	return &MockUniversalClient_ACLList_Call{Call: _e.mock.On("ACLList", ctx)}
+}
+
+func (_c *MockUniversalClient_ACLList_Call) Run(run func(ctx context.Context)) *MockUniversalClient_ACLList_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLList_Call) Return(_a0 *redis.StringSliceCmd) *MockUniversalClient_ACLList_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLList_Call) RunAndReturn(run func(context.Context) *redis.StringSliceCmd) *MockUniversalClient_ACLList_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -177,6 +371,70 @@ func (_c *MockUniversalClient_ACLLogReset_Call) Return(_a0 *redis.StatusCmd) *Mo
 }
 
 func (_c *MockUniversalClient_ACLLogReset_Call) RunAndReturn(run func(context.Context) *redis.StatusCmd) *MockUniversalClient_ACLLogReset_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ACLSetUser provides a mock function with given fields: ctx, username, rules
+func (_m *MockUniversalClient) ACLSetUser(ctx context.Context, username string, rules ...string) *redis.StatusCmd {
+	_va := make([]interface{}, len(rules))
+	for _i := range rules {
+		_va[_i] = rules[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, username)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ACLSetUser")
+	}
+
+	var r0 *redis.StatusCmd
+	if rf, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.StatusCmd); ok {
+		r0 = rf(ctx, username, rules...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StatusCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ACLSetUser_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ACLSetUser'
+type MockUniversalClient_ACLSetUser_Call struct {
+	*mock.Call
+}
+
+// ACLSetUser is a helper method to define mock.On call
+//   - ctx context.Context
+//   - username string
+//   - rules ...string
+func (_e *MockUniversalClient_Expecter) ACLSetUser(ctx interface{}, username interface{}, rules ...interface{}) *MockUniversalClient_ACLSetUser_Call {
+	return &MockUniversalClient_ACLSetUser_Call{Call: _e.mock.On("ACLSetUser",
+		append([]interface{}{ctx, username}, rules...)...)}
+}
+
+func (_c *MockUniversalClient_ACLSetUser_Call) Run(run func(ctx context.Context, username string, rules ...string)) *MockUniversalClient_ACLSetUser_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		run(args[0].(context.Context), args[1].(string), variadicArgs...)
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLSetUser_Call) Return(_a0 *redis.StatusCmd) *MockUniversalClient_ACLSetUser_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ACLSetUser_Call) RunAndReturn(run func(context.Context, string, ...string) *redis.StatusCmd) *MockUniversalClient_ACLSetUser_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4787,6 +5045,54 @@ func (_c *MockUniversalClient_ClusterMeet_Call) Return(_a0 *redis.StatusCmd) *Mo
 }
 
 func (_c *MockUniversalClient_ClusterMeet_Call) RunAndReturn(run func(context.Context, string, string) *redis.StatusCmd) *MockUniversalClient_ClusterMeet_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ClusterMyID provides a mock function with given fields: ctx
+func (_m *MockUniversalClient) ClusterMyID(ctx context.Context) *redis.StringCmd {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ClusterMyID")
+	}
+
+	var r0 *redis.StringCmd
+	if rf, ok := ret.Get(0).(func(context.Context) *redis.StringCmd); ok {
+		r0 = rf(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StringCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_ClusterMyID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ClusterMyID'
+type MockUniversalClient_ClusterMyID_Call struct {
+	*mock.Call
+}
+
+// ClusterMyID is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockUniversalClient_Expecter) ClusterMyID(ctx interface{}) *MockUniversalClient_ClusterMyID_Call {
+	return &MockUniversalClient_ClusterMyID_Call{Call: _e.mock.On("ClusterMyID", ctx)}
+}
+
+func (_c *MockUniversalClient_ClusterMyID_Call) Run(run func(ctx context.Context)) *MockUniversalClient_ClusterMyID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_ClusterMyID_Call) Return(_a0 *redis.StringCmd) *MockUniversalClient_ClusterMyID_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_ClusterMyID_Call) RunAndReturn(run func(context.Context) *redis.StringCmd) *MockUniversalClient_ClusterMyID_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -11583,6 +11889,56 @@ func (_c *MockUniversalClient_HSetNX_Call) Return(_a0 *redis.BoolCmd) *MockUnive
 }
 
 func (_c *MockUniversalClient_HSetNX_Call) RunAndReturn(run func(context.Context, string, string, interface{}) *redis.BoolCmd) *MockUniversalClient_HSetNX_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// HStrLen provides a mock function with given fields: ctx, key, field
+func (_m *MockUniversalClient) HStrLen(ctx context.Context, key string, field string) *redis.IntCmd {
+	ret := _m.Called(ctx, key, field)
+
+	if len(ret) == 0 {
+		panic("no return value specified for HStrLen")
+	}
+
+	var r0 *redis.IntCmd
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) *redis.IntCmd); ok {
+		r0 = rf(ctx, key, field)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+
+	return r0
+}
+
+// MockUniversalClient_HStrLen_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'HStrLen'
+type MockUniversalClient_HStrLen_Call struct {
+	*mock.Call
+}
+
+// HStrLen is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - field string
+func (_e *MockUniversalClient_Expecter) HStrLen(ctx interface{}, key interface{}, field interface{}) *MockUniversalClient_HStrLen_Call {
+	return &MockUniversalClient_HStrLen_Call{Call: _e.mock.On("HStrLen", ctx, key, field)}
+}
+
+func (_c *MockUniversalClient_HStrLen_Call) Run(run func(ctx context.Context, key string, field string)) *MockUniversalClient_HStrLen_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string), args[2].(string))
+	})
+	return _c
+}
+
+func (_c *MockUniversalClient_HStrLen_Call) Return(_a0 *redis.IntCmd) *MockUniversalClient_HStrLen_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MockUniversalClient_HStrLen_Call) RunAndReturn(run func(context.Context, string, string) *redis.IntCmd) *MockUniversalClient_HStrLen_Call {
 	_c.Call.Return(run)
 	return _c
 }

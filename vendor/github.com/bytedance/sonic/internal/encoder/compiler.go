@@ -219,7 +219,7 @@ func (self *Compiler) compileOps(p *ir.Program, sp int, vt reflect.Type) {
 	case reflect.Struct:
 		self.compileStruct(p, sp, vt)
 	default:
-		panic(vars.Error_type(vt))
+		self.compileUnsupportedType(p, vt)
 	}
 }
 
@@ -626,15 +626,15 @@ func (self *Compiler) compileStructFieldQuoted(p *ir.Program, sp int, vt reflect
 }
 
 func (self *Compiler) compileInterface(p *ir.Program, vt reflect.Type) {
-	x := p.PC()
-	p.Add(ir.OP_is_nil_p1)
-
 	/* iface and efaces are different */
 	if vt.NumMethod() == 0 {
 		p.Add(ir.OP_eface)
-	} else {
-		p.Add(ir.OP_iface)
+		return
 	}
+
+	x := p.PC()
+	p.Add(ir.OP_is_nil_p1)
+	p.Add(ir.OP_iface)
 
 	/* the "null" value */
 	e := p.PC()
@@ -643,6 +643,11 @@ func (self *Compiler) compileInterface(p *ir.Program, vt reflect.Type) {
 	p.Add(ir.OP_null)
 	p.Pin(e)
 }
+
+func (self *Compiler) compileUnsupportedType(p *ir.Program, vt reflect.Type) {
+	p.Rtt(ir.OP_unsupported, vt)
+}
+
 
 func (self *Compiler) compileMarshaler(p *ir.Program, op ir.Op, vt reflect.Type, mt reflect.Type) {
 	pc := p.PC()

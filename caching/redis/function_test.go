@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/viebiz/lit/mocks/mockredis"
+	"github.com/viebiz/redis"
 )
 
 func Test_setSingleValue(t *testing.T) {
@@ -827,7 +827,7 @@ func Test_getSingleValue(t *testing.T) {
 				tc := tc
 				t.Run(fmt.Sprintf("[%s] %s", dataType, scenario), func(t *testing.T) {
 					t.Parallel()
-					
+
 					// Given
 					mockCmd := new(mockredis.MockCmdable)
 

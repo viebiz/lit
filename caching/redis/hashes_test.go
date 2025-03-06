@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/viebiz/lit/mocks/mockredis"
+	"github.com/viebiz/redis"
 )
 
 func Test_redisClient_HashSet(t *testing.T) {
