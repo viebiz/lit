@@ -29,3 +29,17 @@ packages:
         config:
       DialHook:
         config:
+      ProcessHook:
+        config:
+      ProcessPipelineHook:
+        config:
+  net:
+    config:
+      dir: "mocks/mocknet"
+      mockname: "Mock{{.InterfaceName}}"
+      outpkg: "mocknet"
+      filename: "mock_{{.InterfaceName}}.go"
+      all: False
+    interfaces:
+      Conn:
+        config:
