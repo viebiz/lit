@@ -29,7 +29,7 @@ func FromContext(ctx context.Context) *Monitor {
 func NewContext(ctx context.Context) context.Context {
 	newCtx := SetInContext(context.Background(), FromContext(ctx))
 
-	if span := trace.SpanFromContext(ctx); span.IsRecording() {
+	if span := trace.SpanFromContext(ctx); span != nil && span.SpanContext().IsValid() {
 		newCtx = trace.ContextWithSpan(newCtx, span)
 	}
 
