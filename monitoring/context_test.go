@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"go.uber.org/zap"
 )
 
@@ -23,10 +24,15 @@ func Test_FromContext(t *testing.T) {
 }
 
 func Test_NewContext(t *testing.T) {
-	type ctxKey struct{}
-
+	mt := mocktracer.Start()
+	defer mt.Stop()
+	
 	// Parent context
+	type ctxKey struct{}
 	ctx := context.WithValue(context.Background(), ctxKey{}, 1)
+
+	ctx, span := tracer.Start(ctx, "test")
+	defer span.End()
 
 	// Child context
 	ctx = NewContext(ctx)
