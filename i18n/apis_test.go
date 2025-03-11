@@ -1,49 +1,57 @@
 package i18n
 
 import (
-	"errors"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"golang.org/x/text/language"
 )
 
-func TestNewTranslator(t *testing.T) {
-	tcs := map[string]struct {
-		givenSupportedLang []string
-		givenBasePath      string
-		expErr             error
+func TestInit(t *testing.T) {
+	testCases := map[string]struct {
+		cfg                 BundleConfig
+		expectedDefaultLang string
 	}{
-		"success": {
-			givenSupportedLang: []string{"en"},
-			givenBasePath:      "testdata",
+		"Default config": {
+			cfg:                 BundleConfig{},
+			expectedDefaultLang: defaultLangTag,
 		},
-		"error - message path not exists": {
-			givenSupportedLang: []string{"en"},
-			givenBasePath:      "NOTEXISTPATH",
-			expErr:             errors.New("message path does not exist"),
+		"Custom DefaultLanguage and AcceptLanguage": {
+			cfg: BundleConfig{
+				DefaultLang: language.Spanish.String(),
+			},
+			expectedDefaultLang: language.Spanish.String(),
 		},
-		"error - load message file": {
-			givenSupportedLang: []string{"fr"},
-			givenBasePath:      "testdata",
-			expErr:             errors.New("open testdata/fr.json: no such file or directory"),
+		"Custom BundleFileFormat and UnmarshalFunc": {
+			cfg: BundleConfig{
+				ExtraBundleFileSupport: map[string]UnmarshalFunc{
+					"yaml": func(data []byte, v interface{}) error {
+						// Dummy unmarshal: use json.Unmarshal here for testing
+						return json.Unmarshal(data, v)
+					},
+				},
+			},
+			expectedDefaultLang: defaultLangTag,
 		},
 	}
 
-	for scenario, tc := range tcs {
-		tc := tc
-		t.Run(scenario, func(t *testing.T) {
+	for name, tc := range testCases {
+		tc := tc // capture range variable
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
+			// Given
 
 			// When
-			rs, err := NewTranslator(tc.givenSupportedLang, tc.givenBasePath)
+			bundleInterface := Init(tc.cfg)
 
 			// Then
-			if tc.expErr != nil {
-				require.EqualError(t, err, tc.expErr.Error())
-			} else {
-				require.NoError(t, err)
-				require.NotZero(t, rs)
-			}
+			require.NotNil(t, bundleInterface)
+
+			b, ok := bundleInterface.(*bundle)
+			require.True(t, ok, "returned bundle is not of expected type")
+			require.Equal(t, tc.expectedDefaultLang, b.DefaultLang, "default language not set as expected")
+			require.NotNil(t, b.i18nBundle)
 		})
 	}
 }

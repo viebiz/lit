@@ -1,0 +1,4 @@
+{
+  "success": "Success",
+  "helloPerson": "Hello {{.Name}}"
+}
