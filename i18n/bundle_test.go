@@ -10,10 +10,11 @@ import (
 	"golang.org/x/text/language"
 )
 
-func TestBundle_LoadMessageFile_Table(t *testing.T) {
+func TestBundle_LoadMessageFile(t *testing.T) {
 	testCases := map[string]struct {
 		sourcePath string
 		langKey    string
+		expNil     bool
 		ext        string
 		expErr     error
 	}{
@@ -30,6 +31,18 @@ func TestBundle_LoadMessageFile_Table(t *testing.T) {
 			ext:        "json",
 			expErr:     errors.New("stat INVALIDPATH: no such file or directory"),
 		},
+		"bundle is nil": {
+			sourcePath: "testdata",
+			langKey:    "en",
+			expNil:     true,
+			ext:        "json",
+		},
+		"unsupported file format": {
+			sourcePath: "testdata",
+			langKey:    "en",
+			ext:        "yaml",
+			expErr:     errors.New("open testdata/en.yaml: no such file or directory"),
+		},
 	}
 
 	for name, tc := range testCases {
@@ -45,19 +58,22 @@ func TestBundle_LoadMessageFile_Table(t *testing.T) {
 			}
 			b.i18nBundle.RegisterUnmarshalFunc(defaultBundleFileFormat, json.Unmarshal)
 
+			if tc.expNil {
+				b = nil
+			}
+
 			// When
 			err := b.LoadMessageFile(tc.sourcePath, tc.langKey, tc.ext)
 
 			// Then
 			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
-
-				_, exists := b.LocalizeMap[tc.langKey]
-				require.False(t, exists, "localize map should not contain the language key on error")
+				require.Nil(t, b.LocalizeMap[tc.langKey])
 			} else {
 				require.NoError(t, err)
-				_, exists := b.LocalizeMap[tc.langKey]
-				require.True(t, exists, "localize map should contain the language key")
+				if !tc.expNil {
+					require.NotNil(t, b.LocalizeMap[tc.langKey])
+				}
 			}
 		})
 	}
@@ -74,6 +90,7 @@ func TestLocaleManager_LocalizeWithLang(t *testing.T) {
 		langKey     string
 		messageID   string
 		params      map[string]interface{}
+		expNil      bool
 		mock        mockInfo
 		expResult   string
 		expErr      error
@@ -103,6 +120,13 @@ func TestLocaleManager_LocalizeWithLang(t *testing.T) {
 			mock:        mockInfo{useMock: true, returnMsg: "Bonjour", returnErr: nil},
 			expResult:   "Bonjour",
 		},
+		"localize nil": {
+			defaultLang: "en",
+			langKey:     "fr",
+			messageID:   "greeting",
+			expNil:      true,
+			expResult:   "greeting",
+		},
 	}
 
 	for name, tc := range tcs {
@@ -120,9 +144,13 @@ func TestLocaleManager_LocalizeWithLang(t *testing.T) {
 					Return(tc.mock.returnMsg, tc.mock.returnErr)
 				localizeBundle[tc.langKey] = mockLocalizer
 			}
-			lm := bundle{
+			lm := &bundle{
 				DefaultLang: tc.defaultLang,
 				LocalizeMap: localizeBundle,
+			}
+
+			if tc.expNil {
+				lm = nil
 			}
 
 			// When
