@@ -2,42 +2,39 @@ package i18n
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
-	"path/filepath"
-
-	pkgerrors "github.com/pkg/errors"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
 )
 
-func NewTranslator(supportedLang []string, basePath string) (Translator, error) {
-	basePath = filepath.Clean(basePath)
-	if _, err := os.Stat(basePath); os.IsNotExist(err) {
-		return Translator{}, fmt.Errorf("message path does not exist")
+const (
+	defaultLangTag          = "en"
+	defaultBundleFileFormat = "json"
+)
+
+type BundleConfig struct {
+	DefaultLang            string
+	ExtraBundleFileSupport map[string]UnmarshalFunc
+}
+
+func Init(cfg BundleConfig) Bundle {
+	// Create a new bundle
+	b := i18n.NewBundle(language.English)
+	b.RegisterUnmarshalFunc(defaultBundleFileFormat, json.Unmarshal)
+
+	// Register custom unmarshal function
+	for format, unmarshalFunc := range cfg.ExtraBundleFileSupport {
+		b.RegisterUnmarshalFunc(format, unmarshalFunc)
 	}
 
-	// Load language bundle
-	b := i18n.NewBundle(defaultLangTag)
-	b.RegisterUnmarshalFunc(defaultMessageFileFormat, json.Unmarshal)
-
-	// Load all message file
-	for _, lang := range supportedLang {
-		msgPath := filepath.Join(basePath, fmt.Sprintf("%s.%s", lang, defaultMessageFileFormat))
-		if _, err := b.LoadMessageFile(msgPath); err != nil {
-			return Translator{}, pkgerrors.WithStack(err)
-		}
+	defaultLang := defaultLangTag
+	if cfg.DefaultLang != "" {
+		defaultLang = cfg.DefaultLang
 	}
 
-	t := Translator{
-		defaultLang:     supportedLang[0], // The first item in supported language
-		langLocalizeMap: make(map[string]*i18n.Localizer),
+	return &bundle{
+		i18nBundle:  b,
+		DefaultLang: defaultLang,
+		LocalizeMap: make(map[string]MessageLocalize),
 	}
-
-	// Init localize map
-	for _, lang := range supportedLang {
-		t.langLocalizeMap[lang] = i18n.NewLocalizer(b, lang)
-	}
-
-	return t, nil
 }
