@@ -1,17 +1,15 @@
 package i18n
 
-// Bundle represents the interface for localizing messages that support multiple languages
-type Bundle interface {
+// MessageBundle represents the interface for localizing messages that support multiple languages
+type MessageBundle interface {
 	LoadMessageFile(path, langKey, ext string) error
-	
-	Localize(messageID string, params map[string]interface{}) (string, error)
 
-	LocalizeWithLang(langKey string, messageID string, params map[string]interface{}) (string, error)
-
-	TryLocalize(messageID string, params map[string]interface{}) string
+	GetLocalize(langKey string) Localizable
 }
 
-// MessageLocalize represents the interface for localizing messages
-type MessageLocalize interface {
-	Localize(messageID string, params map[string]interface{}) (string, error)
+// Localizable represents the interface for localizing messages
+type Localizable interface {
+	TryLocalize(messageID string, params map[string]interface{}) (string, error)
+
+	Localize(messageID string, params map[string]interface{}) string
 }

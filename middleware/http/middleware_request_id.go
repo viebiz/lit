@@ -8,10 +8,6 @@ import (
 	"github.com/viebiz/lit/monitoring"
 )
 
-var (
-	hash64Func = hash64
-)
-
 // RequestIDMiddleware ensures each request has a unique Request ID.
 // If the Request ID is provided in the request header, it uses that;
 // otherwise, it generates a new one and injects it into the request context.
@@ -25,7 +21,8 @@ func RequestIDMiddleware() lit.HandlerFunc {
 
 		// Inject request ID to request context
 		ctx := c.Request().Context()
-		ctx = monitoring.InjectField(ctx, httpRequestIDKey, hash64Func(requestID))
+
+		ctx = monitoring.InjectField(ctx, httpRequestIDKey, hash64(requestID))
 
 		// Update the request context
 		c.SetRequestContext(ctx)
@@ -40,9 +37,6 @@ func RequestIDMiddleware() lit.HandlerFunc {
 
 func hash64(plain string) string {
 	h := fnv.New64a()
-	if _, err := h.Write([]byte(plain)); err != nil {
-		return plain
-	}
-
+	_, _ = h.Write([]byte(plain))
 	return fmt.Sprintf("%x", h.Sum64())
 }

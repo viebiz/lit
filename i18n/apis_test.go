@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"context"
 	"encoding/json"
 	"testing"
 
@@ -9,13 +10,13 @@ import (
 )
 
 func TestInit(t *testing.T) {
-	testCases := map[string]struct {
+	tcs := map[string]struct {
 		cfg                 BundleConfig
 		expectedDefaultLang string
 	}{
 		"Default config": {
 			cfg:                 BundleConfig{},
-			expectedDefaultLang: defaultLangTag,
+			expectedDefaultLang: defaultLang,
 		},
 		"Custom DefaultLanguage and AcceptLanguage": {
 			cfg: BundleConfig{
@@ -32,26 +33,26 @@ func TestInit(t *testing.T) {
 					},
 				},
 			},
-			expectedDefaultLang: defaultLangTag,
+			expectedDefaultLang: defaultLang,
 		},
 	}
 
-	for name, tc := range testCases {
-		tc := tc // capture range variable
-		t.Run(name, func(t *testing.T) {
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
 			t.Parallel()
 			// Given
 
 			// When
-			bundleInterface := Init(tc.cfg)
+			bundleInterface := Init(context.Background(), tc.cfg)
 
 			// Then
 			require.NotNil(t, bundleInterface)
 
-			b, ok := bundleInterface.(*bundle)
-			require.True(t, ok, "returned bundle is not of expected type")
+			b, ok := bundleInterface.(*bundleMessage)
+			require.True(t, ok, "returned bundleMessage is not of expected type")
 			require.Equal(t, tc.expectedDefaultLang, b.DefaultLang, "default language not set as expected")
-			require.NotNil(t, b.i18nBundle)
+			require.NotNil(t, b.underlyingBundle)
 		})
 	}
 }
