@@ -5,7 +5,7 @@ package lit
 //		willPanic bool
 //		in        *testdata.WeatherRequest
 //		out       *testdata.WeatherResponse
-//		err       error
+//		inErr       error
 //	}
 //	tcs := map[string]struct {
 //		givenRequest *testdata.WeatherRequest
@@ -49,7 +49,7 @@ package lit
 //			givenRequest: &testdata.WeatherRequest{},
 //			mockSrv: mockServiceServer{
 //				in:  &testdata.WeatherRequest{},
-//				err: errors.New("expected error"),
+//				inErr: errors.New("expected error"),
 //			},
 //			expErr: errors.New("expected error"),
 //			expLogs: []map[string]interface{}{
@@ -94,7 +94,7 @@ package lit
 //			if tc.mockSrv.willPanic {
 //				srv.On("GetWeatherInfo", mock.Anything, tc.mockSrv.in).Panic("simulated panic")
 //			} else {
-//				srv.On("GetWeatherInfo", mock.Anything, tc.mockSrv.in).Return(tc.mockSrv.out, tc.mockSrv.err)
+//				srv.On("GetWeatherInfo", mock.Anything, tc.mockSrv.in).Return(tc.mockSrv.out, tc.mockSrv.inErr)
 //			}
 //			srvInfo := &grpc.UnaryServerInfo{
 //				Server:     srv,
@@ -103,15 +103,15 @@ package lit
 //
 //			// When
 //			intercept := unaryServerInterceptor(monitorTest.Context())
-//			rs, err := intercept(context.Background(), tc.givenRequest, srvInfo, func(ctx context.Context, req interface{}) (interface{}, error) {
+//			rs, inErr := intercept(context.Background(), tc.givenRequest, srvInfo, func(ctx context.Context, req interface{}) (interface{}, error) {
 //				return srv.GetWeatherInfo(ctx, req.(*testdata.WeatherRequest))
 //			})
 //
 //			// Then
 //			if tc.expErr != nil {
-//				require.EqualError(t, err, tc.expErr.Error())
+//				require.EqualError(t, inErr, tc.expErr.Error())
 //			} else {
-//				require.NoError(t, err)
+//				require.NoError(t, inErr)
 //				requireEqual(t, *tc.expResult, *rs.(*testdata.WeatherResponse),
 //					cmpopts.IgnoreUnexported(testdata.WeatherResponse{}, testdata.WeatherDetail{}),
 //				)

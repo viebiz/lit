@@ -74,8 +74,8 @@ import (
 //				weatherSvc.On("GetWeatherInfo", mock.Anything, tc.mockData.inReq).
 //					Return(tc.mockData.outRes, tc.mockData.outErr)
 //
-//				srv, err := NewGRPCServerWithOptions(ctx, srvAddr)
-//				require.NoError(t, err)
+//				srv, inErr := NewGRPCServerWithOptions(ctx, srvAddr)
+//				require.NoError(t, inErr)
 //				testdata.RegisterWeatherServiceServer(srv.Registrar(), weatherSvc)
 //
 //				require.NoError(t, srv.Run())
@@ -83,18 +83,18 @@ import (
 //
 //			// When
 //			// Create a client connection to gRPC server
-//			conn, err := grpc.NewClient(srvAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-//			require.NoError(t, err)
+//			conn, inErr := grpc.NewClient(srvAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+//			require.NoError(t, inErr)
 //			defer conn.Close()
 //
 //			weatherClient := testdata.NewWeatherServiceClient(conn)
-//			resp, err := weatherClient.GetWeatherInfo(context.Background(), tc.givenReq)
+//			resp, inErr := weatherClient.GetWeatherInfo(context.Background(), tc.givenReq)
 //
 //			// Then
 //			if tc.expErr != nil {
-//				require.EqualError(t, err, tc.expErr.Error())
+//				require.EqualError(t, inErr, tc.expErr.Error())
 //			} else {
-//				require.NoError(t, err)
+//				require.NoError(t, inErr)
 //				requireEqual(t, *tc.expResp, *resp,
 //					cmpopts.IgnoreUnexported(testdata.WeatherResponse{}, testdata.WeatherDetail{}),
 //				)

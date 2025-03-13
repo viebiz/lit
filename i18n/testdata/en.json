@@ -1,4 +1,8 @@
 {
   "success": "Success",
-  "helloPerson": "Hello {{.Name}}"
+  "helloPerson": "Hello {{.Name}}",
+  "required": "The {{.Field}} field is required",
+  "min": "The {{.Field}} field must be at least {{.Condition}} but got {{.Value}}",
+  "max": "The {{.Field}} field must be at most {{.Condition}} but got {{.Value}}",
+  "eq": "The {{.Field}} field must be {{.Condition}}"
 }

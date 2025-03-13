@@ -1,4 +1,8 @@
 {
   "success": "Thành công",
-  "helloPerson": "Chào {{.Name}}"
+  "helloPerson": "Chào {{.Name}}",
+  "required": "Trường {{.Field}} là bắt buộc",
+  "min": "Trường {{.Field}} phải có ít nhất {{.Condition}}, nhưng có {{.Value}}",
+  "max": "Trường {{.Field}} chỉ được tối đa {{.Condition}}, nhưng có {{.Value}}",
+  "eq": "Trường {{.Field}} phải là {{.Condition}}"
 }
