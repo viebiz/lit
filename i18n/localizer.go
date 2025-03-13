@@ -5,20 +5,42 @@ import (
 	pkgerrors "github.com/pkg/errors"
 )
 
-var (
-	prepareMessageConfigWrapper = prepareMessageConfig
-)
-
-type messageLocalize struct {
-	localizer *i18n.Localizer
+type localizer struct {
+	underlyingLocalizer *i18n.Localizer
+	getLocalizedMessage func(localizer *i18n.Localizer, cfg *i18n.LocalizeConfig) (string, error)
 }
 
-func (ml messageLocalize) Localize(messageID string, params map[string]interface{}) (string, error) {
-	if ml.localizer == nil {
-		return "", ErrBundleNotInitialized
+func newLocalizer(langKey string, bundle *i18n.Bundle) Localizable {
+	return &localizer{
+		underlyingLocalizer: i18n.NewLocalizer(bundle, langKey),
+		getLocalizedMessage: getLocalizedMessage,
+	}
+}
+
+func (l localizer) Localize(messageID string, params map[string]interface{}) string {
+	msg, err := l.TryLocalize(messageID, params)
+	if err != nil {
+		return messageID
 	}
 
-	rs, err := ml.localizer.Localize(prepareMessageConfigWrapper(messageID, params))
+	return msg
+}
+
+func (l localizer) TryLocalize(messageID string, params map[string]interface{}) (string, error) {
+	if l.underlyingLocalizer == nil {
+		return messageID, nil
+	}
+
+	// Prepare localize configuration
+	cfg := &i18n.LocalizeConfig{
+		MessageID: messageID,
+	}
+	if len(params) > 0 {
+		cfg.TemplateData = params
+	}
+
+	// Localizable message
+	rs, err := l.getLocalizedMessage(l.underlyingLocalizer, cfg)
 	if err != nil {
 		return "", pkgerrors.WithStack(err)
 	}
@@ -26,13 +48,6 @@ func (ml messageLocalize) Localize(messageID string, params map[string]interface
 	return rs, nil
 }
 
-func prepareMessageConfig(messageID string, params map[string]interface{}) *i18n.LocalizeConfig {
-	msgCfg := &i18n.LocalizeConfig{
-		MessageID: messageID,
-	}
-	if len(params) > 0 {
-		msgCfg.TemplateData = params
-	}
-
-	return msgCfg
+func getLocalizedMessage(localizer *i18n.Localizer, cfg *i18n.LocalizeConfig) (string, error) {
+	return localizer.Localize(cfg)
 }

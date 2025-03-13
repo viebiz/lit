@@ -8,7 +8,7 @@ import (
 )
 
 func TestSetInContext(t *testing.T) {
-	b := &bundle{}
+	b := &localizer{}
 	parentCtx := context.Background()
 	ctx := SetInContext(parentCtx, b)
 
@@ -18,9 +18,17 @@ func TestSetInContext(t *testing.T) {
 }
 
 func TestFromContext(t *testing.T) {
-	b := &bundle{}
-	ctx := context.WithValue(context.Background(), contextKey{}, b)
+	lc := &localizer{}
+	ctx := context.WithValue(context.Background(), contextKey{}, lc)
 
 	retrieved := FromContext(ctx)
-	require.Equal(t, b, retrieved)
+	require.Equal(t, lc, retrieved)
+}
+
+func TestFromContext_Noop(t *testing.T) {
+	ctx := context.Background()
+	retrieved := FromContext(ctx)
+
+	require.NotNil(t, retrieved)
+	require.Equal(t, retrieved, localizer{})
 }

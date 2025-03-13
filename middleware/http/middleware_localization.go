@@ -1,11 +1,10 @@
 package http
 
 import (
-	"sync"
+	"context"
 
 	"github.com/viebiz/lit"
 	"github.com/viebiz/lit/i18n"
-	"github.com/viebiz/lit/monitoring"
 )
 
 const (
@@ -21,7 +20,6 @@ type Config struct {
 	SourcePath  string
 	Format      string
 	DefaultLang string
-	AcceptLang  []string
 }
 
 // LocalizationMiddleware is a middleware that load message file and injects the localization bundle into the request context.
@@ -32,36 +30,24 @@ type Config struct {
 //	- The language header key is "Accept-Language" by default. (e.g. Accept-Language: en)
 //	- The default language is "en" by default.
 //	- The default bundle file format is "json" by default.
-func LocalizationMiddleware(cfg Config) lit.HandlerFunc {
+func LocalizationMiddleware(ctx context.Context, cfg Config) lit.HandlerFunc {
 	cfg = prepareLocalizeConfig(cfg)
-	bundle := i18n.Init(i18n.BundleConfig{})
-
-	// Initialize sync.Map with a sync.Once per accepted language.
-	var langOnce sync.Map
-	for _, lang := range cfg.AcceptLang {
-		langOnce.Store(lang, &sync.Once{})
-	}
+	bundle := i18n.Init(ctx, i18n.BundleConfig{
+		DefaultLang:      cfg.DefaultLang,
+		SourcePath:       cfg.SourcePath,
+		BundleFileFormat: cfg.Format,
+	})
 
 	return func(c lit.Context) {
 		req := c.Request()
-		ctx := req.Context()
-		lang := req.Header.Get(cfg.HeaderKey)
+		reqCtx := req.Context()
 
 		// Load the message file only once for a given language.
+		lang := req.Header.Get(cfg.HeaderKey)
 		if lang != "" {
-			if onceInterface, ok := langOnce.Load(lang); ok {
-				once := onceInterface.(*sync.Once)
-				once.Do(func() {
-					if err := bundle.LoadMessageFile(cfg.SourcePath, lang, cfg.Format); err != nil {
-						monitoring.FromContext(ctx).Errorf(err, "Failed to load message file")
-					}
-				})
-			}
-
+			lc := bundle.GetLocalize(lang)
+			c.SetRequestContext(i18n.SetInContext(reqCtx, lc))
 		}
-
-		// Inject localization bundle to request context
-		c.SetRequestContext(i18n.SetInContext(ctx, bundle))
 
 		// Continue handle request
 		c.Next()

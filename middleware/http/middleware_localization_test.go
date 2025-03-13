@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -64,14 +65,6 @@ func TestLocalizationMiddleware(t *testing.T) {
 			expectedStatus: http.StatusOK,
 			expectedBody:   "\"helloPerson\"",
 		},
-		"Missing accept language": {
-			srcPath:        "testdata",
-			headerValue:    "en",
-			givenMessageID: "helloPerson",
-			expectedLang:   "en",
-			expectedStatus: http.StatusOK,
-			expectedBody:   "\"helloPerson\"",
-		},
 	}
 
 	for scenario, tc := range tcs {
@@ -89,16 +82,15 @@ func TestLocalizationMiddleware(t *testing.T) {
 			c.SetRequest(req)
 
 			// Use LocalizationMiddleware with the test's accepted languages.
-			route.Use(LocalizationMiddleware(Config{
+			route.Use(LocalizationMiddleware(context.Background(), Config{
 				SourcePath: tc.srcPath,
-				AcceptLang: tc.acceptLang,
 			}))
 
 			route.Get("/test", func(c lit.Context) error {
 				ctx := c.Request().Context()
 
 				// The message "helloPerson" should be localized if found.
-				rs := i18n.FromContext(ctx).TryLocalize(tc.givenMessageID, map[string]interface{}{
+				rs := i18n.FromContext(ctx).Localize(tc.givenMessageID, map[string]interface{}{
 					"Name": "Loc Dang",
 				})
 				c.JSON(http.StatusOK, rs)

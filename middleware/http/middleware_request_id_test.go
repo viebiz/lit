@@ -16,7 +16,6 @@ import (
 
 func TestRequestIDMiddleware(t *testing.T) {
 	const staticRequestID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-	const staticHashRequestID = "tHisisAhAsheD"
 
 	type handler struct {
 		Method string
@@ -69,10 +68,8 @@ func TestRequestIDMiddleware(t *testing.T) {
 			idFunc = func() string {
 				return staticRequestID
 			}
-			hash64Func = func(v string) string { return staticHashRequestID }
 			defer func() {
 				idFunc = uuid.NewString
-				hash64Func = hash64
 			}()
 
 			// Given
