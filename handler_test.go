@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestHandler(t *testing.T) {
@@ -78,8 +79,10 @@ func TestHandlerWithProfilingDisabled(t *testing.T) {
 
 	for _, route := range profilingRoutes {
 		t.Run("Profiling Disabled: "+route, func(t *testing.T) {
-			req, _ := http.NewRequest("GET", server.URL+route, nil)
-			resp, _ := http.DefaultClient.Do(req)
+			req, err := http.NewRequest("GET", server.URL+route, nil)
+			require.NoError(t, err)
+			resp, err := http.DefaultClient.Do(req)
+			require.NoError(t, err)
 			defer resp.Body.Close()
 			assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 		})
