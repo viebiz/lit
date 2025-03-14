@@ -10,8 +10,6 @@ type Error interface {
 	error
 
 	StatusCode() int // Suppose return status code
-
-	ErrorCode() string // Suppose support internalization
 }
 
 var (
@@ -27,10 +25,6 @@ type HttpError struct {
 
 func (e HttpError) StatusCode() int {
 	return e.Status
-}
-
-func (e HttpError) ErrorCode() string {
-	return e.Code
 }
 
 func (e HttpError) Error() string {

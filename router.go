@@ -33,6 +33,7 @@ type router struct {
 func NewRouter() (Router, http.Handler) {
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
+	engine.ContextWithFallback = true
 
 	return router{
 		ginRouter: engine,
@@ -57,7 +58,7 @@ func (rtr router) Handle(method string, relativePath string, handler HandlerFunc
 }
 
 func (rtr router) HandleWithErr(method string, relativePath string, handler ErrHandlerFunc) {
-	rtr.ginRouter.Handle(method, relativePath, handleUnexpectedError(handler))
+	rtr.ginRouter.Handle(method, relativePath, wrapErrHandler(handler))
 }
 
 func (rtr router) Get(relativePath string, handler ErrHandlerFunc) {

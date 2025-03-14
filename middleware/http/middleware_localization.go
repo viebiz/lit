@@ -42,21 +42,21 @@ func LocalizationMiddleware(ctx context.Context, cfg Config) lit.HandlerFunc {
 		req := c.Request()
 		reqCtx := req.Context()
 
-		// Load the message file only once for a given language.
+		// Get language from request header
 		lang := req.Header.Get(cfg.HeaderKey)
-		if lang != "" {
-			lc := bundle.GetLocalize(lang)
-			c.SetRequestContext(i18n.SetInContext(reqCtx, lc))
+		if lang == "" {
+			lang = cfg.DefaultLang
 		}
+
+		// Set localize to request context
+		lc := bundle.GetLocalize(lang)
+		c.SetRequestContext(i18n.SetInContext(reqCtx, lc))
+
+		// Add localization header to response
+		c.Writer().Header().Add(defaultLangResponseHeader, lang)
 
 		// Continue handle request
 		c.Next()
-
-		// Add localization header to response
-		if lang == "" {
-			lang = defaultLang
-		}
-		c.Writer().Header().Add(defaultLangResponseHeader, lang)
 	}
 }
 

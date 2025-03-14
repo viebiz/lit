@@ -26,7 +26,7 @@ func (_m *MockContext) EXPECT() *MockContext_Expecter {
 	return &MockContext_Expecter{mock: &_m.Mock}
 }
 
-// AbortWithError provides a mock function with given fields: err
+// AbortWithError provides a mock function with given fields: inErr
 func (_m *MockContext) AbortWithError(err error) {
 	_m.Called(err)
 }
@@ -37,7 +37,7 @@ type MockContext_AbortWithError_Call struct {
 }
 
 // AbortWithError is a helper method to define mock.On call
-//   - err error
+//   - inErr error
 func (_e *MockContext_Expecter) AbortWithError(err interface{}) *MockContext_AbortWithError_Call {
 	return &MockContext_AbortWithError_Call{Call: _e.mock.On("AbortWithError", err)}
 }

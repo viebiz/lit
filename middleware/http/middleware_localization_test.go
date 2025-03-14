@@ -63,7 +63,7 @@ func TestLocalizationMiddleware(t *testing.T) {
 			givenMessageID: "helloPerson",
 			expectedLang:   "en",
 			expectedStatus: http.StatusOK,
-			expectedBody:   "\"helloPerson\"",
+			expectedBody:   "\"Hello Loc Dang\"",
 		},
 	}
 
