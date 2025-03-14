@@ -7,6 +7,7 @@ executors:
         environment:
           CODACY_PROJECT_TOKEN: $CODACY_PROJECT_TOKEN
           CODECOV_TOKEN: $CODECOV_TOKEN
+          GITHUB_ACCESS_TOKEN: $GITHUB_ACCESS_TOKEN
 
 jobs:
 
@@ -32,7 +33,7 @@ jobs:
           paths:
             - full_coverage.out
 
-  # Coverage
+  # Code Report & Coverage
   coverage:
     executor: bizgroup-executor
     steps:
@@ -54,6 +55,9 @@ jobs:
       - run:
           name: Send Codecov
           command: codecov -f coverage.out
+      - run:
+          name: Send Open SSF
+          command: scorecard --repo=github.com/viebiz/lit
 
 
 workflows:
