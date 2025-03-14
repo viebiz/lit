@@ -2,7 +2,7 @@ services:
   tool:
     container_name: bizgroup-tool-${ENV}
     restart: always
-    image: sangnv/bizgroup-thunder:x86
+    image: sangnv/bizgroup-thunder:latest
     volumes:
       - .:/tool
     working_dir: /tool

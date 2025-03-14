@@ -8,8 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/viebiz/lit/testutil"
@@ -116,9 +114,7 @@ func TestClientConn_Invoke(t *testing.T) {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
 				require.NoError(t, err)
-				if diff := cmp.Diff(*tc.expResp, *resp, cmpopts.IgnoreUnexported(testdata.WeatherResponse{}, testdata.WeatherDetail{})); diff != "" {
-					t.Errorf("unexpected response (-want, +got) = %v", diff)
-				}
+				testutil.Equal(t, tc.expResp, resp, testutil.IgnoreUnexported[*testdata.WeatherResponse](testdata.WeatherResponse{}, testdata.WeatherDetail{}))
 			}
 
 			pasedLogs, err := parseLog(logBuffer.Bytes())
