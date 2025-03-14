@@ -827,7 +827,7 @@ func Test_getSingleValue(t *testing.T) {
 				tc := tc
 				t.Run(fmt.Sprintf("[%s] %s", dataType, scenario), func(t *testing.T) {
 					t.Parallel()
-					
+
 					// Given
 					mockCmd := new(mockredis.MockCmdable)
 
