@@ -7,7 +7,7 @@ executors:
         environment:
           CODACY_PROJECT_TOKEN: $CODACY_PROJECT_TOKEN
           CODECOV_TOKEN: $CODECOV_TOKEN
-          GITHUB_ACCESS_TOKEN: $GITHUB_ACCESS_TOKEN
+          GITHUB_AUTH_TOKEN: $GITHUB_ACCESS_TOKEN
 
 jobs:
 
