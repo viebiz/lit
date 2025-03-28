@@ -22,6 +22,5 @@
 .env.prod
 
 # Private files
-*.pem
 *.cer
 coverage.*

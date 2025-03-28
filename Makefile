@@ -8,6 +8,10 @@ DOCKER_BUILD_BIN := docker
 COMPOSE_BIN := ENV=$(ENV) GROUP_NAME=$(GROUP_NAME) PROJECT_NAME=$(PROJECT_NAME) docker compose
 COMPOSE_TOOL_RUN := $(COMPOSE_BIN) run --rm --service-ports tool
 
+mod:
+	go mod tidy
+	go mod vendor
+
 init: kafka pg redis
 	echo "Start Kafka, Postgres, and Redis!"
 
@@ -38,6 +42,16 @@ gen-mocks:
 
 gen-proto:
 	@$(COMPOSE_TOOL_RUN) sh -c "buf generate"
+
+gen-pem:
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl genrsa -out ./crypto/rsa/testdata/pkcs1_rsa_private_key.pem 2048"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl rsa -pubout -in ./crypto/rsa/testdata/pkcs1_rsa_private_key.pem -outform PEM -RSAPublicKey_out -out ./crypto/rsa/testdata/pkcs1_rsa_public_key.pem"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out ./crypto/rsa/testdata/ecdsa_private_key.pem"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl ec -pubout -in ./crypto/rsa/testdata/ecdsa_private_key.pem -out ./crypto/rsa/testdata/ecdsa_public_key.pem"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl genpkey -algorithm RSA -out ./crypto/rsa/testdata/test_rsa_private_key.pem -pkeyopt rsa_keygen_bits:2048"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl rsa -pubout -in ./crypto/rsa/testdata/test_rsa_private_key.pem -out ./crypto/rsa/testdata/test_rsa_public_key.pem"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl genpkey -algorithm RSA -out ./crypto/rsa/testdata/rsa_private_key.pem -pkeyopt rsa_keygen_bits:2048"
+	@$(COMPOSE_TOOL_RUN) sh -c "openssl rsa -pubout -in ./crypto/rsa/testdata/rsa_private_key.pem -out ./crypto/rsa/testdata/rsa_public_key.pem"
 
 tear-down:
 	@$(COMPOSE_BIN) down -v
