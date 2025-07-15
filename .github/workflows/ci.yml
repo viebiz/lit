@@ -75,4 +75,8 @@ jobs:
           KAFKA_TOPIC_NAME_1: KAFKA_TOPIC_NAME_1
           KAFKA_TOPIC_NAME_2: KAFKA_TOPIC_NAME_2
         with:
-          args: sh -c "go test -mod=vendor -vet=all -coverprofile=coverage.out -failfast -timeout 5m ./..."
+          args: > 
+            sh -c "
+            go mod download &&
+            go test -mod=mod -vet=all -coverprofile=coverage.out -failfast -timeout 5m ./...
+            "
