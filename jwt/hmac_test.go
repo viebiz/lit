@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"crypto"
 	"crypto/ecdsa"
 	"encoding/base64"
 	"testing"
@@ -145,4 +146,41 @@ func TestSigningMethodHMAC_Verify(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNewHS256(t *testing.T) {
+	method := NewHS256()
+	require.Equal(t, SigningMethodNameHS256, method.Name)
+	require.Equal(t, crypto.SHA256, method.Hash)
+	require.Equal(t, "HS256", method.Alg())
+}
+
+func TestNewHS384(t *testing.T) {
+	method := NewHS384()
+	require.Equal(t, SigningMethodNameHS384, method.Name)
+	require.Equal(t, crypto.SHA384, method.Hash)
+	require.Equal(t, "HS384", method.Alg())
+}
+
+func TestNewHS512(t *testing.T) {
+	method := NewHS512()
+	require.Equal(t, SigningMethodNameHS512, method.Name)
+	require.Equal(t, crypto.SHA512, method.Hash)
+	require.Equal(t, "HS512", method.Alg())
+}
+
+func TestHMACPrivateKey_Sign(t *testing.T) {
+	key := HMACPrivateKey("test-key")
+	signingString := []byte("test-data")
+	opts := crypto.SHA256
+
+	t.Run("success", func(t *testing.T) {
+		// When
+		signature, err := key.Sign(nil, signingString, opts)
+
+		// Then
+		require.NoError(t, err)
+		require.NotEmpty(t, signature)
+		require.Len(t, signature, 32) // SHA256 produces 32 bytes
+	})
 }

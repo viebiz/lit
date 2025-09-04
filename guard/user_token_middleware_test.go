@@ -157,6 +157,88 @@ func TestAuthenticateUserMiddleware(t *testing.T) {
 	}
 }
 
+func TestGetTokenString(t *testing.T) {
+	tcs := map[string]struct {
+		header string
+		exp    string
+	}{
+		"valid bearer": {
+			header: "Bearer token123",
+			exp:    "token123",
+		},
+		"invalid prefix": {
+			header: "Basic token123",
+			exp:    "",
+		},
+		"no space": {
+			header: "Bearertoken123",
+			exp:    "",
+		},
+		"too many parts": {
+			header: "Bearer token123 extra",
+			exp:    "",
+		},
+		"empty header": {
+			header: "",
+			exp:    "",
+		},
+		"only prefix": {
+			header: "Bearer",
+			exp:    "",
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			req := httptest.NewRequest(http.MethodGet, "/", nil)
+			req.Header.Set(headerAuthorization, tc.header)
+
+			result := getTokenString(req)
+			require.Equal(t, tc.exp, result)
+		})
+	}
+}
+
+func TestConvertError(t *testing.T) {
+	tcs := map[string]struct {
+		inputErr error
+		expErr   error
+	}{
+		"missing required claim": {
+			inputErr: iam.ErrMissingRequiredClaim,
+			expErr:   unauthorizedErr(iam.ErrMissingRequiredClaim),
+		},
+		"token expired": {
+			inputErr: iam.ErrTokenExpired,
+			expErr:   unauthorizedErr(iam.ErrTokenExpired),
+		},
+		"invalid token": {
+			inputErr: iam.ErrInvalidToken,
+			expErr:   unauthorizedErr(iam.ErrInvalidToken),
+		},
+		"action not allowed": {
+			inputErr: iam.ErrActionIsNotAllowed,
+			expErr:   errForbidden,
+		},
+		"other error": {
+			inputErr: errors.New("some other error"),
+			expErr:   errors.New("some other error"),
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			result := convertError(tc.inputErr)
+			require.Equal(t, tc.expErr, result)
+		})
+	}
+}
 func pointerTo[T any](value T) *T {
 	return &value
 }

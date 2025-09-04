@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"crypto"
 	"crypto/ecdsa"
 	"crypto/rsa"
 	"encoding/base64"
@@ -151,4 +152,25 @@ func TestSigningMethodRSA_Verify(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNewRS256(t *testing.T) {
+	method := NewRS256()
+	require.Equal(t, SigningMethodNameRS256, method.Name)
+	require.Equal(t, crypto.SHA256, method.Hash)
+	require.Equal(t, "RS256", method.Alg())
+}
+
+func TestNewRS384(t *testing.T) {
+	method := NewRS384()
+	require.Equal(t, SigningMethodNameRS384, method.Name)
+	require.Equal(t, crypto.SHA384, method.Hash)
+	require.Equal(t, "RS384", method.Alg())
+}
+
+func TestNewRS512(t *testing.T) {
+	method := NewRS512()
+	require.Equal(t, SigningMethodNameRS512, method.Name)
+	require.Equal(t, crypto.SHA512, method.Hash)
+	require.Equal(t, "RS512", method.Alg())
 }
