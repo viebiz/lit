@@ -3009,6 +3009,240 @@ func (_c *MockPipeliner_BitOpAnd_Call) RunAndReturn(run func(ctx context.Context
 	return _c
 }
 
+// BitOpAndOr provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) BitOpAndOr(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpAndOr")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_BitOpAndOr_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpAndOr'
+type MockPipeliner_BitOpAndOr_Call struct {
+	*mock.Call
+}
+
+// BitOpAndOr is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockPipeliner_Expecter) BitOpAndOr(ctx interface{}, destKey interface{}, keys ...interface{}) *MockPipeliner_BitOpAndOr_Call {
+	return &MockPipeliner_BitOpAndOr_Call{Call: _e.mock.On("BitOpAndOr",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockPipeliner_BitOpAndOr_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockPipeliner_BitOpAndOr_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpAndOr_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_BitOpAndOr_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpAndOr_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockPipeliner_BitOpAndOr_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpDiff provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) BitOpDiff(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpDiff")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_BitOpDiff_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpDiff'
+type MockPipeliner_BitOpDiff_Call struct {
+	*mock.Call
+}
+
+// BitOpDiff is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockPipeliner_Expecter) BitOpDiff(ctx interface{}, destKey interface{}, keys ...interface{}) *MockPipeliner_BitOpDiff_Call {
+	return &MockPipeliner_BitOpDiff_Call{Call: _e.mock.On("BitOpDiff",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockPipeliner_BitOpDiff_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockPipeliner_BitOpDiff_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpDiff_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_BitOpDiff_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpDiff_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockPipeliner_BitOpDiff_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpDiff1 provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) BitOpDiff1(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpDiff1")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_BitOpDiff1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpDiff1'
+type MockPipeliner_BitOpDiff1_Call struct {
+	*mock.Call
+}
+
+// BitOpDiff1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockPipeliner_Expecter) BitOpDiff1(ctx interface{}, destKey interface{}, keys ...interface{}) *MockPipeliner_BitOpDiff1_Call {
+	return &MockPipeliner_BitOpDiff1_Call{Call: _e.mock.On("BitOpDiff1",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockPipeliner_BitOpDiff1_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockPipeliner_BitOpDiff1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpDiff1_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_BitOpDiff1_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpDiff1_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockPipeliner_BitOpDiff1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // BitOpNot provides a mock function for the type MockPipeliner
 func (_mock *MockPipeliner) BitOpNot(ctx context.Context, destKey string, key string) *redis.IntCmd {
 	ret := _mock.Called(ctx, destKey, key)
@@ -3070,6 +3304,84 @@ func (_c *MockPipeliner_BitOpNot_Call) Return(intCmd *redis.IntCmd) *MockPipelin
 }
 
 func (_c *MockPipeliner_BitOpNot_Call) RunAndReturn(run func(ctx context.Context, destKey string, key string) *redis.IntCmd) *MockPipeliner_BitOpNot_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpOne provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) BitOpOne(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpOne")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_BitOpOne_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpOne'
+type MockPipeliner_BitOpOne_Call struct {
+	*mock.Call
+}
+
+// BitOpOne is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockPipeliner_Expecter) BitOpOne(ctx interface{}, destKey interface{}, keys ...interface{}) *MockPipeliner_BitOpOne_Call {
+	return &MockPipeliner_BitOpOne_Call{Call: _e.mock.On("BitOpOne",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockPipeliner_BitOpOne_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockPipeliner_BitOpOne_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpOne_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_BitOpOne_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_BitOpOne_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockPipeliner_BitOpOne_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -7009,6 +7321,52 @@ func (_c *MockPipeliner_ClusterSlots_Call) Return(clusterSlotsCmd *redis.Cluster
 }
 
 func (_c *MockPipeliner_ClusterSlots_Call) RunAndReturn(run func(ctx context.Context) *redis.ClusterSlotsCmd) *MockPipeliner_ClusterSlots_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// Cmds provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) Cmds() []redis.Cmder {
+	ret := _mock.Called()
+
+	if len(ret) == 0 {
+		panic("no return value specified for Cmds")
+	}
+
+	var r0 []redis.Cmder
+	if returnFunc, ok := ret.Get(0).(func() []redis.Cmder); ok {
+		r0 = returnFunc()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]redis.Cmder)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_Cmds_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Cmds'
+type MockPipeliner_Cmds_Call struct {
+	*mock.Call
+}
+
+// Cmds is a helper method to define mock.On call
+func (_e *MockPipeliner_Expecter) Cmds() *MockPipeliner_Cmds_Call {
+	return &MockPipeliner_Cmds_Call{Call: _e.mock.On("Cmds")}
+}
+
+func (_c *MockPipeliner_Cmds_Call) Run(run func()) *MockPipeliner_Cmds_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_Cmds_Call) Return(cmders []redis.Cmder) *MockPipeliner_Cmds_Call {
+	_c.Call.Return(cmders)
+	return _c
+}
+
+func (_c *MockPipeliner_Cmds_Call) RunAndReturn(run func() []redis.Cmder) *MockPipeliner_Cmds_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -30605,6 +30963,96 @@ func (_c *MockPipeliner_XAck_Call) RunAndReturn(run func(ctx context.Context, st
 	return _c
 }
 
+// XAckDel provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XAckDel(ctx context.Context, stream string, group string, mode string, ids ...string) *redis.SliceCmd {
+	// string
+	_va := make([]interface{}, len(ids))
+	for _i := range ids {
+		_va[_i] = ids[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, stream, group, mode)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XAckDel")
+	}
+
+	var r0 *redis.SliceCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, string, ...string) *redis.SliceCmd); ok {
+		r0 = returnFunc(ctx, stream, group, mode, ids...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.SliceCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XAckDel_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XAckDel'
+type MockPipeliner_XAckDel_Call struct {
+	*mock.Call
+}
+
+// XAckDel is a helper method to define mock.On call
+//   - ctx context.Context
+//   - stream string
+//   - group string
+//   - mode string
+//   - ids ...string
+func (_e *MockPipeliner_Expecter) XAckDel(ctx interface{}, stream interface{}, group interface{}, mode interface{}, ids ...interface{}) *MockPipeliner_XAckDel_Call {
+	return &MockPipeliner_XAckDel_Call{Call: _e.mock.On("XAckDel",
+		append([]interface{}{ctx, stream, group, mode}, ids...)...)}
+}
+
+func (_c *MockPipeliner_XAckDel_Call) Run(run func(ctx context.Context, stream string, group string, mode string, ids ...string)) *MockPipeliner_XAckDel_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		var arg4 []string
+		variadicArgs := make([]string, len(args)-4)
+		for i, a := range args[4:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg4 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XAckDel_Call) Return(sliceCmd *redis.SliceCmd) *MockPipeliner_XAckDel_Call {
+	_c.Call.Return(sliceCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XAckDel_Call) RunAndReturn(run func(ctx context.Context, stream string, group string, mode string, ids ...string) *redis.SliceCmd) *MockPipeliner_XAckDel_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // XAdd provides a mock function for the type MockPipeliner
 func (_mock *MockPipeliner) XAdd(ctx context.Context, a *redis.XAddArgs) *redis.StringCmd {
 	ret := _mock.Called(ctx, a)
@@ -30974,6 +31422,90 @@ func (_c *MockPipeliner_XDel_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_X
 }
 
 func (_c *MockPipeliner_XDel_Call) RunAndReturn(run func(ctx context.Context, stream string, ids ...string) *redis.IntCmd) *MockPipeliner_XDel_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XDelEx provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XDelEx(ctx context.Context, stream string, mode string, ids ...string) *redis.SliceCmd {
+	// string
+	_va := make([]interface{}, len(ids))
+	for _i := range ids {
+		_va[_i] = ids[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, stream, mode)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XDelEx")
+	}
+
+	var r0 *redis.SliceCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, ...string) *redis.SliceCmd); ok {
+		r0 = returnFunc(ctx, stream, mode, ids...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.SliceCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XDelEx_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XDelEx'
+type MockPipeliner_XDelEx_Call struct {
+	*mock.Call
+}
+
+// XDelEx is a helper method to define mock.On call
+//   - ctx context.Context
+//   - stream string
+//   - mode string
+//   - ids ...string
+func (_e *MockPipeliner_Expecter) XDelEx(ctx interface{}, stream interface{}, mode interface{}, ids ...interface{}) *MockPipeliner_XDelEx_Call {
+	return &MockPipeliner_XDelEx_Call{Call: _e.mock.On("XDelEx",
+		append([]interface{}{ctx, stream, mode}, ids...)...)}
+}
+
+func (_c *MockPipeliner_XDelEx_Call) Run(run func(ctx context.Context, stream string, mode string, ids ...string)) *MockPipeliner_XDelEx_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 []string
+		variadicArgs := make([]string, len(args)-3)
+		for i, a := range args[3:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg3 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XDelEx_Call) Return(sliceCmd *redis.SliceCmd) *MockPipeliner_XDelEx_Call {
+	_c.Call.Return(sliceCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XDelEx_Call) RunAndReturn(run func(ctx context.Context, stream string, mode string, ids ...string) *redis.SliceCmd) *MockPipeliner_XDelEx_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -32451,6 +32983,154 @@ func (_c *MockPipeliner_XTrimMaxLenApprox_Call) RunAndReturn(run func(ctx contex
 	return _c
 }
 
+// XTrimMaxLenApproxMode provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XTrimMaxLenApproxMode(ctx context.Context, key string, maxLen int64, limit int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, maxLen, limit, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMaxLenApproxMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int64, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, maxLen, limit, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XTrimMaxLenApproxMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMaxLenApproxMode'
+type MockPipeliner_XTrimMaxLenApproxMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMaxLenApproxMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - maxLen int64
+//   - limit int64
+//   - mode string
+func (_e *MockPipeliner_Expecter) XTrimMaxLenApproxMode(ctx interface{}, key interface{}, maxLen interface{}, limit interface{}, mode interface{}) *MockPipeliner_XTrimMaxLenApproxMode_Call {
+	return &MockPipeliner_XTrimMaxLenApproxMode_Call{Call: _e.mock.On("XTrimMaxLenApproxMode", ctx, key, maxLen, limit, mode)}
+}
+
+func (_c *MockPipeliner_XTrimMaxLenApproxMode_Call) Run(run func(ctx context.Context, key string, maxLen int64, limit int64, mode string)) *MockPipeliner_XTrimMaxLenApproxMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 int64
+		if args[2] != nil {
+			arg2 = args[2].(int64)
+		}
+		var arg3 int64
+		if args[3] != nil {
+			arg3 = args[3].(int64)
+		}
+		var arg4 string
+		if args[4] != nil {
+			arg4 = args[4].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMaxLenApproxMode_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_XTrimMaxLenApproxMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMaxLenApproxMode_Call) RunAndReturn(run func(ctx context.Context, key string, maxLen int64, limit int64, mode string) *redis.IntCmd) *MockPipeliner_XTrimMaxLenApproxMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMaxLenMode provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XTrimMaxLenMode(ctx context.Context, key string, maxLen int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, maxLen, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMaxLenMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, maxLen, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XTrimMaxLenMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMaxLenMode'
+type MockPipeliner_XTrimMaxLenMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMaxLenMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - maxLen int64
+//   - mode string
+func (_e *MockPipeliner_Expecter) XTrimMaxLenMode(ctx interface{}, key interface{}, maxLen interface{}, mode interface{}) *MockPipeliner_XTrimMaxLenMode_Call {
+	return &MockPipeliner_XTrimMaxLenMode_Call{Call: _e.mock.On("XTrimMaxLenMode", ctx, key, maxLen, mode)}
+}
+
+func (_c *MockPipeliner_XTrimMaxLenMode_Call) Run(run func(ctx context.Context, key string, maxLen int64, mode string)) *MockPipeliner_XTrimMaxLenMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 int64
+		if args[2] != nil {
+			arg2 = args[2].(int64)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMaxLenMode_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_XTrimMaxLenMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMaxLenMode_Call) RunAndReturn(run func(ctx context.Context, key string, maxLen int64, mode string) *redis.IntCmd) *MockPipeliner_XTrimMaxLenMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // XTrimMinID provides a mock function for the type MockPipeliner
 func (_mock *MockPipeliner) XTrimMinID(ctx context.Context, key string, minID string) *redis.IntCmd {
 	ret := _mock.Called(ctx, key, minID)
@@ -32583,6 +33263,154 @@ func (_c *MockPipeliner_XTrimMinIDApprox_Call) Return(intCmd *redis.IntCmd) *Moc
 }
 
 func (_c *MockPipeliner_XTrimMinIDApprox_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, limit int64) *redis.IntCmd) *MockPipeliner_XTrimMinIDApprox_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMinIDApproxMode provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XTrimMinIDApproxMode(ctx context.Context, key string, minID string, limit int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, minID, limit, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMinIDApproxMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, minID, limit, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XTrimMinIDApproxMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMinIDApproxMode'
+type MockPipeliner_XTrimMinIDApproxMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMinIDApproxMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - minID string
+//   - limit int64
+//   - mode string
+func (_e *MockPipeliner_Expecter) XTrimMinIDApproxMode(ctx interface{}, key interface{}, minID interface{}, limit interface{}, mode interface{}) *MockPipeliner_XTrimMinIDApproxMode_Call {
+	return &MockPipeliner_XTrimMinIDApproxMode_Call{Call: _e.mock.On("XTrimMinIDApproxMode", ctx, key, minID, limit, mode)}
+}
+
+func (_c *MockPipeliner_XTrimMinIDApproxMode_Call) Run(run func(ctx context.Context, key string, minID string, limit int64, mode string)) *MockPipeliner_XTrimMinIDApproxMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 int64
+		if args[3] != nil {
+			arg3 = args[3].(int64)
+		}
+		var arg4 string
+		if args[4] != nil {
+			arg4 = args[4].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMinIDApproxMode_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_XTrimMinIDApproxMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMinIDApproxMode_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, limit int64, mode string) *redis.IntCmd) *MockPipeliner_XTrimMinIDApproxMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMinIDMode provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) XTrimMinIDMode(ctx context.Context, key string, minID string, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, minID, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMinIDMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, minID, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockPipeliner_XTrimMinIDMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMinIDMode'
+type MockPipeliner_XTrimMinIDMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMinIDMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - minID string
+//   - mode string
+func (_e *MockPipeliner_Expecter) XTrimMinIDMode(ctx interface{}, key interface{}, minID interface{}, mode interface{}) *MockPipeliner_XTrimMinIDMode_Call {
+	return &MockPipeliner_XTrimMinIDMode_Call{Call: _e.mock.On("XTrimMinIDMode", ctx, key, minID, mode)}
+}
+
+func (_c *MockPipeliner_XTrimMinIDMode_Call) Run(run func(ctx context.Context, key string, minID string, mode string)) *MockPipeliner_XTrimMinIDMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMinIDMode_Call) Return(intCmd *redis.IntCmd) *MockPipeliner_XTrimMinIDMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockPipeliner_XTrimMinIDMode_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, mode string) *redis.IntCmd) *MockPipeliner_XTrimMinIDMode_Call {
 	_c.Call.Return(run)
 	return _c
 }
