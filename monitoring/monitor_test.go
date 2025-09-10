@@ -154,6 +154,30 @@ func TestMonitorLogger(t *testing.T) {
 				m.Flush(DefaultFlushWait)
 			},
 		},
+		"info - nil monitor": {
+			doLogging: func(w io.Writer) {
+				var m *Monitor
+				m.Info("Skip this log because it is nil")
+			},
+		},
+		"infof - nil monitor": {
+			doLogging: func(w io.Writer) {
+				var m *Monitor
+				m.Infof("Skip this log because it is nil")
+			},
+		},
+		"error - nil monitor": {
+			doLogging: func(w io.Writer) {
+				var m *Monitor
+				m.Error(errors.New("test error"), "Skip this log because it is nil")
+			},
+		},
+		"errorf - nil monitor": {
+			doLogging: func(w io.Writer) {
+				var m *Monitor
+				m.Errorf(errors.New("test error"), "Skip this log because it is nil")
+			},
+		},
 		"error": {
 			doLogging: func(w io.Writer) {
 				m, err := New(Config{ServerName: "lightning", Environment: "dev", Version: "1.0.0", Writer: w})
@@ -330,6 +354,187 @@ func setupClientTest() (*sentry.Client, *sentry.MockTransport) {
 
 // parseLog first converts []byte into string and then to map.
 // Idea is to mimic actual log line of key value pairs
+func TestMonitor_WithTag(t *testing.T) {
+	type args struct {
+		key   string
+		value string
+	}
+	tcs := map[string]args{
+		"add new tag": {
+			key:   "request_id",
+			value: "123",
+		},
+		"update existing tag": {
+			key:   "server.name",
+			value: "updated-server",
+		},
+		"empty value": {
+			key:   "empty_tag",
+			value: "",
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			// Given
+			m, err := New(Config{ServerName: "test", Environment: "test", Version: "1.0.0"})
+			require.NoError(t, err)
+
+			// When
+			child := m.WithTag(tc.key, tc.value)
+
+			// Then
+			require.NotNil(t, child)
+			require.NotEqual(t, m, child) // Should be different instance
+			require.Contains(t, child.logTags, tc.key)
+			require.Equal(t, tc.value, child.logTags[tc.key])
+			// Parent should remain unchanged
+			if tc.key != "server.name" { // server.name is set during New()
+				require.NotContains(t, m.logTags, tc.key)
+			}
+		})
+	}
+}
+
+func TestMonitor_WithTag_NilMonitor(t *testing.T) {
+	// When
+	child := (*Monitor)(nil).WithTag("key", "value")
+
+	// Then
+	require.Nil(t, child)
+}
+
+func TestMonitor_With(t *testing.T) {
+	type args struct {
+		tags map[string]string
+	}
+	tcs := map[string]args{
+		"add multiple tags": {
+			tags: map[string]string{
+				"request_id": "123",
+				"user_id":    "456",
+			},
+		},
+		"empty map": {
+			tags: map[string]string{},
+		},
+		"nil map": {
+			tags: nil,
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			// Given
+			m, err := New(Config{ServerName: "test", Environment: "test", Version: "1.0.0"})
+			require.NoError(t, err)
+
+			// When
+			child := m.With(tc.tags)
+
+			// Then
+			require.NotNil(t, child)
+			if len(tc.tags) > 0 {
+				require.NotEqual(t, m, child) // Should be different instance only when tags are added
+			}
+			for k, v := range tc.tags {
+				require.Contains(t, child.logTags, k)
+				require.Equal(t, v, child.logTags[k])
+			}
+		})
+	}
+}
+
+func TestMonitor_With_NilMonitor(t *testing.T) {
+	// When
+	child := (*Monitor)(nil).With(map[string]string{"key": "value"})
+
+	// Then
+	require.Nil(t, child)
+}
+
+func TestMonitor_getLogFields(t *testing.T) {
+	tcs := map[string]struct {
+		tags         map[string]string
+		expectedKeys []string
+	}{
+		"with tags": {
+			tags: map[string]string{
+				"key1": "value1",
+				"key2": "value2",
+			},
+			expectedKeys: []string{"key1", "key2"},
+		},
+		"empty tags": {
+			tags:         map[string]string{},
+			expectedKeys: []string{},
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			// Given
+			m := &Monitor{
+				logTags: tc.tags,
+			}
+
+			// When
+			fields := m.getLogFields()
+
+			// Then
+			require.Len(t, fields, len(tc.expectedKeys))
+			for _, key := range tc.expectedKeys {
+				found := false
+				for _, field := range fields {
+					if field.Key == key {
+						require.Equal(t, tc.tags[key], field.String)
+						found = true
+						break
+					}
+				}
+				require.True(t, found, "Expected key %s not found in fields", key)
+			}
+		})
+	}
+}
+
+func TestMonitor_getLogFields_NilMonitor(t *testing.T) {
+	// When
+	fields := (*Monitor)(nil).getLogFields()
+
+	// Then
+	require.Nil(t, fields)
+}
+
+func TestMonitor_Flush(t *testing.T) {
+	// Given
+	m, err := New(Config{ServerName: "test", Environment: "test", Version: "1.0.0"})
+	require.NoError(t, err)
+
+	// When
+	m.Flush(DefaultFlushWait)
+
+	// Then
+	// No panic should occur, and function should complete
+}
+
+func TestMonitor_Flush_NilMonitor(t *testing.T) {
+	// When
+	(*Monitor)(nil).Flush(DefaultFlushWait)
+
+	// Then
+	// No panic should occur
+}
+
 func parseLog(b []byte, skip int) ([]map[string]interface{}, error) {
 	var result []map[string]interface{}
 	for idx, s := range strings.Split(string(b), "\n") {

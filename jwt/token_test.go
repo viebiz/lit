@@ -72,3 +72,94 @@ func BenchmarkToken_signingString(b *testing.B) {
 		}
 	})
 }
+
+func TestNewToken(t *testing.T) {
+	claims := RegisteredClaims{
+		Subject: "test-subject",
+		Issuer:  "test-issuer",
+	}
+
+	tcs := map[string]struct {
+		method SigningMethod
+		claims Claims
+		expAlg string
+		expTyp string
+	}{
+		"HS256": {
+			method: NewHS256(),
+			claims: claims,
+			expAlg: "HS256",
+			expTyp: "JWT",
+		},
+		"RS256": {
+			method: NewRS256(),
+			claims: claims,
+			expAlg: "RS256",
+			expTyp: "JWT",
+		},
+	}
+
+	for scenario, tc := range tcs {
+		t.Run(scenario, func(t *testing.T) {
+			// When
+			token := NewToken(tc.method, tc.claims)
+
+			// Then
+			require.Equal(t, tc.expAlg, token.Header["alg"])
+			require.Equal(t, tc.expTyp, token.Header["typ"])
+			require.Equal(t, tc.claims, token.Claims)
+			require.Equal(t, tc.method, token.signingMethod)
+		})
+	}
+}
+
+func TestToken_signingString(t *testing.T) {
+	iat := time.Date(2024, time.July, 24, 0, 0, 0, 0, time.UTC).Unix()
+	claims := RegisteredClaims{
+		Subject:  "test-subject",
+		IssuedAt: &iat,
+	}
+
+	token := NewToken(NewHS256(), claims)
+
+	t.Run("success", func(t *testing.T) {
+		// When
+		signingString, err := token.signingString()
+
+		// Then
+		require.NoError(t, err)
+		require.Contains(t, string(signingString), ".")
+		parts := string(signingString)
+		require.Contains(t, parts, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9") // base64 of header
+	})
+}
+
+func Test_encodeSegment(t *testing.T) {
+	tcs := map[string]struct {
+		input    []byte
+		expected string
+	}{
+		"simple string": {
+			input:    []byte("hello world"),
+			expected: "aGVsbG8gd29ybGQ",
+		},
+		"empty": {
+			input:    []byte(""),
+			expected: "",
+		},
+		"special chars": {
+			input:    []byte("test+data/with=special?chars"),
+			expected: "dGVzdCtkYXRhL3dpdGg9c3BlY2lhbD9jaGFycw",
+		},
+	}
+
+	for scenario, tc := range tcs {
+		t.Run(scenario, func(t *testing.T) {
+			// When
+			result := encodeSegment(tc.input)
+
+			// Then
+			require.Equal(t, tc.expected, string(result))
+		})
+	}
+}

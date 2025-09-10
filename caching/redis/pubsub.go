@@ -30,7 +30,10 @@ func (client redisClient) Subscribe(ctx context.Context, channels []string, hand
 		rdb:      client.rdb,
 		channels: channels,
 		handler:  handler,
-		monitor:  monitoring.FromContext(ctx),
+		monitor:  monitor,
+		subscribeFunc: func(ctx context.Context, channels ...string) RedisPubSub {
+			return client.rdb.SSubscribe(ctx, channels...)
+		},
 	}
 }
 
@@ -56,11 +59,18 @@ type Subscriber interface {
 	SubscribeWithOptions(ctx context.Context, opts ChannelOption) error
 }
 
+type RedisPubSub interface {
+	Receive(ctx context.Context) (interface{}, error)
+	Channel(opts ...redis.ChannelOption) <-chan *redis.Message
+	Close() error
+}
+
 type subscriber struct {
-	rdb      redis.UniversalClient
-	monitor  *monitoring.Monitor
-	channels []string
-	handler  MessageHandler
+	rdb           redis.UniversalClient
+	monitor       *monitoring.Monitor
+	channels      []string
+	handler       MessageHandler
+	subscribeFunc func(ctx context.Context, channels ...string) RedisPubSub
 }
 
 func (s *subscriber) Subscribe(ctx context.Context) error {
@@ -70,7 +80,7 @@ func (s *subscriber) Subscribe(ctx context.Context) error {
 }
 
 func (s *subscriber) SubscribeWithOptions(ctx context.Context, opts ChannelOption) error {
-	ps := s.rdb.SSubscribe(ctx, s.channels...)
+	ps := s.subscribeFunc(ctx, s.channels...)
 	defer func() {
 		if err := ps.Close(); err != nil {
 			s.monitor.Errorf(err, "[redis_subscriber] Closing subscriber channels: %v", s.channels)
