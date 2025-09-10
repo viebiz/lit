@@ -70,6 +70,7 @@ func TestWithBasicAuth(t *testing.T) {
 	vars := map[string]string{
 		"var1": "one",
 	}
+
 	contentType := "application/json"
 	apiKeyName := "X-API-KEY"
 	apiKeyValue := "this-is-a-secret-key"
@@ -130,4 +131,79 @@ func TestWithBasicAuth(t *testing.T) {
 	require.True(t, called)
 	require.Equal(t, http.StatusAccepted, resp.Status)
 	require.Equal(t, "response body", string(resp.Body))
+}
+
+func TestNewClient_MissingURL(t *testing.T) {
+	pool := NewSharedCustomPool()
+	_, err := NewUnauthenticated(
+		Config{URL: "", Method: http.MethodGet, ServiceName: "svc"}, pool,
+	)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "url is missing")
+}
+
+func TestNewClient_MissingMethod(t *testing.T) {
+	pool := NewSharedCustomPool()
+	_, err := NewUnauthenticated(
+		Config{URL: "http://example.com", Method: "", ServiceName: "svc"}, pool,
+	)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "method is missing")
+}
+
+func TestNewClient_MissingServiceName(t *testing.T) {
+	pool := NewSharedCustomPool()
+	_, err := NewUnauthenticated(
+		Config{URL: "http://example.com", Method: http.MethodGet, ServiceName: ""}, pool,
+	)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "missing service name")
+}
+
+func TestNewWithOAuth(t *testing.T) {
+	pool := NewSharedCustomPool()
+	c, err := NewWithOAuth(
+		Config{URL: "http://example.com", Method: http.MethodGet, ServiceName: "svc"}, pool,
+		OAuthConfig{
+			TokenURL:         "http://token.url",
+			ClientID:         "client_id",
+			ClientSecret:     "client_secret",
+			ReceiverAudience: "audience",
+		},
+	)
+	require.NoError(t, err)
+	require.NotNil(t, c)
+	require.Equal(t, "http://example.com", c.url)
+	require.Equal(t, http.MethodGet, c.method)
+	require.Equal(t, "svc", c.serviceName)
+}
+
+func TestOverrideUserAgent(t *testing.T) {
+	pool := NewSharedCustomPool()
+	c, err := NewUnauthenticated(
+		Config{URL: "http://example.com", Method: http.MethodGet, ServiceName: "svc"}, pool,
+		OverrideUserAgent("test-agent"),
+	)
+	require.NoError(t, err)
+	require.Equal(t, "test-agent", c.userAgent)
+}
+
+func TestDisableRequestBodyLogging(t *testing.T) {
+	pool := NewSharedCustomPool()
+	c, err := NewUnauthenticated(
+		Config{URL: "http://example.com", Method: http.MethodGet, ServiceName: "svc"}, pool,
+		DisableRequestBodyLogging(),
+	)
+	require.NoError(t, err)
+	require.True(t, c.disableReqBodyLogging)
+}
+
+func TestDisableResponseBodyLogging(t *testing.T) {
+	pool := NewSharedCustomPool()
+	c, err := NewUnauthenticated(
+		Config{URL: "http://example.com", Method: http.MethodGet, ServiceName: "svc"}, pool,
+		DisableResponseBodyLogging(),
+	)
+	require.NoError(t, err)
+	require.True(t, c.disableRespBodyLogging)
 }

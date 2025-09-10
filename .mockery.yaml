@@ -1,37 +1,32 @@
-with-expecter: True
-resolve-type-alias: False
-issue-845-fix: True
+template: testify
+template-data:
+  unroll-variadic: true
 packages:
-  github.com/viebiz/lit:
-    config:
-      recursive: True
-      inpackage: True
-      dir: "{{.InterfaceDir}}"
-      mockname: "Mock{{.InterfaceName}}"
-      outpkg: "{{.PackageName}}"
-      filename: "mock_{{.InterfaceName}}.go"
-      all: True
-  github.com/redis/go-redis/v9:
-    config:
-      dir: "mocks/mockredis"
-      mockname: "Mock{{.InterfaceName}}"
-      outpkg: "mockredis"
-      filename: "mock_{{.InterfaceName}}.go"
-      all: False
-    interfaces:
-      UniversalClient:
-        config:
-      Cmdable:
-        config:
-      Pipeliner:
-        config:
   github.com/casbin/casbin/v2:
     config:
-      dir: "mocks/mockcasbin"
-      mockname: "Mock{{.InterfaceName}}"
-      outpkg: "mockcasbin"
+      all: false
+      dir: mocks/mockcasbin
+      structname: Mock{{.InterfaceName}}
       filename: "mock_{{.InterfaceName}}.go"
-      all: False
+      pkgname: mockcasbin
     interfaces:
-      IEnforcer:
-        config:
+      IEnforcer: {}
+  github.com/redis/go-redis/v9:
+    config:
+      all: false
+      dir: mocks/mockredis
+      structname: Mock{{.InterfaceName}}
+      filename: "mock_{{.InterfaceName}}.go"
+      pkgname: mockredis
+    interfaces:
+      Cmdable: {}
+      Pipeliner: {}
+      UniversalClient: {}
+  github.com/viebiz/lit:
+    config:
+      all: true
+      dir: '{{.InterfaceDir}}'
+      structname: Mock{{.InterfaceName}}
+      filename: "mock_{{.InterfaceName}}.go"
+      pkgname: '{{.SrcPackageName}}'
+      recursive: true

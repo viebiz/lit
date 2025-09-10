@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/mock"
@@ -168,6 +169,151 @@ func TestSubscriber_handleMessage(t *testing.T) {
 			}
 			s.handleMessage(tc.givenMsg)
 			require.True(t, called || tc.panicInHandle)
+		})
+	}
+}
+
+func TestSubscriber_Subscribe(t *testing.T) {
+	type args struct {
+		givenContext  context.Context
+		givenChannels []string
+		givenHandler  MessageHandler
+	}
+	tcs := map[string]args{
+		"success": {
+			givenContext:  context.Background(),
+			givenChannels: []string{"test-channel"},
+			givenHandler: func(ctx context.Context, msg Message) error {
+				return nil
+			},
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			// Given
+			mockUniversalClient := new(mockredis.MockUniversalClient)
+
+			// When
+			instance := redisClient{
+				rdb: mockUniversalClient,
+			}
+			sub := instance.Subscribe(tc.givenContext, tc.givenChannels, tc.givenHandler)
+
+			// Then
+			require.NotNil(t, sub)
+			require.IsType(t, &subscriber{}, sub)
+		})
+	}
+}
+
+func TestSubscriber_SubscribeWithOptions(t *testing.T) {
+	type args struct {
+		givenContext  context.Context
+		givenChannels []string
+		givenHandler  MessageHandler
+		givenOpts     ChannelOption
+		receiveErr    error
+		channelClosed bool
+		contextDone   bool
+	}
+	tcs := map[string]args{
+		"success: receives message and handles": {
+			givenContext: func() context.Context {
+				ctx, cancel := context.WithCancel(context.Background())
+				go func() {
+					time.Sleep(10 * time.Millisecond) // Wait for message to be processed
+					cancel()
+				}()
+				return ctx
+			}(),
+			givenChannels: []string{"test-channel"},
+			givenHandler: func(ctx context.Context, msg Message) error {
+				return nil
+			},
+			givenOpts: ChannelOption{},
+		},
+		"error: receive fails": {
+			givenContext:  context.Background(),
+			givenChannels: []string{"test-channel"},
+			givenHandler: func(ctx context.Context, msg Message) error {
+				return nil
+			},
+			givenOpts:  ChannelOption{},
+			receiveErr: errors.New("receive error"),
+		},
+		"channel closed": {
+			givenContext:  context.Background(),
+			givenChannels: []string{"test-channel"},
+			givenHandler: func(ctx context.Context, msg Message) error {
+				return nil
+			},
+			givenOpts:     ChannelOption{},
+			channelClosed: true,
+		},
+		"context done": {
+			givenContext: func() context.Context {
+				ctx, cancel := context.WithCancel(context.Background())
+				cancel()
+				return ctx
+			}(),
+			givenChannels: []string{"test-channel"},
+			givenHandler: func(ctx context.Context, msg Message) error {
+				return nil
+			},
+			givenOpts:   ChannelOption{},
+			contextDone: true,
+		},
+	}
+
+	for scenario, tc := range tcs {
+		tc := tc
+		t.Run(scenario, func(t *testing.T) {
+			t.Parallel()
+
+			// Given
+			mockPubSub := new(mockredis.MockPubSub)
+			mockPubSub.On("Receive", mock.Anything).Return(nil, tc.receiveErr)
+			if tc.receiveErr == nil {
+				msgCh := make(chan *redis.Message, 1)
+				if tc.channelClosed {
+					close(msgCh)
+				} else {
+					msgCh <- &redis.Message{Channel: "test-channel", Payload: "test"}
+				}
+				mockPubSub.On("Channel", mock.Anything).Return((<-chan *redis.Message)(msgCh))
+			}
+			mockPubSub.On("Close").Return(nil)
+
+			s := &subscriber{
+				channels: tc.givenChannels,
+				handler:  tc.givenHandler,
+				subscribeFunc: func(ctx context.Context, channels ...string) RedisPubSub {
+					return mockPubSub
+				},
+			}
+
+			// When
+			err := s.SubscribeWithOptions(tc.givenContext, tc.givenOpts)
+
+			// Then
+			if tc.receiveErr != nil {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "initial subscribe/receive failed")
+			} else if tc.channelClosed {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "channel was closed by redis SDK")
+			} else if tc.contextDone {
+				require.NoError(t, err)
+			} else {
+				// For success case, we need to cancel context to exit the loop
+				// But since it's a unit test, we'll assume it runs without error
+				require.NoError(t, err)
+			}
+			mockPubSub.AssertExpectations(t)
 		})
 	}
 }
