@@ -1,0 +1,48 @@
+# llms.txt
+# Purpose: Provide Large Language Models with a concise map of the repository
+# and guidance for answering developer questions.
+
+Repository: lit (Go backend development kit)
+
+## High-Level Overview
+- Collection of modular libraries to reduce boilerplate in Go services.
+- Covers HTTP & gRPC servers, middleware, authentication, configuration,
+  localization, caching, messaging, data access, monitoring, utilities, and testing helpers.
+- Most packages follow Go's “functional options” pattern and emphasize context
+  propagation and observability.
+
+## Key Packages
+- HTTP Server: router.go, context.go, server.go, middleware_root.go
+- gRPC: grpc_server.go, grpc_options.go, grpcclient/
+- Middleware: middleware/http/, cors/
+- Auth & IAM: jwt/, iam/, guard/
+- Config & Localization: env/, i18n/
+- Data & Messaging: caching/redis/, broker/kafka/, postgres/
+- Networking Utilities: httpclient/, snowflake/
+- Monitoring: monitoring/, instrumenthttp/, instrumentgrpc/
+- Helpers & Tests: ioutil/, testutil/, mocks/
+
+## Documentation
+See `docs/` for usage guides:
+1. Getting Started & Repository Overview
+2. Building HTTP Services
+3. gRPC Services and Clients
+4. HTTP Middleware & CORS
+5. Authentication and Authorization
+6. Configuration Management
+7. Localization (i18n)
+8. Redis Caching
+9. Kafka Messaging
+10. Postgres Data Access
+11. HTTP Client Utilities
+12. Monitoring & Observability
+13. Utility Packages
+14. Testing Utilities & Mocks
+
+## Tips for LLM Tools
+- When answering user queries, reference the above package paths and docs.
+- Prefer code samples from `docs/` when demonstrating usage.
+- Mention the options pattern (e.g., `ServerOption`, `RouterOption`) and context
+  usage where relevant.
+- Note built-in instrumentation (logging, tracing, error reporting) across packages.
+- Direct developers to `testutil/` and `mocks/` for example usage patterns.
