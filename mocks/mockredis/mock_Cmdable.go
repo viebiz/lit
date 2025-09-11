@@ -2885,6 +2885,240 @@ func (_c *MockCmdable_BitOpAnd_Call) RunAndReturn(run func(ctx context.Context, 
 	return _c
 }
 
+// BitOpAndOr provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) BitOpAndOr(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpAndOr")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_BitOpAndOr_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpAndOr'
+type MockCmdable_BitOpAndOr_Call struct {
+	*mock.Call
+}
+
+// BitOpAndOr is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockCmdable_Expecter) BitOpAndOr(ctx interface{}, destKey interface{}, keys ...interface{}) *MockCmdable_BitOpAndOr_Call {
+	return &MockCmdable_BitOpAndOr_Call{Call: _e.mock.On("BitOpAndOr",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockCmdable_BitOpAndOr_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockCmdable_BitOpAndOr_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_BitOpAndOr_Call) Return(intCmd *redis.IntCmd) *MockCmdable_BitOpAndOr_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_BitOpAndOr_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockCmdable_BitOpAndOr_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpDiff provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) BitOpDiff(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpDiff")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_BitOpDiff_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpDiff'
+type MockCmdable_BitOpDiff_Call struct {
+	*mock.Call
+}
+
+// BitOpDiff is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockCmdable_Expecter) BitOpDiff(ctx interface{}, destKey interface{}, keys ...interface{}) *MockCmdable_BitOpDiff_Call {
+	return &MockCmdable_BitOpDiff_Call{Call: _e.mock.On("BitOpDiff",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockCmdable_BitOpDiff_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockCmdable_BitOpDiff_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_BitOpDiff_Call) Return(intCmd *redis.IntCmd) *MockCmdable_BitOpDiff_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_BitOpDiff_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockCmdable_BitOpDiff_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpDiff1 provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) BitOpDiff1(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpDiff1")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_BitOpDiff1_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpDiff1'
+type MockCmdable_BitOpDiff1_Call struct {
+	*mock.Call
+}
+
+// BitOpDiff1 is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockCmdable_Expecter) BitOpDiff1(ctx interface{}, destKey interface{}, keys ...interface{}) *MockCmdable_BitOpDiff1_Call {
+	return &MockCmdable_BitOpDiff1_Call{Call: _e.mock.On("BitOpDiff1",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockCmdable_BitOpDiff1_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockCmdable_BitOpDiff1_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_BitOpDiff1_Call) Return(intCmd *redis.IntCmd) *MockCmdable_BitOpDiff1_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_BitOpDiff1_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockCmdable_BitOpDiff1_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // BitOpNot provides a mock function for the type MockCmdable
 func (_mock *MockCmdable) BitOpNot(ctx context.Context, destKey string, key string) *redis.IntCmd {
 	ret := _mock.Called(ctx, destKey, key)
@@ -2946,6 +3180,84 @@ func (_c *MockCmdable_BitOpNot_Call) Return(intCmd *redis.IntCmd) *MockCmdable_B
 }
 
 func (_c *MockCmdable_BitOpNot_Call) RunAndReturn(run func(ctx context.Context, destKey string, key string) *redis.IntCmd) *MockCmdable_BitOpNot_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// BitOpOne provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) BitOpOne(ctx context.Context, destKey string, keys ...string) *redis.IntCmd {
+	// string
+	_va := make([]interface{}, len(keys))
+	for _i := range keys {
+		_va[_i] = keys[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, destKey)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BitOpOne")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, ...string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, destKey, keys...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_BitOpOne_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BitOpOne'
+type MockCmdable_BitOpOne_Call struct {
+	*mock.Call
+}
+
+// BitOpOne is a helper method to define mock.On call
+//   - ctx context.Context
+//   - destKey string
+//   - keys ...string
+func (_e *MockCmdable_Expecter) BitOpOne(ctx interface{}, destKey interface{}, keys ...interface{}) *MockCmdable_BitOpOne_Call {
+	return &MockCmdable_BitOpOne_Call{Call: _e.mock.On("BitOpOne",
+		append([]interface{}{ctx, destKey}, keys...)...)}
+}
+
+func (_c *MockCmdable_BitOpOne_Call) Run(run func(ctx context.Context, destKey string, keys ...string)) *MockCmdable_BitOpOne_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		variadicArgs := make([]string, len(args)-2)
+		for i, a := range args[2:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_BitOpOne_Call) Return(intCmd *redis.IntCmd) *MockCmdable_BitOpOne_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_BitOpOne_Call) RunAndReturn(run func(ctx context.Context, destKey string, keys ...string) *redis.IntCmd) *MockCmdable_BitOpOne_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -29899,6 +30211,96 @@ func (_c *MockCmdable_XAck_Call) RunAndReturn(run func(ctx context.Context, stre
 	return _c
 }
 
+// XAckDel provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XAckDel(ctx context.Context, stream string, group string, mode string, ids ...string) *redis.SliceCmd {
+	// string
+	_va := make([]interface{}, len(ids))
+	for _i := range ids {
+		_va[_i] = ids[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, stream, group, mode)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XAckDel")
+	}
+
+	var r0 *redis.SliceCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, string, ...string) *redis.SliceCmd); ok {
+		r0 = returnFunc(ctx, stream, group, mode, ids...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.SliceCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XAckDel_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XAckDel'
+type MockCmdable_XAckDel_Call struct {
+	*mock.Call
+}
+
+// XAckDel is a helper method to define mock.On call
+//   - ctx context.Context
+//   - stream string
+//   - group string
+//   - mode string
+//   - ids ...string
+func (_e *MockCmdable_Expecter) XAckDel(ctx interface{}, stream interface{}, group interface{}, mode interface{}, ids ...interface{}) *MockCmdable_XAckDel_Call {
+	return &MockCmdable_XAckDel_Call{Call: _e.mock.On("XAckDel",
+		append([]interface{}{ctx, stream, group, mode}, ids...)...)}
+}
+
+func (_c *MockCmdable_XAckDel_Call) Run(run func(ctx context.Context, stream string, group string, mode string, ids ...string)) *MockCmdable_XAckDel_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		var arg4 []string
+		variadicArgs := make([]string, len(args)-4)
+		for i, a := range args[4:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg4 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XAckDel_Call) Return(sliceCmd *redis.SliceCmd) *MockCmdable_XAckDel_Call {
+	_c.Call.Return(sliceCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XAckDel_Call) RunAndReturn(run func(ctx context.Context, stream string, group string, mode string, ids ...string) *redis.SliceCmd) *MockCmdable_XAckDel_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // XAdd provides a mock function for the type MockCmdable
 func (_mock *MockCmdable) XAdd(ctx context.Context, a *redis.XAddArgs) *redis.StringCmd {
 	ret := _mock.Called(ctx, a)
@@ -30268,6 +30670,90 @@ func (_c *MockCmdable_XDel_Call) Return(intCmd *redis.IntCmd) *MockCmdable_XDel_
 }
 
 func (_c *MockCmdable_XDel_Call) RunAndReturn(run func(ctx context.Context, stream string, ids ...string) *redis.IntCmd) *MockCmdable_XDel_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XDelEx provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XDelEx(ctx context.Context, stream string, mode string, ids ...string) *redis.SliceCmd {
+	// string
+	_va := make([]interface{}, len(ids))
+	for _i := range ids {
+		_va[_i] = ids[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx, stream, mode)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XDelEx")
+	}
+
+	var r0 *redis.SliceCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, ...string) *redis.SliceCmd); ok {
+		r0 = returnFunc(ctx, stream, mode, ids...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.SliceCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XDelEx_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XDelEx'
+type MockCmdable_XDelEx_Call struct {
+	*mock.Call
+}
+
+// XDelEx is a helper method to define mock.On call
+//   - ctx context.Context
+//   - stream string
+//   - mode string
+//   - ids ...string
+func (_e *MockCmdable_Expecter) XDelEx(ctx interface{}, stream interface{}, mode interface{}, ids ...interface{}) *MockCmdable_XDelEx_Call {
+	return &MockCmdable_XDelEx_Call{Call: _e.mock.On("XDelEx",
+		append([]interface{}{ctx, stream, mode}, ids...)...)}
+}
+
+func (_c *MockCmdable_XDelEx_Call) Run(run func(ctx context.Context, stream string, mode string, ids ...string)) *MockCmdable_XDelEx_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 []string
+		variadicArgs := make([]string, len(args)-3)
+		for i, a := range args[3:] {
+			if a != nil {
+				variadicArgs[i] = a.(string)
+			}
+		}
+		arg3 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XDelEx_Call) Return(sliceCmd *redis.SliceCmd) *MockCmdable_XDelEx_Call {
+	_c.Call.Return(sliceCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XDelEx_Call) RunAndReturn(run func(ctx context.Context, stream string, mode string, ids ...string) *redis.SliceCmd) *MockCmdable_XDelEx_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -31745,6 +32231,154 @@ func (_c *MockCmdable_XTrimMaxLenApprox_Call) RunAndReturn(run func(ctx context.
 	return _c
 }
 
+// XTrimMaxLenApproxMode provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XTrimMaxLenApproxMode(ctx context.Context, key string, maxLen int64, limit int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, maxLen, limit, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMaxLenApproxMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int64, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, maxLen, limit, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XTrimMaxLenApproxMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMaxLenApproxMode'
+type MockCmdable_XTrimMaxLenApproxMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMaxLenApproxMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - maxLen int64
+//   - limit int64
+//   - mode string
+func (_e *MockCmdable_Expecter) XTrimMaxLenApproxMode(ctx interface{}, key interface{}, maxLen interface{}, limit interface{}, mode interface{}) *MockCmdable_XTrimMaxLenApproxMode_Call {
+	return &MockCmdable_XTrimMaxLenApproxMode_Call{Call: _e.mock.On("XTrimMaxLenApproxMode", ctx, key, maxLen, limit, mode)}
+}
+
+func (_c *MockCmdable_XTrimMaxLenApproxMode_Call) Run(run func(ctx context.Context, key string, maxLen int64, limit int64, mode string)) *MockCmdable_XTrimMaxLenApproxMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 int64
+		if args[2] != nil {
+			arg2 = args[2].(int64)
+		}
+		var arg3 int64
+		if args[3] != nil {
+			arg3 = args[3].(int64)
+		}
+		var arg4 string
+		if args[4] != nil {
+			arg4 = args[4].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMaxLenApproxMode_Call) Return(intCmd *redis.IntCmd) *MockCmdable_XTrimMaxLenApproxMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMaxLenApproxMode_Call) RunAndReturn(run func(ctx context.Context, key string, maxLen int64, limit int64, mode string) *redis.IntCmd) *MockCmdable_XTrimMaxLenApproxMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMaxLenMode provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XTrimMaxLenMode(ctx context.Context, key string, maxLen int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, maxLen, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMaxLenMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, maxLen, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XTrimMaxLenMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMaxLenMode'
+type MockCmdable_XTrimMaxLenMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMaxLenMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - maxLen int64
+//   - mode string
+func (_e *MockCmdable_Expecter) XTrimMaxLenMode(ctx interface{}, key interface{}, maxLen interface{}, mode interface{}) *MockCmdable_XTrimMaxLenMode_Call {
+	return &MockCmdable_XTrimMaxLenMode_Call{Call: _e.mock.On("XTrimMaxLenMode", ctx, key, maxLen, mode)}
+}
+
+func (_c *MockCmdable_XTrimMaxLenMode_Call) Run(run func(ctx context.Context, key string, maxLen int64, mode string)) *MockCmdable_XTrimMaxLenMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 int64
+		if args[2] != nil {
+			arg2 = args[2].(int64)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMaxLenMode_Call) Return(intCmd *redis.IntCmd) *MockCmdable_XTrimMaxLenMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMaxLenMode_Call) RunAndReturn(run func(ctx context.Context, key string, maxLen int64, mode string) *redis.IntCmd) *MockCmdable_XTrimMaxLenMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // XTrimMinID provides a mock function for the type MockCmdable
 func (_mock *MockCmdable) XTrimMinID(ctx context.Context, key string, minID string) *redis.IntCmd {
 	ret := _mock.Called(ctx, key, minID)
@@ -31877,6 +32511,154 @@ func (_c *MockCmdable_XTrimMinIDApprox_Call) Return(intCmd *redis.IntCmd) *MockC
 }
 
 func (_c *MockCmdable_XTrimMinIDApprox_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, limit int64) *redis.IntCmd) *MockCmdable_XTrimMinIDApprox_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMinIDApproxMode provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XTrimMinIDApproxMode(ctx context.Context, key string, minID string, limit int64, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, minID, limit, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMinIDApproxMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, int64, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, minID, limit, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XTrimMinIDApproxMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMinIDApproxMode'
+type MockCmdable_XTrimMinIDApproxMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMinIDApproxMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - minID string
+//   - limit int64
+//   - mode string
+func (_e *MockCmdable_Expecter) XTrimMinIDApproxMode(ctx interface{}, key interface{}, minID interface{}, limit interface{}, mode interface{}) *MockCmdable_XTrimMinIDApproxMode_Call {
+	return &MockCmdable_XTrimMinIDApproxMode_Call{Call: _e.mock.On("XTrimMinIDApproxMode", ctx, key, minID, limit, mode)}
+}
+
+func (_c *MockCmdable_XTrimMinIDApproxMode_Call) Run(run func(ctx context.Context, key string, minID string, limit int64, mode string)) *MockCmdable_XTrimMinIDApproxMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 int64
+		if args[3] != nil {
+			arg3 = args[3].(int64)
+		}
+		var arg4 string
+		if args[4] != nil {
+			arg4 = args[4].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMinIDApproxMode_Call) Return(intCmd *redis.IntCmd) *MockCmdable_XTrimMinIDApproxMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMinIDApproxMode_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, limit int64, mode string) *redis.IntCmd) *MockCmdable_XTrimMinIDApproxMode_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// XTrimMinIDMode provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) XTrimMinIDMode(ctx context.Context, key string, minID string, mode string) *redis.IntCmd {
+	ret := _mock.Called(ctx, key, minID, mode)
+
+	if len(ret) == 0 {
+		panic("no return value specified for XTrimMinIDMode")
+	}
+
+	var r0 *redis.IntCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, string) *redis.IntCmd); ok {
+		r0 = returnFunc(ctx, key, minID, mode)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.IntCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_XTrimMinIDMode_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'XTrimMinIDMode'
+type MockCmdable_XTrimMinIDMode_Call struct {
+	*mock.Call
+}
+
+// XTrimMinIDMode is a helper method to define mock.On call
+//   - ctx context.Context
+//   - key string
+//   - minID string
+//   - mode string
+func (_e *MockCmdable_Expecter) XTrimMinIDMode(ctx interface{}, key interface{}, minID interface{}, mode interface{}) *MockCmdable_XTrimMinIDMode_Call {
+	return &MockCmdable_XTrimMinIDMode_Call{Call: _e.mock.On("XTrimMinIDMode", ctx, key, minID, mode)}
+}
+
+func (_c *MockCmdable_XTrimMinIDMode_Call) Run(run func(ctx context.Context, key string, minID string, mode string)) *MockCmdable_XTrimMinIDMode_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMinIDMode_Call) Return(intCmd *redis.IntCmd) *MockCmdable_XTrimMinIDMode_Call {
+	_c.Call.Return(intCmd)
+	return _c
+}
+
+func (_c *MockCmdable_XTrimMinIDMode_Call) RunAndReturn(run func(ctx context.Context, key string, minID string, mode string) *redis.IntCmd) *MockCmdable_XTrimMinIDMode_Call {
 	_c.Call.Return(run)
 	return _c
 }
