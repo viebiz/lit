@@ -31,11 +31,11 @@ func (e *Enforcer) GetUsersForRoleInDomain(name string, domain string) []string 
 
 // GetRolesForUserInDomain gets the roles that a user has inside a domain.
 func (e *Enforcer) GetRolesForUserInDomain(name string, domain string) []string {
-	if e.GetRoleManager() == nil {
-		return nil
+	if rm := e.GetRoleManager(); rm != nil {
+		res, _ := rm.GetRoles(name, domain)
+		return res
 	}
-	res, _ := e.GetRoleManager().GetRoles(name, domain)
-	return res
+	return nil
 }
 
 // GetPermissionsForUserInDomain gets permissions for a user or role inside a domain.
