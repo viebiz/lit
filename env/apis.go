@@ -10,7 +10,7 @@ import (
 const (
 	defaultConfigPath  = "."
 	defaultFormat      = "env"
-	defaultEnvFilename = "config.env"
+	defaultEnvFilename = ".env"
 	envVarPrefix       = "app"
 )
 

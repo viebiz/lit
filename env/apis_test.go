@@ -121,6 +121,9 @@ func TestReadAppConfig(t *testing.T) {
 }
 
 func TestReadAppConfig_UnmarshalError(t *testing.T) {
+	end := setupDefaultENV(t)
+	defer end()
+
 	// Given
 	type config struct {
 		AppName chan int `mapstructure:"APP_NAME"` // A channel can't be unmarshaled, forcing an error
@@ -132,4 +135,18 @@ func TestReadAppConfig_UnmarshalError(t *testing.T) {
 	// Then
 	require.Zero(t, cfg)
 	require.ErrorContains(t, err, "unmarshal to object error")
+}
+
+func setupDefaultENV(t *testing.T) func() {
+	envFile, err := os.Create(".env")
+	require.NoError(t, err)
+
+	_, err = envFile.WriteString(`APP_NAME=lightning\nLANG=en,vi\nDB.URL=postgres:thisisurl\nWEB.HOST=0.0.0.0\nWEB.PORT=8080\n`)
+	require.NoError(t, err)
+	require.NoError(t, envFile.Sync())
+
+	return func() {
+		require.NoError(t, envFile.Close())
+		require.NoError(t, os.Remove(envFile.Name()))
+	}
 }
