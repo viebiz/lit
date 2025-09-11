@@ -206,6 +206,8 @@ func (c litContext) Error(err error) {
 			Code:   http.StatusText(http.StatusInternalServerError),
 			Desc:   "Internal Server Error",
 		}
+
+		monitoring.FromContext(c.Request().Context()).Errorf(err, "Server error")
 	}
 
 	switch c.Request().Method {
