@@ -90,6 +90,23 @@ func TestRootMiddleware(t *testing.T) {
 				{"level": "INFO", "ts": "2025-02-23T18:23:26.434+0700", "msg": "http.incoming_request", "http.request.method": "PATCH", "url.path": "/ping", "url.query": "", "http.request.body": map[string]any{"message": "pong"}, "http.response.body.size": float64(67), "http.response.status_code": float64(400), "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
 			},
 		},
+		"error - Invalid request": {
+			givenReq: httptest.NewRequest(http.MethodPatch, "/ping", bytes.NewBufferString(`{"message":"pong"}`)),
+			hdl: handler{
+				Method: http.MethodPatch,
+				Path:   "/ping",
+				Func: func(c Context) error {
+					return errors.New("simulated server error")
+				},
+			},
+			expStatus: http.StatusInternalServerError,
+			expBody:   "{\"error\":\"Internal Server Error\",\"error_description\":\"Internal Server Error\"}\n",
+			expLogs: []map[string]interface{}{
+				{"level": "ERROR", "ts": "2025-09-11T10:04:33.991+0700", "msg": "Server error. Err: simulated server error", "span_id": "0000000000000001", "version": "1.0.0", "server.name": "lightning", "environment": "dev", "trace_id": "00000000000000000000000000000001", "error.kind": "*errors.errorString", "error.message": "simulated server error"},
+				{"level": "INFO", "ts": "2025-02-23T18:18:48.186+0700", "msg": "[incoming_request] Wrote response", "http.request.method": "PATCH", "url.path": "/ping", "http.response.body": map[string]any{"error": "Internal Server Error", "error_description": "Internal Server Error"}, "server.name": "lightning", "environment": "dev", "version": "1.0.0", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001"},
+				{"level": "INFO", "ts": "2025-09-11T10:04:33.992+0700", "msg": "http.incoming_request", "http.request.method": "PATCH", "url.path": "/ping", "url.query": "", "http.request.body": map[string]any{"message": "pong"}, "http.response.status_code": float64(500), "http.response.body.size": float64(78), "environment": "dev", "trace_id": "00000000000000000000000000000001", "span_id": "0000000000000001", "version": "1.0.0", "server.name": "lightning"},
+			},
+		},
 		"error - PANIC request": {
 			givenReq: httptest.NewRequest(http.MethodPatch, "/ping", bytes.NewBufferString(`{"message":"pong"}`)),
 			hdl: handler{
