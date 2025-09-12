@@ -2614,6 +2614,76 @@ func (_c *MockPipeliner_BZPopMin_Call) RunAndReturn(run func(ctx context.Context
 	return _c
 }
 
+// BatchProcess provides a mock function for the type MockPipeliner
+func (_mock *MockPipeliner) BatchProcess(ctx context.Context, cmd ...redis.Cmder) error {
+	// redis.Cmder
+	_va := make([]interface{}, len(cmd))
+	for _i := range cmd {
+		_va[_i] = cmd[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, ctx)
+	_ca = append(_ca, _va...)
+	ret := _mock.Called(_ca...)
+
+	if len(ret) == 0 {
+		panic("no return value specified for BatchProcess")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, ...redis.Cmder) error); ok {
+		r0 = returnFunc(ctx, cmd...)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockPipeliner_BatchProcess_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'BatchProcess'
+type MockPipeliner_BatchProcess_Call struct {
+	*mock.Call
+}
+
+// BatchProcess is a helper method to define mock.On call
+//   - ctx context.Context
+//   - cmd ...redis.Cmder
+func (_e *MockPipeliner_Expecter) BatchProcess(ctx interface{}, cmd ...interface{}) *MockPipeliner_BatchProcess_Call {
+	return &MockPipeliner_BatchProcess_Call{Call: _e.mock.On("BatchProcess",
+		append([]interface{}{ctx}, cmd...)...)}
+}
+
+func (_c *MockPipeliner_BatchProcess_Call) Run(run func(ctx context.Context, cmd ...redis.Cmder)) *MockPipeliner_BatchProcess_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 []redis.Cmder
+		variadicArgs := make([]redis.Cmder, len(args)-1)
+		for i, a := range args[1:] {
+			if a != nil {
+				variadicArgs[i] = a.(redis.Cmder)
+			}
+		}
+		arg1 = variadicArgs
+		run(
+			arg0,
+			arg1...,
+		)
+	})
+	return _c
+}
+
+func (_c *MockPipeliner_BatchProcess_Call) Return(err error) *MockPipeliner_BatchProcess_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockPipeliner_BatchProcess_Call) RunAndReturn(run func(ctx context.Context, cmd ...redis.Cmder) error) *MockPipeliner_BatchProcess_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // BgRewriteAOF provides a mock function for the type MockPipeliner
 func (_mock *MockPipeliner) BgRewriteAOF(ctx context.Context) *redis.StatusCmd {
 	ret := _mock.Called(ctx)
