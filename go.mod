@@ -1,6 +1,6 @@
 module github.com/viebiz/lit
 
-go 1.24.5
+go 1.24.6
 
 require (
 	github.com/IBM/sarama v1.46.0
@@ -8,7 +8,7 @@ require (
 	github.com/casbin/gorm-adapter/v3 v3.36.0
 	github.com/casbin/govaluate v1.10.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/getsentry/sentry-go v0.35.1
+	github.com/getsentry/sentry-go v0.35.2
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/validator/v10 v10.27.0
@@ -17,8 +17,8 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/redis/go-redis/extra/rediscmd/v9 v9.13.0
-	github.com/redis/go-redis/v9 v9.13.0
+	github.com/redis/go-redis/extra/rediscmd/v9 v9.14.0
+	github.com/redis/go-redis/v9 v9.14.0
 	github.com/sony/sonyflake v1.3.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
@@ -31,10 +31,10 @@ require (
 	go.uber.org/zap v1.27.0
 	golang.org/x/oauth2 v0.31.0
 	golang.org/x/text v0.29.0
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.9
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.5
+	gorm.io/gorm v1.31.0
 )
 
 require (
