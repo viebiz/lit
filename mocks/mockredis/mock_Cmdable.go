@@ -5512,6 +5512,71 @@ func (_c *MockCmdable_ClientList_Call) RunAndReturn(run func(ctx context.Context
 	return _c
 }
 
+// ClientMaintNotifications provides a mock function for the type MockCmdable
+func (_mock *MockCmdable) ClientMaintNotifications(ctx context.Context, enabled bool, endpointType string) *redis.StatusCmd {
+	ret := _mock.Called(ctx, enabled, endpointType)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ClientMaintNotifications")
+	}
+
+	var r0 *redis.StatusCmd
+	if returnFunc, ok := ret.Get(0).(func(context.Context, bool, string) *redis.StatusCmd); ok {
+		r0 = returnFunc(ctx, enabled, endpointType)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*redis.StatusCmd)
+		}
+	}
+	return r0
+}
+
+// MockCmdable_ClientMaintNotifications_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ClientMaintNotifications'
+type MockCmdable_ClientMaintNotifications_Call struct {
+	*mock.Call
+}
+
+// ClientMaintNotifications is a helper method to define mock.On call
+//   - ctx context.Context
+//   - enabled bool
+//   - endpointType string
+func (_e *MockCmdable_Expecter) ClientMaintNotifications(ctx interface{}, enabled interface{}, endpointType interface{}) *MockCmdable_ClientMaintNotifications_Call {
+	return &MockCmdable_ClientMaintNotifications_Call{Call: _e.mock.On("ClientMaintNotifications", ctx, enabled, endpointType)}
+}
+
+func (_c *MockCmdable_ClientMaintNotifications_Call) Run(run func(ctx context.Context, enabled bool, endpointType string)) *MockCmdable_ClientMaintNotifications_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 bool
+		if args[1] != nil {
+			arg1 = args[1].(bool)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockCmdable_ClientMaintNotifications_Call) Return(statusCmd *redis.StatusCmd) *MockCmdable_ClientMaintNotifications_Call {
+	_c.Call.Return(statusCmd)
+	return _c
+}
+
+func (_c *MockCmdable_ClientMaintNotifications_Call) RunAndReturn(run func(ctx context.Context, enabled bool, endpointType string) *redis.StatusCmd) *MockCmdable_ClientMaintNotifications_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ClientPause provides a mock function for the type MockCmdable
 func (_mock *MockCmdable) ClientPause(ctx context.Context, dur time.Duration) *redis.BoolCmd {
 	ret := _mock.Called(ctx, dur)
