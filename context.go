@@ -47,11 +47,9 @@ type Context interface {
 	MultipartForm() (*multipart.Form, error)
 
 	// Set stores a new key/value pair exclusively for this context
-	// Read more at https://pkg.go.dev/github.com/gin-gonic/gin#Context.Set
 	Set(key string, value any)
 
 	// Get returns the value for the given key
-	// Read more at https://pkg.go.dev/github.com/gin-gonic/gin#Context.Get
 	Get(key string) (value any, exists bool)
 
 	// Status sets the HTTP response code
@@ -191,6 +189,14 @@ func (c litContext) JSON(status int, obj any) error {
 func (c litContext) NoContent(status int) error {
 	c.Context.Writer.WriteHeader(status)
 	return nil
+}
+
+func (c litContext) Get(key string) (value any, exists bool) {
+	return c.Context.Get(key)
+}
+
+func (c litContext) Set(key string, value any) {
+	c.Context.Set(key, value)
 }
 
 func (c litContext) Error(err error) {
