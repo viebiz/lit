@@ -6,12 +6,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
+	"github.com/viebiz/lit/mocks/mocktracer"
 )
 
 func TestPublishSegment_SpanID(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -26,8 +26,8 @@ func TestPublishSegment_SpanID(t *testing.T) {
 }
 
 func TestPublishSegment_SpanContext(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -45,8 +45,8 @@ func TestPublishSegment_SpanContext(t *testing.T) {
 }
 
 func TestPublishSegment_End_Success(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -59,8 +59,8 @@ func TestPublishSegment_End_Success(t *testing.T) {
 }
 
 func TestPublishSegment_End_WithError(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -74,8 +74,8 @@ func TestPublishSegment_End_WithError(t *testing.T) {
 }
 
 func TestPublishSegment_BuildPublishSegment(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	_, span := tracer.Start(context.Background(), "test-span")

@@ -7,15 +7,15 @@ import (
 
 	"github.com/IBM/sarama"
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 )
 
 func TestStartSyncPublishSegment_NoCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx := context.Background()
@@ -43,8 +43,8 @@ func TestStartSyncPublishSegment_NoCurSpan(t *testing.T) {
 }
 
 func TestStartSyncPublishSegment_WithCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx, _ := tracer.Start(context.Background(), "test-parent-span")
@@ -71,8 +71,8 @@ func TestStartSyncPublishSegment_WithCurSpan(t *testing.T) {
 }
 
 func TestStartAsyncEnqueueSegment_NoCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx := context.Background()
@@ -92,8 +92,8 @@ func TestStartAsyncEnqueueSegment_NoCurSpan(t *testing.T) {
 }
 
 func TestStartAsyncEnqueueSegment_WithCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Create a parent span
 	ctx, _ := tracer.Start(context.Background(), "test-parent-span")
@@ -116,8 +116,8 @@ func TestStartAsyncEnqueueSegment_WithCurSpan(t *testing.T) {
 }
 
 func TestStartAsyncPublishSegment(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	extSvcInfo := monitoring.ExternalServiceInfo{
@@ -145,6 +145,9 @@ func TestStartAsyncPublishSegment(t *testing.T) {
 }
 
 func TestStartAsyncPublishSegment_NoExistingContext(t *testing.T) {
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
+
 	// GIVEN
 	extSvcInfo := monitoring.ExternalServiceInfo{
 		Hostname: "kafka-broker",
