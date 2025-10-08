@@ -6,13 +6,13 @@ import (
 	"testing"
 
 	"github.com/IBM/sarama"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"go.opentelemetry.io/otel"
 )
 
 func TestStartConsumeTxn_NoCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx := context.Background()
@@ -34,8 +34,8 @@ func TestStartConsumeTxn_NoCurSpan(t *testing.T) {
 }
 
 func TestStartConsumeTxn_WithSpanContext(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx := context.Background()
@@ -61,8 +61,8 @@ func TestStartConsumeTxn_WithSpanContext(t *testing.T) {
 }
 
 func TestStartCommitSegment(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx := context.Background()
@@ -79,8 +79,8 @@ func TestStartCommitSegment(t *testing.T) {
 }
 
 func TestStartCommitSegment_WithExistingSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	ctx, parentSpan := tracer.Start(context.Background(), "parent-span")

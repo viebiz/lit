@@ -6,15 +6,15 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/metadata"
 )
 
 func TestStartUnaryCallSegment_NoCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx := context.Background()
@@ -37,8 +37,8 @@ func TestStartUnaryCallSegment_NoCurSpan(t *testing.T) {
 }
 
 func TestStartUnaryCallSegment_WithCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx := context.Background()
@@ -64,8 +64,8 @@ func TestStartUnaryCallSegment_WithCurSpan(t *testing.T) {
 }
 
 func TestStartUnaryCallSegment_EndWithError(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx := context.Background()
@@ -84,8 +84,8 @@ func TestStartUnaryCallSegment_EndWithError(t *testing.T) {
 }
 
 func TestStartUnaryCallSegment_WithExistingMetadata(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx := context.Background()

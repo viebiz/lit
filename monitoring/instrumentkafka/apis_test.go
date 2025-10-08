@@ -7,13 +7,13 @@ import (
 
 	"github.com/IBM/sarama"
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 )
 
 func TestInjectAsyncSegmentInfo(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// GIVEN
 	buf := bytes.NewBuffer(nil)

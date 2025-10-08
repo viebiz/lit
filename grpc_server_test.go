@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"github.com/viebiz/lit/testutil"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -74,8 +74,8 @@ func TestGRPCServer_UnaryRun(t *testing.T) {
 	}
 	for scenario, tc := range tcs {
 		t.Run(scenario, func(t *testing.T) {
-			tp := mocktracer.Start()
-			defer tp.Reset()
+			tp := mocktracer.NewTestTracerProvider(t)
+			defer tp.Shutdown(t)
 
 			m, err := monitoring.New(monitoring.Config{ServerName: "test"})
 			require.NoError(t, err)

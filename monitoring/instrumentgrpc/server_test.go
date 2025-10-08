@@ -11,8 +11,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"github.com/viebiz/lit/grpcclient/testdata"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"github.com/viebiz/lit/testutil"
 	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc/metadata"
@@ -20,8 +20,8 @@ import (
 )
 
 func TestStartUnaryIncomingCall_NoCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	logBuf := bytes.NewBuffer(nil)
 	m, err := monitoring.New(monitoring.Config{Writer: logBuf})
@@ -50,8 +50,8 @@ func TestStartUnaryIncomingCall_NoCurSpan(t *testing.T) {
 }
 
 func TestStartUnaryIncomingCall_WihCurSpan(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	logBuf := bytes.NewBuffer(nil)
 	m, err := monitoring.New(monitoring.Config{Writer: logBuf})
@@ -85,8 +85,8 @@ func TestStartUnaryIncomingCall_WihCurSpan(t *testing.T) {
 }
 
 func TestStartUnaryIncomingCall_EndWithError(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	logBuf := bytes.NewBuffer(nil)
 	m, err := monitoring.New(monitoring.Config{Writer: logBuf})

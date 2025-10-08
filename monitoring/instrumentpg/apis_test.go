@@ -4,13 +4,13 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/postgres"
 )
 
 func TestWithInstrumentation(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	tcs := map[string]struct {
 		givenPool postgres.BeginnerExecutor
@@ -38,8 +38,8 @@ func TestWithInstrumentation(t *testing.T) {
 }
 
 func TestWithInstrumentationTx(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	tcs := map[string]struct {
 		givenTx postgres.ContextExecutor

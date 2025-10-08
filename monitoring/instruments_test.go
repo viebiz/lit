@@ -7,7 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"go.opentelemetry.io/otel/attribute"
 )
 
@@ -36,8 +36,8 @@ func TestStartSegmentWithTags_WithCurSpan(t *testing.T) {
 }
 
 func TestInjectField(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	type args struct {
 		key   string
@@ -95,8 +95,8 @@ func TestInjectField(t *testing.T) {
 }
 
 func TestInjectFields(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx, span := tracer.Start(context.Background(), "test-span")
@@ -138,8 +138,8 @@ func TestInjectFields(t *testing.T) {
 }
 
 func TestInjectTracingInfo(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -171,8 +171,8 @@ func TestInjectTracingInfo(t *testing.T) {
 }
 
 func TestInjectOutgoingTracingInfo(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	_, span := tracer.Start(context.Background(), "test-span")
@@ -194,8 +194,8 @@ func TestInjectOutgoingTracingInfo(t *testing.T) {
 }
 
 func TestNotifyErrorToInstrumentation(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	// Given
 	ctx, _ := tracer.Start(context.Background(), "test-span")
@@ -206,5 +206,4 @@ func TestNotifyErrorToInstrumentation(t *testing.T) {
 
 	// Then
 	// The function should not panic and should handle the error notification
-	// We can't easily test the span status with mocktracer, so we just ensure no panic
 }

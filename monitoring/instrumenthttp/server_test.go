@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/viebiz/lit/mocks/mocktracer"
 	"github.com/viebiz/lit/monitoring"
-	"github.com/viebiz/lit/monitoring/tracing/mocktracer"
 	"github.com/viebiz/lit/testutil"
 	"go.opentelemetry.io/otel/attribute"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -21,8 +21,8 @@ import (
 )
 
 func TestStartIncomingRequest(t *testing.T) {
-	tp := mocktracer.Start()
-	defer tp.Stop()
+	tp := mocktracer.NewTestTracerProvider(t)
+	defer tp.Shutdown(t)
 
 	type args struct {
 		givenURL             string
