@@ -26,25 +26,76 @@ Designed to be simple, extensible, and easy to adopt, Lit lets teams focus on bu
 | License         | ![GitHub License](https://img.shields.io/github/license/viebiz/lit)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 
+## 🤖 AI Assistant Support
 
-## Getting started
+Lightning (Lit) includes comprehensive instructions for AI coding assistants to help you develop faster:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- **[GitHub Copilot & Cursor](.github/copilot-instructions.md)** - Complete framework reference for inline suggestions
+- **[Claude AI](CLAUDE.md)** - Detailed architectural guide with common pitfalls and best practices
+- **[Generic AI Assistants](AGENTS.md)** - Quick-start guide for all AI coding tools
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+These files provide guidance on:
+- Core architectural patterns (functional options, context propagation)
+- Testing requirements and best practices
+- Common development workflows
+- Security and performance considerations
 
-## Add your files
+See [.github/AI-INSTRUCTIONS-README.md](.github/AI-INSTRUCTIONS-README.md) for details on which file to use.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## 📚 Documentation
 
+Detailed documentation is available in the [`docs/`](docs/) directory:
+
+- [Getting Started](docs/getting-started.md) - Installation and hello world
+- [HTTP Services](docs/http-services.md) - Building HTTP APIs
+- [gRPC Services](docs/grpc.md) - gRPC server and client setup
+- [Authentication & Authorization](docs/auth-authorization.md) - JWT and Casbin integration
+- [Monitoring](docs/monitoring.md) - Logging, tracing, and error reporting
+- [Kafka Messaging](docs/kafka-messaging.md) - Message broker integration
+- [Redis Caching](docs/redis-caching.md) - Caching layer
+- [Testing](docs/testing.md) - Testing utilities and patterns
+
+## 🚀 Getting Started
+
+Install Lightning:
+
+```bash
+go get github.com/viebiz/lit@latest
 ```
-cd existing_repo
-git remote add origin https://github.com/viebiz/lit.git
-git branch -M main
-git push -uf origin main
+
+Create a simple HTTP server:
+
+```go
+package main
+
+import (
+    "context"
+    "net/http"
+    "github.com/viebiz/lit"
+)
+
+func main() {
+    r := lit.NewRouter(context.Background())
+    r.Get("/", func(c lit.Context) error {
+        return c.String(http.StatusOK, "Hello, World!")
+    })
+
+    srv := lit.NewHttpServer(":8080", r.Handler())
+    if err := srv.Run(); err != nil {
+        panic(err)
+    }
+}
 ```
 
-## Integrate with your tools
+## 🤝 Contributing
 
-## Test and Deploy
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+
+- Code style and formatting
+- Testing requirements
+- Development workflow
+- Pull request process
+
+## 📝 License
+
+Lightning is licensed under the Apache-2.0 License. See [LICENSE](LICENSE) for details.

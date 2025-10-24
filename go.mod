@@ -8,7 +8,7 @@ require (
 	github.com/casbin/gorm-adapter/v3 v3.37.0
 	github.com/casbin/govaluate v1.10.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/getsentry/sentry-go v0.36.0
+	github.com/getsentry/sentry-go v0.36.1
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-playground/validator/v10 v10.28.0
@@ -17,8 +17,8 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/redis/go-redis/extra/rediscmd/v9 v9.15.1
-	github.com/redis/go-redis/v9 v9.15.1
+	github.com/redis/go-redis/extra/rediscmd/v9 v9.16.0
+	github.com/redis/go-redis/v9 v9.16.0
 	github.com/sony/sonyflake v1.3.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
