@@ -30,6 +30,10 @@ func setSingleValue[T Type](
 	// 2. Set value to redis
 	status, err := rdb.SetArgs(ctx, key, value, args).Result()
 	if err != nil {
+		if mode == setModeNX && errors.Is(err, redis.Nil) {
+			return ErrFailToSetValue
+		}
+
 		return pkgerrors.WithStack(err)
 	}
 

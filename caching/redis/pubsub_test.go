@@ -73,7 +73,7 @@ func TestRedisClient_Publish(t *testing.T) {
 			tc.givenMockCmdArg = tc.givenMockCmdArgFn()
 			mockUniversalClient.ExpectedCalls = []*mock.Call{
 				mockUniversalClient.On(
-					"SPublish",
+					"Publish",
 					tc.givenMockCmdArg.givenContext,
 					tc.givenMockCmdArg.givenChannel,
 					tc.givenMockCmdArg.givenValue,
