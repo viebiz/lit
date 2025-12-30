@@ -14,8 +14,7 @@ import (
 
 // Publish posts a new message to server
 func (client redisClient) Publish(ctx context.Context, channel string, payload any) error {
-	// Use SPUBLISH for better efficiency with sharding (Redis Cluster), If not using sharding it the same PUBLISH
-	return client.rdb.SPublish(ctx, channel, payload).Err()
+	return client.rdb.Publish(ctx, channel, payload).Err()
 }
 
 func (client redisClient) Subscribe(ctx context.Context, channels []string, handler MessageHandler) Subscriber {
@@ -32,7 +31,7 @@ func (client redisClient) Subscribe(ctx context.Context, channels []string, hand
 		handler:  handler,
 		monitor:  monitor,
 		subscribeFunc: func(ctx context.Context, channels ...string) RedisPubSub {
-			return client.rdb.SSubscribe(ctx, channels...)
+			return client.rdb.Subscribe(ctx, channels...)
 		},
 	}
 }
